@@ -1,0 +1,3309 @@
+{
+  "metadata": {
+    "proyectoOrigen": "Visitá Fray (Guía Turística Fray Mamerto Esquiú)",
+    "fechaExportacion": "2026-11-16T16:51:00.109Z",
+    "fuentesAnalizadas": [
+      "src/data/initialData.ts",
+      "data/places.json",
+      "src/components/LocalidadesSection.tsx",
+      "public/, public/images/, public/uploads/, src/assets/images/"
+    ],
+    "notaFidelidad": "Todos los campos conservan los datos originales sin inventar ni completar información faltante.",
+    "criterioClasificacion": {
+      "registros_verificados_y_completos": "Requiere validationStatus === \"verificado\", imagen asignada, enlace googleMapsUrl explícito y sin notas o teléfonos pendientes/genéricos.",
+      "registros_incompletos_o_no_verificables": "Registros con algún dato faltante (imagen o enlace de Google Maps), estado pendiente_validacion / dato_pendiente_actualizacion / sin estado, o teléfono genérico a verificar."
+    },
+    "resumen": {
+      "totalLugares": 58,
+      "verificadosYCompletos": 2,
+      "incompletosONoVerificables": 56,
+      "conEnlaceGoogleMaps": 6,
+      "conImagenAsignada": 5,
+      "totalCategorias": 8,
+      "totalLocalidades": 8,
+      "totalEventos": 5,
+      "totalAudioguias": 5,
+      "totalExperiencias": 6,
+      "totalImagenesAlmacenadasEnDisco": 47
+    }
+  },
+  "registros_verificados_y_completos": [
+    {
+      "id": "casa-natal-esquiu",
+      "name": "Casa Natal de Fray Mamerto Esquiú",
+      "category": "religioso",
+      "subCategory": "Patrimonio Religioso e Histórico",
+      "shortDescription": "Monumento Histórico Nacional donde nació el célebre fraile orador y beato argentino.",
+      "description": "Auténtica joya de la arquitectura colonial de tierra cruda, preservada bajo un templete protector. Aquí nació el 11 de mayo de 1826 Fray Mamerto Esquiú. Conserva objetos personales, mobiliario de época y reliquias en un entorno de paz rodeado por las sierras del Gracián.",
+      "address": "Calle del Beato s/n, Piedra Blanca",
+      "locality": "San José de Piedra Blanca",
+      "localityId": "san-jose",
+      "lat": -28.3812,
+      "lng": -65.7311,
+      "image": "/images/casa-natal-esquiu.jpg",
+      "gallery": [
+        "/images/casa-natal-esquiu.jpg"
+      ],
+      "openingHours": "Mar a Dom: 08:30 a 13:00 y 16:30 a 20:30 hs. Lunes cerrado.",
+      "phone": "+54 383 4491020",
+      "whatsapp": "5493834491020",
+      "instagram": "turismofray",
+      "tags": [
+        "Abierto ahora",
+        "Accesible",
+        "Con niños",
+        "Patrimonio Esquiú",
+        "Económico",
+        "Estacionamiento"
+      ],
+      "services": [
+        "Visitas guiadas gratuitas",
+        "Audioguía interactiva",
+        "Baños adaptados",
+        "Venta de recuerdos"
+      ],
+      "priceLevel": "$",
+      "featured": true,
+      "isImperdible": true,
+      "isHeritageEsquiu": true,
+      "audioguideId": "audio-casa-natal",
+      "googleMapsUrl": "https://maps.app.goo.gl/xQJHPy1nYiffXkeU7",
+      "validationStatus": "verificado",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "id": "monumento-esquiu",
+      "name": "Monumento al Beato Mamerto Esquiú",
+      "category": "religioso",
+      "subCategory": "Historia y Turismo Religioso",
+      "shortDescription": "Emblemática escultura de Antonio Emilio Forner con tres arcadas franciscanas al pie de las sierras.",
+      "description": "Ubicado en cercanías de la histórica Iglesia de San José de Piedra Blanca y con las sierras como marco natural, el Monumento al Beato Mamerto Esquiú homenajea a una de las figuras más importantes de la historia de Catamarca.\n\nLa obra fue realizada por el escultor Antonio Emilio Forner durante los homenajes organizados por el sesquicentenario del nacimiento de Esquiú. La imponente figura, de aproximadamente 2,30 metros de altura, representa al fraile franciscano acompañada por tres grandes arcadas.\n\nEstas arcadas simbolizan los tres votos de la tradición franciscana: pobreza, obediencia y castidad, valores profundamente vinculados a la vida religiosa de Mamerto Esquiú.\n\nPor su ubicación, su significado y el paisaje serrano que lo rodea, el monumento constituye uno de los puntos emblemáticos del recorrido histórico y religioso de Fray Mamerto Esquiú.",
+      "address": "Colina del Monumento al Beato Esquiú, Piedra Blanca",
+      "locality": "San José de Piedra Blanca",
+      "localityId": "san-jose",
+      "lat": -28.3953562,
+      "lng": -65.7017361,
+      "googleMapsUrl": "https://maps.app.goo.gl/5EZx4Lnhi4ibEV7j7",
+      "image": "/images/monumento-beato-esquiu.jpg",
+      "gallery": [
+        "/images/monumento-beato-esquiu.jpg"
+      ],
+      "openingHours": "Monumento al aire libre. Acceso público permanente.",
+      "phone": "",
+      "whatsapp": "",
+      "tags": [
+        "Al aire libre",
+        "Vista a las sierras",
+        "Patrimonio Esquiú",
+        "Monumento Histórico"
+      ],
+      "services": [
+        "Arcadas franciscanas",
+        "Escultura de 2.30 m de Antonio Emilio Forner",
+        "Mirador serrano"
+      ],
+      "isHeritageEsquiu": true,
+      "isImperdible": true,
+      "featured": true,
+      "audioguideId": "audio-monumento",
+      "validationStatus": "verificado",
+      "validationNote": "Monumento público conmemorativo del sesquicentenario de Esquiú.",
+      "diferenciaEnDataPlacesJson": {
+        "placesJsonLat": -28.389,
+        "placesJsonLng": -65.729,
+        "placesJsonImage": "/images/monumento-beato-esquiu.jpg",
+        "placesJsonGallery": [
+          "/images/monumento-beato-esquiu.jpg"
+        ],
+        "placesJsonShortDescription": "Emblemática escultura de Antonio Emilio Forner con tres arcadas franciscanas al pie de las sierras.",
+        "placesJsonDescription": "Ubicado en cercanías de la histórica Iglesia de San José de Piedra Blanca y con las sierras como marco natural, el Monumento al Beato Mamerto Esquiú homenajea a una de las figuras más importantes de la historia de Catamarca.\n\nLa obra fue realizada por el escultor Antonio Emilio Forner durante los homenajes organizados por el sesquicentenario del nacimiento de Esquiú. La imponente figura, de aproximadamente 2,30 metros de altura, representa al fraile franciscano acompañada por tres grandes arcadas.\n\nEstas arcadas simbolizan los tres votos de la tradición franciscana: pobreza, obediencia y castidad, valores profundamente vinculados a la vida religiosa de Mamerto Esquiú.\n\nPor su ubicación, su significado y el paisaje serrano que lo rodea, el monumento constituye uno de los puntos emblemáticos del recorrido histórico y religioso de Fray Mamerto Esquiú.",
+        "placesJsonAddress": "Colina cercana a la Iglesia de San José, Piedra Blanca"
+      }
+    }
+  ],
+  "registros_incompletos_o_no_verificables": [
+    {
+      "motivosRevision": [
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps",
+        "nota_foto_pendiente"
+      ],
+      "id": "casa-de-piedra",
+      "name": "Casa de Piedra",
+      "category": "naturaleza",
+      "subCategory": "Sierras y Senderos",
+      "shortDescription": "Formación rocosa natural en la Sierra de Gracián con un ventanal natural panorámico hacia el valle.",
+      "description": "Majestuosa e imponente formación rocosa natural ubicada sobre el lomo de la Sierra de Gracián. Es célebre por su gigantesca cavidad natural que funciona visualmente como un enorme ventanal sobre el abismo, ofreciendo vistas panorámicas 360° inigualables de todo el Valle Central, el Dique Las Pirquitas y los pueblos de Fray Mamerto Esquiú. Requiere ascenso a pie por sendero serrano nativo.",
+      "address": "Sierra de Gracián (Acceso sendero desde La Tercena / La Falda)",
+      "locality": "La Tercena",
+      "localityId": "la-tercena",
+      "lat": -28.362,
+      "lng": -65.719,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Recomendado ascender de 07:00 a 16:00 hs con luz diurna. No realizar de noche sin guía certificado.",
+      "phone": "+54 383 4491020",
+      "whatsapp": "5493834491020",
+      "instagram": "turismofray",
+      "tags": [
+        "Trekking",
+        "Sendero de montaña",
+        "Al aire libre",
+        "Vista a las sierras",
+        "Cuidado ambiental"
+      ],
+      "services": [
+        "Sendero pedestre señalizado",
+        "Mirador natural de roca",
+        "Avistaje de aves y cóndores",
+        "Registro turístico"
+      ],
+      "priceLevel": "$",
+      "featured": true,
+      "isImperdible": true,
+      "photoPendingNote": "FOTO PENDIENTE: vista panorámica de Casa de Piedra hacia el Valle de Fray Mamerto Esquiú",
+      "photoCredit": "Turismo Catamarca / Municipalidad de Fray Mamerto Esquiú",
+      "validationStatus": "verificado",
+      "validationNote": "Sendero serrano de montaña activo. Verificar estado del tiempo antes de subir.",
+      "sourceGuide": "Guía Turística Oficial FME & Relevamiento de Montaña",
+      "trekkingInfo": {
+        "difficulty": "Moderada",
+        "durationHours": "2 a 3 horas de marcha",
+        "distanceKm": 4.8,
+        "elevationGain": "+320 m de desnivel",
+        "waterRecommended": "Mínimo 1.5 a 2 litros de agua por persona",
+        "footwearRecommended": "Zapatillas de trekking o botas con suela de agarre (no calzado urbano liso)",
+        "bestTimeToVisit": "Primeras horas de la mañana (07:00 a 11:00 hs) o media tarde.",
+        "environmentalCare": [
+          "Reserva Natural Serrana: Regresar con absolutamente todos los residuos.",
+          "Prohibición total de encender fuego en toda la ladera serrana.",
+          "Prohibido pintar o intervenir las formaciones rocosas.",
+          "Respetar la flora (quebrachos, algarrobos, cardones) y la fauna autóctona."
+        ],
+        "safetyWarnings": [
+          "Caminata serrana de montaña. No es un paseo urbano.",
+          "Llevar gorro o sombrero de ala ancha, protector solar y bastón de apoyo si se requiere.",
+          "No ascender con pronóstico de lluvias o tormentas eléctricas.",
+          "Avisar en la Secretaría de Turismo o a conocidos antes de iniciar el ascenso."
+        ]
+      }
+    },
+    {
+      "motivosRevision": [
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps",
+        "nota_foto_pendiente"
+      ],
+      "id": "santuario-senor-de-los-milagros",
+      "name": "Santuario Señor de los Milagros",
+      "category": "religioso",
+      "subCategory": "Patrimonio Religioso",
+      "shortDescription": "Histórico templo de profunda devoción mariana y cristológica en el corazón de La Tercena.",
+      "description": "Emblemático santuario de estilo colonial del siglo XIX que resguarda la sagrada imagen del Señor de los Milagros. Su fiesta patronal reúne a miles de devotos de toda la provincia. Forma parte indivisible del circuito de fe y de la memoria comunitaria del Beato Esquiú.",
+      "address": "Calle Pública s/n, La Tercena",
+      "locality": "La Tercena",
+      "localityId": "la-tercena",
+      "lat": -28.3685,
+      "lng": -65.727,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Lunes a Domingo de 08:30 a 12:30 y 17:00 a 20:30 hs.",
+      "phone": "+54 383 4491020",
+      "whatsapp": "5493834491020",
+      "tags": [
+        "Abierto ahora",
+        "Accesible",
+        "Con niños",
+        "Patrimonio Esquiú",
+        "Económico"
+      ],
+      "services": [
+        "Misas dominicales",
+        "Visitas guiadas de fe",
+        "Espacio de oración y silencio"
+      ],
+      "priceLevel": "$",
+      "featured": true,
+      "isImperdible": true,
+      "isHeritageEsquiu": true,
+      "audioguideId": "audio-santuario-milagros",
+      "photoPendingNote": "FOTO PENDIENTE: Fachada histórica del Santuario Señor de los Milagros de La Tercena",
+      "validationStatus": "verificado",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps",
+        "nota_foto_pendiente"
+      ],
+      "id": "campanas-del-rosario",
+      "name": "Campanas del Rosario & Capilla",
+      "category": "religioso",
+      "subCategory": "Patrimonio Religioso",
+      "shortDescription": "Capilla histórica y campanario rústico abrazados por el paisaje serrano de La Falda.",
+      "description": "Un sitio donde la devoción y la naturaleza se funden en perfecta armonía. La capilla y su campanario histórico resuenan entre las quebradas de La Falda, en un entorno de nogales, algarrobos y silencio espiritual venerado por generaciones.",
+      "address": "Camino a La Falda s/n",
+      "locality": "La Falda de San Antonio",
+      "localityId": "san-antonio",
+      "lat": -28.417,
+      "lng": -65.724,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Visita libre durante horas del día (08:00 a 19:30 hs).",
+      "phone": "+54 383 4491020",
+      "whatsapp": "5493834491020",
+      "tags": [
+        "Al aire libre",
+        "Vista a las sierras",
+        "Patrimonio Esquiú",
+        "Con niños",
+        "Económico"
+      ],
+      "services": [
+        "Campanario histórico",
+        "Entorno arbolado de descanso",
+        "Espacio de meditación"
+      ],
+      "priceLevel": "$",
+      "featured": true,
+      "isImperdible": true,
+      "isHeritageEsquiu": true,
+      "photoPendingNote": "FOTO PENDIENTE: Campanario de las Campanas del Rosario y entorno serrano de La Falda",
+      "validationStatus": "verificado",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps",
+        "nota_foto_pendiente"
+      ],
+      "id": "cuesta-del-cura",
+      "name": "Cuesta del Cura & Cuesta del Gracián",
+      "category": "naturaleza",
+      "subCategory": "Sierras y Senderos",
+      "shortDescription": "Caminos históricos de herradura y senderismo de media montaña con miradores serranos.",
+      "description": "Antiguo paso serrano transitado en tiempos coloniales y por el propio Fray Mamerto Esquiú en sus recorridos pastorales. Conecta las quebradas de La Tercena y La Carrera cruzando abras montañosas con vistas panorámicas al valle.",
+      "address": "Acceso por La Tercena / La Carrera",
+      "locality": "La Carrera",
+      "localityId": "la-carrera",
+      "lat": -28.345,
+      "lng": -65.718,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Recorrido diurno sugerido entre 07:30 y 17:30 hs.",
+      "phone": "+54 383 4491020",
+      "whatsapp": "5493834491020",
+      "tags": [
+        "Trekking",
+        "Sendero de montaña",
+        "Al aire libre",
+        "Vista a las sierras",
+        "Cuidado ambiental"
+      ],
+      "services": [
+        "Sendero de herradura",
+        "Miradores naturales",
+        "Cartelería histórica"
+      ],
+      "priceLevel": "$",
+      "photoPendingNote": "FOTO PENDIENTE: Sendero de la Cuesta del Cura y vistas al cordón del Gracián",
+      "validationStatus": "verificado",
+      "sourceGuide": "Guía Turística Oficial FME",
+      "trekkingInfo": {
+        "difficulty": "Moderada",
+        "durationHours": "3 a 4 horas",
+        "distanceKm": 6.2,
+        "elevationGain": "+280 m",
+        "waterRecommended": "Mínimo 1.5 L de agua",
+        "footwearRecommended": "Calzado de senderismo con agarre",
+        "bestTimeToVisit": "Mañanas templadas o días otoñales/primaverales",
+        "environmentalCare": [
+          "No dejar residuos",
+          "Prohibido encender fuego",
+          "Cuidar la vegetación nativa"
+        ],
+        "safetyWarnings": [
+          "Llevar protección solar y agua suficiente",
+          "Sendero de ripio y piedras sueltas"
+        ]
+      }
+    },
+    {
+      "motivosRevision": [
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps",
+        "nota_foto_pendiente",
+        "telefono_aparentemente_generico_4567890"
+      ],
+      "id": "paseo-las-moras",
+      "name": "Paseo Las Moras & Costanera del Dique",
+      "category": "naturaleza",
+      "shortDescription": "Costanera peatonal arbolada con moras, bancos rústicos y parador con vista al lago.",
+      "description": "Paseo peatonal y ciclista ubicado en Villa Las Pirquitas. Bordea el embalse y el vertedero bajo la sombra de moreras centenarias, con paradores gastronómicos, alquiler de bicicletas y mirador para matear al atardecer.",
+      "address": "Villa Las Pirquitas (Margen del embalse)",
+      "locality": "Villa Las Pirquitas",
+      "localityId": "las-pirquitas",
+      "lat": -28.281,
+      "lng": -65.73,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Abierto las 24 hs. Iluminación nocturna.",
+      "phone": "+54 383 4567890",
+      "whatsapp": "5493834567890",
+      "tags": [
+        "Abierto ahora",
+        "Pet friendly",
+        "Con niños",
+        "Al aire libre",
+        "Estacionamiento",
+        "Vista a las sierras"
+      ],
+      "services": [
+        "Bancos rústicos",
+        "Alquiler de bicis",
+        "Paradores al paso",
+        "Iluminación pública"
+      ],
+      "priceLevel": "$",
+      "photoPendingNote": "FOTO PENDIENTE: Paseo costero Las Moras en Villa Las Pirquitas",
+      "validationStatus": "verificado",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "sin_enlace_google_maps",
+        "telefono_aparentemente_generico_4567890"
+      ],
+      "id": "dique-las-pirquitas",
+      "name": "Dique y Embalse Las Pirquitas",
+      "category": "naturaleza",
+      "shortDescription": "Espejo de agua rodeado de montañas, ideal para deportes náuticos, pesca y atardeceres únicos.",
+      "description": "Ubicado a 15 km de San José, el embalse Las Pirquitas ofrece un entorno paisajístico de ensueño con aguas verde esmeralda entre cerros. Es el punto neurálgico para paseos en kayak, stand up paddle, pesca de pejerrey y relajarse bajo los sauces.",
+      "address": "Ruta Provincial 1, Las Pirquitas",
+      "locality": "Las Pirquitas",
+      "localityId": "las-pirquitas",
+      "lat": -28.2798,
+      "lng": -65.7302,
+      "image": "/images/dique-las-pirquitas.jpg",
+      "gallery": [
+        "/images/dique-las-pirquitas.jpg",
+        "/images/dique-las-pirquitas-hero.jpg",
+        "/dique%20las%20pirquitas.jpg"
+      ],
+      "openingHours": "Abierto todos los días de 08:00 a 20:00 hs.",
+      "phone": "+54 383 4567890",
+      "whatsapp": "5493834567890",
+      "instagram": "laspirquitasfme",
+      "tags": [
+        "Abierto ahora",
+        "Pet friendly",
+        "Con niños",
+        "Al aire libre",
+        "Estacionamiento",
+        "Vista a las sierras"
+      ],
+      "services": [
+        "Alquiler de kayak",
+        "Paradores náuticos",
+        "Zona de pesca",
+        "Paseos en lancha",
+        "Puesto de guardavidas"
+      ],
+      "priceLevel": "$",
+      "featured": true,
+      "isImperdible": true,
+      "audioguideId": "audio-dique-pirquitas",
+      "validationStatus": "verificado",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú",
+      "diferenciaEnDataPlacesJson": {
+        "placesJsonLat": -28.2798,
+        "placesJsonLng": -65.7302,
+        "placesJsonImage": "/dique%20las%20pirquitas.jpg",
+        "placesJsonGallery": [
+          "/dique%20las%20pirquitas.jpg",
+          "/Cuesta%20de%20Las%20Pirquitas%20STEFAN%20SAUZUK.%20Catamarca%20paisajes.jpg"
+        ],
+        "placesJsonShortDescription": "Espejo de agua rodeado de montañas, ideal para deportes náuticos, pesca y atardeceres únicos.",
+        "placesJsonDescription": "Ubicado a 15 km de San José, el embalse Las Pirquitas ofrece un entorno paisajístico de ensueño con aguas verde esmeralda entre cerros. Es el punto neurálgico para paseos en kayak, stand up paddle, pesca de pejerrey y relajarse bajo los sauces.",
+        "placesJsonAddress": "Ruta Provincial 1, Las Pirquitas"
+      }
+    },
+    {
+      "motivosRevision": [
+        "sin_estado_de_validacion",
+        "sin_enlace_google_maps"
+      ],
+      "id": "iglesia-san-jose",
+      "name": "Iglesia de San José de Piedra Blanca",
+      "category": "religioso",
+      "subCategory": "Patrimonio Religioso",
+      "shortDescription": "Monumento Histórico Nacional erigido en 1780, corazón espiritual de la villa.",
+      "description": "Imponente templo que data de finales del siglo XVIII con sus muros de adobe, altar tallado en madera dorada a la hoja y campanario colonial. Aquí fue bautizado Fray Mamerto Esquiú y en su atrio se celebran las fiestas patronales más sentidas del departamento.",
+      "address": "Frente a Plaza San José, Piedra Blanca",
+      "locality": "San José de Piedra Blanca",
+      "lat": -28.3842,
+      "lng": -65.7331,
+      "image": "/images/iglesia-san-jose.jpg",
+      "gallery": [
+        "/images/iglesia-san-jose.jpg",
+        "/images/templo-san-jose-piedra-blanca.jpg"
+      ],
+      "openingHours": "Lunes a Domingo de 08:00 a 12:30 y 17:00 a 21:00 hs.",
+      "phone": "+54 383 4491100",
+      "whatsapp": "5493834491100",
+      "tags": [
+        "Abierto ahora",
+        "Accesible",
+        "Con niños",
+        "Económico"
+      ],
+      "services": [
+        "Secretaría parroquial",
+        "Misas los fines de semana",
+        "Visitas patrimoniales"
+      ],
+      "priceLevel": "$",
+      "featured": true,
+      "audioguideId": "audio-iglesia-sanjose"
+    },
+    {
+      "motivosRevision": [
+        "sin_estado_de_validacion",
+        "sin_enlace_google_maps"
+      ],
+      "id": "casona-piedra-blanca",
+      "name": "La Casona de Piedra Blanca",
+      "category": "comer",
+      "shortDescription": "Restaurante criollo con patio colonial, empanadas al horno de barro y cabrito a la llama.",
+      "description": "Famoso por su auténtica cocina catamarqueña en una casona centenaria rodeada de higueras y parrales. Imperdibles las empanadas cortadas a cuchillo, el cabrito braseado al torrontés y el flan casero con dulce de leche de campo.",
+      "address": "Av. Vicente Saadi 450, Piedra Blanca",
+      "locality": "San José de Piedra Blanca",
+      "lat": -28.386,
+      "lng": -65.7348,
+      "image": "/images/casona-piedra-blanca.jpg",
+      "gallery": [
+        "/images/casona-piedra-blanca.jpg"
+      ],
+      "openingHours": "Mié a Dom: 12:00 a 16:00 y 20:30 a 01:00 hs.",
+      "phone": "+54 383 4721990",
+      "whatsapp": "5493834721990",
+      "instagram": "lacasonapiedrablanca",
+      "tags": [
+        "Abierto ahora",
+        "Pet friendly",
+        "Con niños",
+        "Al aire libre",
+        "Estacionamiento",
+        "Opciones vegetarianas",
+        "Acepta Mercado Pago",
+        "Wi-Fi"
+      ],
+      "services": [
+        "Patio al aire libre",
+        "Música folclórica en vivo",
+        "Menú infantil",
+        "Carta de vinos catamarqueños"
+      ],
+      "priceLevel": "$$",
+      "featured": true
+    },
+    {
+      "motivosRevision": [
+        "sin_estado_de_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "casa-de-te-la-calera",
+      "name": "Casa de Té & Café La Calera",
+      "category": "merendar",
+      "shortDescription": "Paredones de adobe, repostería artesanal, licuados de frutas de estación y té en hebras.",
+      "description": "Un rincón mágico bajo la sombra de nogales y algarrobos. Especialistas en tostadas de campo con dulce casero de cayote y nuez, torta húmeda de chocolate con frutos rojos, café de especialidad y limonadas con menta del huerto.",
+      "address": "Calle Pública s/n, Collagasta",
+      "locality": "Collagasta",
+      "lat": -28.3712,
+      "lng": -65.739,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Jue a Dom: 16:30 a 21:30 hs.",
+      "phone": "+54 383 4812345",
+      "whatsapp": "5493834812345",
+      "instagram": "lacalera.te",
+      "tags": [
+        "Abierto ahora",
+        "Pet friendly",
+        "Al aire libre",
+        "Con niños",
+        "Opciones vegetarianas",
+        "Wi-Fi",
+        "Acepta Mercado Pago"
+      ],
+      "services": [
+        "Jardín de té",
+        "Pastelería casera",
+        "Juegos para niños",
+        "Venta de mermeladas artesanales"
+      ],
+      "priceLevel": "$$",
+      "featured": true
+    },
+    {
+      "motivosRevision": [
+        "sin_estado_de_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "hosteria-municipal-pirquitas",
+      "name": "Hostería y Cabañas del Dique",
+      "category": "dormir",
+      "shortDescription": "Alojamiento frente al embalse con pileta panorámica, jardines y vista a las sierras.",
+      "description": "Complejo turístico con habitaciones confortables y cabañas totalmente equipadas para familias. Cuenta con piscina, solárium con vista al espejo de agua, quincho con asadores individuales y desayuno regional incluido.",
+      "address": "Costanera del Lago s/n, Las Pirquitas",
+      "locality": "Las Pirquitas",
+      "lat": -28.2755,
+      "lng": -65.7289,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Recepción 24 hs. Check-in 14:00 | Check-out 10:30",
+      "phone": "+54 383 4492211",
+      "whatsapp": "5493834492211",
+      "instagram": "hosteriadelaspirquitas",
+      "tags": [
+        "Abierto ahora",
+        "Piscina",
+        "Vista a las sierras",
+        "Estacionamiento",
+        "Wi-Fi",
+        "Con niños",
+        "Acepta Mercado Pago"
+      ],
+      "services": [
+        "Piscina",
+        "Desayuno serrano",
+        "Aire acondicionado",
+        "Asadores y quinchos",
+        "Cocheras cubiertas"
+      ],
+      "priceLevel": "$$",
+      "featured": true
+    },
+    {
+      "motivosRevision": [
+        "sin_estado_de_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "balneario-rio-del-valle",
+      "name": "Balneario y Costanera San Antonio",
+      "category": "naturaleza",
+      "shortDescription": "Ollitas de agua cristalina, sauces frondosos, asadores públicos y canchas deportivas.",
+      "description": "El clásico paseo refrescante de Fray Mamerto Esquiú. Sus márgenes de arena y sauces añosos ofrecen sombra natural para pasar el día en familia, tomar mate junto al murmullo del agua y disfrutar de los atardeceres.",
+      "address": "Costanera del Río del Valle, San Antonio",
+      "locality": "San Antonio",
+      "lat": -28.4072,
+      "lng": -65.7389,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Acceso libre y gratuito permanente.",
+      "phone": "+54 383 4491000",
+      "whatsapp": "5493834491000",
+      "tags": [
+        "Abierto ahora",
+        "Pet friendly",
+        "Con niños",
+        "Al aire libre",
+        "Económico",
+        "Estacionamiento"
+      ],
+      "services": [
+        "Asadores públicos",
+        "Sombra natural",
+        "Paseo peatonal iluminado",
+        "Seguridad municipal"
+      ],
+      "priceLevel": "$",
+      "featured": false
+    },
+    {
+      "motivosRevision": [
+        "sin_estado_de_validacion",
+        "sin_imagen_asignada"
+      ],
+      "id": "trapiche-azucarero",
+      "name": "Ruinas del Trapiche Azucarero",
+      "category": "visitar",
+      "subCategory": "Sitio Histórico y Arqueológico",
+      "shortDescription": "Restos arqueológicos del primer ingenio azucarero y acueducto colonial de Catamarca.",
+      "description": "Complejo arqueológico y monumento histórico que resguarda los imponentes arcos de piedra y adobe del antiguo trapiche azucarero del siglo XIX. Un testimonio emblemático del espíritu productivo e ingeniería pionera de Fray Mamerto Esquiú.",
+      "address": "Camino al Trapiche s/n, San José",
+      "locality": "San José de Piedra Blanca",
+      "lat": -28.3996993,
+      "lng": -65.704139,
+      "googleMapsUrl": "https://maps.app.goo.gl/eBNxMQdTsg5jviUz7",
+      "image": "",
+      "gallery": [],
+      "openingHours": "Lunes a Domingo de 09:00 a 19:00 hs.",
+      "phone": "+54 383 4491020",
+      "whatsapp": "5493834491020",
+      "tags": [
+        "Abierto ahora",
+        "Al aire libre",
+        "Con niños",
+        "Económico"
+      ],
+      "services": [
+        "Cartelería interpretativa",
+        "Área de descanso",
+        "Sendero peatonal"
+      ],
+      "priceLevel": "$",
+      "featured": false,
+      "audioguideId": "audio-trapiche",
+      "diferenciaEnDataPlacesJson": {
+        "placesJsonLat": -28.3996993,
+        "placesJsonLng": -65.704139,
+        "placesJsonImage": "",
+        "placesJsonGallery": [],
+        "placesJsonShortDescription": "Testimonio de la primera industria azucarera y harinera de la región vallista colonial.",
+        "placesJsonDescription": "Complejo arqueológico e histórico que resguarda los restos del primer molino hidráulico y trapiche azucarero que funcionó en el siglo XIX. Un paseo fascinante por los orígenes productivos y la ingeniería de los pioneros de Catamarca.",
+        "placesJsonAddress": "Camino al Trapiche s/n, San José"
+      }
+    },
+    {
+      "motivosRevision": [
+        "sin_estado_de_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "aventura-nautica-kayak",
+      "name": "Club Náutico & Kayak Pirquitas",
+      "category": "actividades",
+      "shortDescription": "Alquiler de kayaks simples y dobles, tablas de SUP, paseos guiados y clases de iniciación.",
+      "description": "La mejor manera de sentir la inmensidad del lago Las Pirquitas. Equipos con chalecos salvavidas reglamentarios, guías certificados y bajada de embarcaciones. Ofrecen travesías nocturnas bajo la luna llena y salidas al atardecer.",
+      "address": "Bajada Náutica Este, Dique Las Pirquitas",
+      "locality": "Las Pirquitas",
+      "lat": -28.2815,
+      "lng": -65.732,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Todos los días de 10:00 a 19:30 hs.",
+      "phone": "+54 383 4908877",
+      "whatsapp": "5493834908877",
+      "instagram": "pirquitaskayak",
+      "tags": [
+        "Abierto ahora",
+        "Al aire libre",
+        "Con niños",
+        "Estacionamiento",
+        "Acepta Mercado Pago"
+      ],
+      "services": [
+        "Alquiler por hora",
+        "Chaleco y remo incluidos",
+        "Guías de rescate",
+        "Fotografía acuática"
+      ],
+      "priceLevel": "$$",
+      "featured": true
+    },
+    {
+      "motivosRevision": [
+        "sin_estado_de_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "parrilla-el-quincho",
+      "name": "Parrilla & Restó El Quincho de San Antonio",
+      "category": "comer",
+      "shortDescription": "Cortes a la parrilla, matambre a la pizza, papas rústicas y cervezas bien heladas.",
+      "description": "Punto de encuentro veraniego con mesas bajo techado de cañizo y gran patio cervecero. Platos abundantes pensados para compartir en familia o con amigos tras un día de río o lago.",
+      "address": "Ruta 41 y Calle del Carmen, San Antonio",
+      "locality": "San Antonio",
+      "lat": -28.4045,
+      "lng": -65.737,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Jue a Dom: 20:30 a 02:00 hs. Sáb y Dom también 12:30 a 16:00 hs.",
+      "phone": "+54 383 4223344",
+      "whatsapp": "5493834223344",
+      "instagram": "elquinchosanantonio",
+      "tags": [
+        "Abierto ahora",
+        "Pet friendly",
+        "Con niños",
+        "Al aire libre",
+        "Estacionamiento",
+        "Wi-Fi",
+        "Acepta Mercado Pago"
+      ],
+      "services": [
+        "Parrilla a la vista",
+        "Pantalla gigante para partidos",
+        "Sector infantil",
+        "Delivery local"
+      ],
+      "priceLevel": "$$"
+    },
+    {
+      "motivosRevision": [
+        "sin_estado_de_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "helados-plaza-sanjose",
+      "name": "Helados Artesanales San José",
+      "category": "merendar",
+      "shortDescription": "Sabores autóctonos: nuez con higo, dulce de leche catamarqueño, cayote y frutos del monte.",
+      "description": "Frente a la plaza principal, la heladería tradicional de Fray donde convergen turistas y vecinos. Elaboración 100% artesanal con materias primas locales y cafetería rápida al paso.",
+      "address": "Calle Fray M. Esquiú 120 (frente a la plaza), Piedra Blanca",
+      "locality": "San José de Piedra Blanca",
+      "lat": -28.385,
+      "lng": -65.7339,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Lunes a Domingo de 11:00 a 01:30 hs.",
+      "phone": "+54 383 4661122",
+      "whatsapp": "5493834661122",
+      "tags": [
+        "Abierto ahora",
+        "Accesible",
+        "Con niños",
+        "Al aire libre",
+        "Económico",
+        "Acepta Mercado Pago"
+      ],
+      "services": [
+        "Mesitas en la vereda",
+        "Opciones sin TACC",
+        "Café express",
+        "Take away"
+      ],
+      "priceLevel": "$"
+    },
+    {
+      "motivosRevision": [
+        "sin_estado_de_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "cabanas-sol-sierras",
+      "name": "Cabañas Sol y Sierras",
+      "category": "dormir",
+      "shortDescription": "Complejo serrano con parque arbolado, piscina cercada, juegos infantiles y parrillas.",
+      "description": "Emplazadas al pie de las sierras en un ambiente silencioso y seguro. Cabañas de 2 a 6 personas totalmente equipadas con vajilla, microondas, Smart TV, Wi-Fi de alta velocidad y cochera cubierta.",
+      "address": "La Falda de San Antonio s/n",
+      "locality": "La Falda de San Antonio",
+      "lat": -28.419,
+      "lng": -65.725,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Recepción permanente. Reserva previa requerida.",
+      "phone": "+54 383 4339988",
+      "whatsapp": "5493834339988",
+      "instagram": "cabanas_solysierras_fme",
+      "tags": [
+        "Abierto ahora",
+        "Piscina",
+        "Vista a las sierras",
+        "Pet friendly",
+        "Con niños",
+        "Estacionamiento",
+        "Wi-Fi"
+      ],
+      "services": [
+        "Pileta con cerco perimetral",
+        "Ropa blanca incluida",
+        "Asador individual",
+        "Parque de 3000 m2"
+      ],
+      "priceLevel": "$$"
+    },
+    {
+      "motivosRevision": [
+        "sin_estado_de_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "sendero-gracian",
+      "name": "Sendero Serranías del Gracián & Mirador",
+      "category": "actividades",
+      "shortDescription": "Trekking de baja a media dificultad con vistas panorámicas 360° del Valle Central y el Dique.",
+      "description": "Sendero señalizado que asciende por la ladera oriental de las sierras. Ideal para caminatas tempranas o al atardecer para contemplar la puesta de sol sobre el cordón del Ambato. Punto predilecto para avistaje de aves y fotografía.",
+      "address": "Acceso por Ruta Prov. 1 km 8, La Carrera",
+      "locality": "La Carrera",
+      "lat": -28.33,
+      "lng": -65.721,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Se recomienda realizar entre 07:00 y 18:30 hs con luz natural.",
+      "phone": "+54 383 4491020",
+      "whatsapp": "5493834491020",
+      "tags": [
+        "Abierto ahora",
+        "Pet friendly",
+        "Al aire libre",
+        "Vista a las sierras",
+        "Económico"
+      ],
+      "services": [
+        "Cartelería de sendero",
+        "Mirador con bancos rústicos",
+        "Acceso libre y gratuito"
+      ],
+      "priceLevel": "$"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "alquiler-bicis-las-moras",
+      "name": "Alquiler de Bicicletas (Las Moras & Of. Turismo)",
+      "category": "actividades",
+      "shortDescription": "Alquiler de bicicletas de paseo y MTB en Las Pirquitas y Piedra Blanca.",
+      "description": "Servicio para recorrer los paisajes serranos y las orillas del embalse en dos ruedas. Disponible en Punto Las Moras (Villa Las Pirquitas) y en la Oficina de Turismo de Piedra Blanca.",
+      "address": "Las Moras (Villa Las Pirquitas) / Plaza San José (Piedra Blanca)",
+      "locality": "Villa Las Pirquitas",
+      "lat": -28.281,
+      "lng": -65.7295,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Lunes a domingo de 09:00 a 13:00 y de 16:00 a 20:00 hs.",
+      "phone": "3834-693224",
+      "whatsapp": "5493834693224",
+      "tags": [
+        "Al aire libre",
+        "Con niños",
+        "Económico",
+        "Estacionamiento",
+        "Vista a las sierras"
+      ],
+      "services": [
+        "Alquiler por hora/turno",
+        "Cascos de protección",
+        "Recomendación de circuitos seguros"
+      ],
+      "priceLevel": "$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "pasea-en-bici-san-antonio",
+      "name": "Pasea en Bici (Bicicletas para Paseos)",
+      "category": "actividades",
+      "shortDescription": "Alquiler de bicicletas para paseos recreativos en San Antonio.",
+      "description": "Emprendimiento local dedicado al alquiler de bicicletas para recorrer San Antonio, el Río del Valle y las casonas históricas de la zona.",
+      "address": "Juan Alfonso Carrizo s/n, San Antonio",
+      "locality": "San Antonio",
+      "lat": -28.406,
+      "lng": -65.7365,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Horarios variables. Consultar por WhatsApp.",
+      "phone": "383-4798560 / 383-4528507",
+      "whatsapp": "5493834798560",
+      "tags": [
+        "Al aire libre",
+        "Con niños",
+        "Económico"
+      ],
+      "services": [
+        "Bicicletas de paseo",
+        "Atención personalizada",
+        "Circuitos familiares"
+      ],
+      "priceLevel": "$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "laguna-victoria-collagasta",
+      "name": "Laguna Victoria",
+      "category": "actividades",
+      "shortDescription": "Predio recreativo con laguna natural, parque arbolado y descanso al aire libre.",
+      "description": "Hermoso rincón en Collagasta para pasar una jornada al aire libre junto a la laguna, con sombra de sauces y actividades recreativas en un entorno sereno.",
+      "address": "Ruta Nº 22, Collagasta",
+      "locality": "Collagasta",
+      "lat": -28.3735,
+      "lng": -65.738,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Sábado, domingo y feriados de 11:00 a 21:00 hs. (Jueves y viernes de 15:00 a 21:00 hs).",
+      "phone": "383-4005011",
+      "whatsapp": "5493834005011",
+      "tags": [
+        "Al aire libre",
+        "Con niños",
+        "Pet friendly",
+        "Estacionamiento",
+        "Vista a las sierras"
+      ],
+      "services": [
+        "Predio arbolado",
+        "Laguna recreativa",
+        "Mesas y sombra",
+        "Estacionamiento"
+      ],
+      "priceLevel": "$$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "kayak-adventure-catamarca",
+      "name": "Kayak Adventure Catamarca",
+      "category": "actividades",
+      "shortDescription": "Travesías guiadas en kayak y deportes náuticos en Las Pirquitas.",
+      "description": "Travesías en kayak guiadas en el Club Náutico Los Talas sobre el embalse Las Pirquitas. Paseos grupales, bautismos náuticos y salidas al atardecer.",
+      "address": "Club Náutico Los Talas, Las Pirquitas",
+      "locality": "Las Pirquitas",
+      "lat": -28.2785,
+      "lng": -65.729,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Fines de semana y feriados con reserva previa.",
+      "phone": "3834-057882",
+      "whatsapp": "5493834057882",
+      "tags": [
+        "Al aire libre",
+        "Con niños",
+        "Vista a las sierras",
+        "Estacionamiento"
+      ],
+      "services": [
+        "Travesías en kayak",
+        "Chalecos salvavidas incluidos",
+        "Instructores certificados",
+        "Salidas grupales"
+      ],
+      "priceLevel": "$$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "camping-municipal-las-pirquitas",
+      "name": "Camping Municipal Las Pirquitas",
+      "category": "naturaleza",
+      "shortDescription": "Área de acampe arbolada con asadores, sanitarios y acceso a la costa del río.",
+      "description": "Predio municipal arbolado en Villa Las Pirquitas. Ofrece sombra de sauces, asadores, mesas, sanitarios y un entorno seguro para disfrutar con carpa o pasar el día junto al agua.",
+      "address": "Villa Las Pirquitas",
+      "locality": "Villa Las Pirquitas",
+      "lat": -28.283,
+      "lng": -65.7315,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Viernes a domingo y feriados de 11:00 a 20:00 hs.",
+      "phone": "383-4196324",
+      "whatsapp": "5493834196324",
+      "tags": [
+        "Al aire libre",
+        "Con niños",
+        "Pet friendly",
+        "Económico",
+        "Estacionamiento"
+      ],
+      "services": [
+        "Sector de acampe",
+        "Asadores y mesas",
+        "Sanitarios públicos",
+        "Seguridad municipal"
+      ],
+      "priceLevel": "$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "club-de-campo-la-carrera",
+      "name": "Club de Campo Municipal La Carrera",
+      "category": "actividades",
+      "shortDescription": "Complejo recreativo municipal con pileta, canchas deportivas y asadores.",
+      "description": "Espacio deportivo y recreativo de la Municipalidad de Fray Mamerto Esquiú ubicado en La Carrera. Cuenta con piscina, canchas para diversas disciplinas, quinchos con asadores y amplio parque.",
+      "address": "La Carrera",
+      "locality": "La Carrera",
+      "lat": -28.348,
+      "lng": -65.724,
+      "image": "",
+      "gallery": [],
+      "openingHours": "De viernes a domingo y feriados de 10:00 a 20:00 hs.",
+      "phone": "383-4355669",
+      "whatsapp": "5493834355669",
+      "tags": [
+        "Piscina",
+        "Al aire libre",
+        "Con niños",
+        "Estacionamiento",
+        "Vista a las sierras",
+        "Económico"
+      ],
+      "services": [
+        "Piscina municipal",
+        "Canchas deportivas",
+        "Quinchos con asadores",
+        "Espacios verdes"
+      ],
+      "priceLevel": "$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "pileta-polideportivo-vial",
+      "name": "Pileta Polideportivo Vial",
+      "category": "actividades",
+      "shortDescription": "Pileta recreativa y predio deportivo en Piedra Blanca.",
+      "description": "Predio recreativo con amplia pileta de natación para refrescarse durante las jornadas de calor en el departamento, con zona de césped y solárium.",
+      "address": "Piedra Blanca",
+      "locality": "San José de Piedra Blanca",
+      "lat": -28.388,
+      "lng": -65.736,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Todos los días de 09:00 a 20:00 hs.",
+      "phone": "3834-246715",
+      "whatsapp": "5493834246715",
+      "tags": [
+        "Piscina",
+        "Al aire libre",
+        "Con niños",
+        "Económico"
+      ],
+      "services": [
+        "Pileta de natación",
+        "Solárium",
+        "Sanitarios y vestuarios",
+        "Espacio arbolado"
+      ],
+      "priceLevel": "$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "pileta-quinta-amadeus",
+      "name": "Pileta Quinta Amadeus (con Merienda)",
+      "category": "actividades",
+      "shortDescription": "Quinta privada con piscina, parque verde y servicio de cafetería.",
+      "description": "Tranquila quinta en Piedra Blanca con piscina, áreas de sombra, reposeras y servicio de merienda para disfrutar de una tarde relajada.",
+      "address": "Piedra Blanca",
+      "locality": "San José de Piedra Blanca",
+      "lat": -28.383,
+      "lng": -65.735,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Jueves a domingo de 15:00 a 20:30 hs.",
+      "phone": "3834-254343",
+      "whatsapp": "5493834254343",
+      "tags": [
+        "Piscina",
+        "Al aire libre",
+        "Con niños",
+        "Estacionamiento",
+        "Wi-Fi"
+      ],
+      "services": [
+        "Piscina con solárium",
+        "Servicio de meriendas y cafetería",
+        "Parque arbolado",
+        "Mesas y reposeras"
+      ],
+      "priceLevel": "$$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "pileta-empleados-comercio",
+      "name": "Pileta Centro de Empleados de Comercio",
+      "category": "actividades",
+      "shortDescription": "Complejo recreativo con pileta en San Antonio, junto al Estadio Evita.",
+      "description": "Predio deportivo y social con piscina, asadores y canchas de fútbol ubicado en San Antonio, al lado del Estadio Evita.",
+      "address": "San Antonio (al lado del Estadio Evita)",
+      "locality": "San Antonio",
+      "lat": -28.4095,
+      "lng": -65.735,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Consultar días y horarios de apertura por WhatsApp.",
+      "phone": "3834-090172",
+      "whatsapp": "5493834090172",
+      "tags": [
+        "Piscina",
+        "Al aire libre",
+        "Con niños",
+        "Estacionamiento"
+      ],
+      "services": [
+        "Piscina de temporada",
+        "Quinchos con asadores",
+        "Vestuarios",
+        "Canchas"
+      ],
+      "priceLevel": "$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_dato_pendiente_actualizacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps",
+        "telefono_pendiente_actualizacion"
+      ],
+      "id": "pileta-polideportivo-evita",
+      "name": "Pileta Polideportivo Evita",
+      "category": "actividades",
+      "shortDescription": "Piscina municipal abierta para familias en el Estadio Evita.",
+      "description": "Piscina comunitaria y familiar en el predio del Estadio Evita en San Antonio. Cuenta con guardavidas y espacio de recreación.",
+      "address": "Estadio Evita, San Antonio",
+      "locality": "San Antonio",
+      "lat": -28.41,
+      "lng": -65.7355,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Sábado, domingo y feriados de 14:00 a 20:00 hs.",
+      "phone": "Dato pendiente de actualización",
+      "whatsapp": "",
+      "tags": [
+        "Piscina",
+        "Al aire libre",
+        "Con niños",
+        "Económico"
+      ],
+      "services": [
+        "Piscina comunitaria",
+        "Guardavidas",
+        "Vestuarios",
+        "Sector de sombra"
+      ],
+      "priceLevel": "$",
+      "validationStatus": "dato_pendiente_actualizacion",
+      "validationNote": "Teléfono y contacto directo pendientes de actualización.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "sabores-caseros-casa-de-te",
+      "name": "Sabores Caseros Casa de Té",
+      "category": "merendar",
+      "shortDescription": "Pastelería casera, variedad de tés e infusiones en La Carrera.",
+      "description": "Acogedora casa de té serrana en La Carrera. Ofrece tortas artesanales, tartas dulces, tostadas de campo, jugos naturales y cafés de especialidad en un ambiente tranquilo. Recomendado con reserva.",
+      "address": "La Carrera",
+      "locality": "La Carrera",
+      "lat": -28.346,
+      "lng": -65.723,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Sábado y domingo de 18:00 a 22:00 hs. Feriados nacionales abierto.",
+      "phone": "3834-535453",
+      "whatsapp": "5493834535453",
+      "instagram": "cbsabores",
+      "tags": [
+        "Al aire libre",
+        "Opciones vegetarianas",
+        "Wi-Fi",
+        "Acepta Mercado Pago",
+        "Vista a las sierras"
+      ],
+      "services": [
+        "Servicio de té completo",
+        "Pastelería casera",
+        "Mesas en galería y salón",
+        "Reserva previa sugerida"
+      ],
+      "priceLevel": "$$",
+      "featured": true,
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "pan-y-cafe-la-callecita",
+      "name": "Pan y Café (Bar - Cafetería)",
+      "category": "merendar",
+      "shortDescription": "Desayunos, meriendas, panadería artesanal y minutas sobre La Callecita.",
+      "description": "Bar y cafetería ubicado sobre Av. La Callecita a pocos metros del Club Defensores de Esquiú. Medialunas calientes, café express, tostados, sandwiches y minutas tanto de día como de noche.",
+      "address": "Avenida La Callecita a metros del Club Defensores de Esquiú",
+      "locality": "San José de Piedra Blanca",
+      "lat": -28.3825,
+      "lng": -65.732,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Todos los días de 07:00 a 15:00 y de 18:00 a 02:00 hs.",
+      "phone": "3834-322392 / 3934-044785",
+      "whatsapp": "5493834322392",
+      "tags": [
+        "Abierto ahora",
+        "Accesible",
+        "Con niños",
+        "Wi-Fi",
+        "Acepta Mercado Pago",
+        "Económico"
+      ],
+      "services": [
+        "Cafetería express",
+        "Panificación propia",
+        "Desayunos y meriendas",
+        "Salón climatizado y vereda"
+      ],
+      "priceLevel": "$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "las-lilas-resto-merienda",
+      "name": "Las Lilas (Restó & Merienda)",
+      "category": "merendar",
+      "shortDescription": "Meriendas campestres, cafetería y cocina de autor en San Antonio.",
+      "description": "Predio campestre sobre RP 41 frente a la rotonda de entrada a El Hueco. Especialistas en tardes de té y meriendas los fines de semana, además de cenas y eventos.",
+      "address": "Ruta Provincial Nº 41 frente a rotonda de entrada a El Hueco",
+      "locality": "San Antonio",
+      "lat": -28.403,
+      "lng": -65.735,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Viernes a domingos y feriados. Meriendas desde las 18:00 hs.",
+      "phone": "3834-559563 / 3512-031171",
+      "whatsapp": "5493834559563",
+      "tags": [
+        "Al aire libre",
+        "Pet friendly",
+        "Con niños",
+        "Estacionamiento",
+        "Wi-Fi",
+        "Acepta Mercado Pago"
+      ],
+      "services": [
+        "Meriendas campestres",
+        "Jardín con mesas al aire libre",
+        "Carta nocturna",
+        "Reserva para grupos"
+      ],
+      "priceLevel": "$$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "hosteria-las-pirquitas-merienda",
+      "name": "Cafetería Hostería Las Pirquitas",
+      "category": "merendar",
+      "shortDescription": "Merienda y cafetería con vista panorámica a las sierras en Las Pirquitas.",
+      "description": "Salón de té y cafetería dentro de la Hostería Municipal de Las Pirquitas. Ideal para hacer una pausa con café, licuados y tortas tras visitar el dique o el perilago.",
+      "address": "Av. San Martín, Las Pirquitas",
+      "locality": "Villa Las Pirquitas",
+      "lat": -28.276,
+      "lng": -65.729,
+      "image": "",
+      "gallery": [],
+      "openingHours": "De lunes a lunes de 09:00 a 21:00 hs.",
+      "phone": "3834-414903",
+      "whatsapp": "5493834414903",
+      "instagram": "Hosterialaspirquitas",
+      "tags": [
+        "Vista a las sierras",
+        "Wi-Fi",
+        "Con niños",
+        "Estacionamiento",
+        "Acepta Mercado Pago"
+      ],
+      "services": [
+        "Cafetería panorámica",
+        "Tortas artesanales",
+        "Atención diaria",
+        "Estacionamiento propio"
+      ],
+      "priceLevel": "$$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada"
+      ],
+      "id": "paluma-cerveceria",
+      "name": "Paluma Cervecería",
+      "category": "comer",
+      "shortDescription": "Cervecería artesanal con patio al aire libre en La Callecita.",
+      "description": "Espacio cervecero y gastronómico con canillas de cerveza tirada artesanal, hamburguesas gourmet, papas con cheddar y picadas sobre la histórica Callecita.",
+      "address": "Sobre Av. La Callecita, Piedra Blanca (Estacionamiento por Campanas del Rosario)",
+      "locality": "San José de Piedra Blanca",
+      "lat": -28.3955991,
+      "lng": -65.7039236,
+      "googleMapsUrl": "https://maps.app.goo.gl/Ua6s9jgnMowxLQ886",
+      "image": "",
+      "gallery": [],
+      "openingHours": "Jueves, viernes, sábado y domingo desde las 21:00 hs.",
+      "phone": "3834-683333 / 3834-329062 / 3834-343454",
+      "whatsapp": "5493834683333",
+      "tags": [
+        "Al aire libre",
+        "Estacionamiento",
+        "Wi-Fi",
+        "Acepta Mercado Pago",
+        "Pet friendly"
+      ],
+      "services": [
+        "Cervezas tiradas artesanales",
+        "Patio cervecero iluminado",
+        "Estacionamiento privado",
+        "Música y ambiente joven"
+      ],
+      "priceLevel": "$$",
+      "featured": true,
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada"
+      ],
+      "id": "amadeus-bar",
+      "name": "Amadeus Bar",
+      "category": "comer",
+      "shortDescription": "Bar y restó sobre Camino Real con tragos de autor y cenas bajo los árboles.",
+      "description": "Bar tradicional de Piedra Blanca con mesas bajo arboleda centenaria. Ofrece tragos de autor, pizzas, tablas y almuerzos dominicales.",
+      "address": "Sobre Camino Real, Piedra Blanca",
+      "locality": "San José de Piedra Blanca",
+      "lat": -28.3929648,
+      "lng": -65.7003958,
+      "googleMapsUrl": "https://maps.app.goo.gl/qpwsFgGEgLCqsgvN9",
+      "image": "",
+      "gallery": [],
+      "openingHours": "Miércoles a domingo desde las 20:30 hs. Domingo almuerzo de 13:00 a 15:30 hs.",
+      "phone": "3834-036644",
+      "whatsapp": "5493834036644",
+      "tags": [
+        "Al aire libre",
+        "Pet friendly",
+        "Con niños",
+        "Estacionamiento",
+        "Wi-Fi",
+        "Acepta Mercado Pago"
+      ],
+      "services": [
+        "Bar al aire libre",
+        "Almuerzos dominicales",
+        "Coctelería clásica y de autor",
+        "Ambiente relajado"
+      ],
+      "priceLevel": "$$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "astor-pizza-in-te-glia",
+      "name": "Astor Pizza In Te-Glia",
+      "category": "comer",
+      "shortDescription": "Pizza al molde estilo romano de masa madre y envíos a domicilio.",
+      "description": "Pizzería especializada en pizza in teglia de masa madre con fermentación natural. Textura crujiente, ingredientes de primera calidad y servicio de delivery.",
+      "address": "Sargento Cabral esq. Ruta 41, San Antonio",
+      "locality": "San Antonio",
+      "lat": -28.4065,
+      "lng": -65.7375,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Abierto de jueves a domingo de 20:00 a 02:00 hs.",
+      "phone": "3834-653008",
+      "whatsapp": "5493834653008",
+      "instagram": "astorpizzainteglia",
+      "tags": [
+        "Opciones vegetarianas",
+        "Acepta Mercado Pago",
+        "Con niños",
+        "Wi-Fi"
+      ],
+      "services": [
+        "Pizzas al corte y enteras",
+        "Servicio de delivery / envíos",
+        "Masa madre",
+        "Mesas para consumo en el local"
+      ],
+      "priceLevel": "$$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada"
+      ],
+      "id": "el-chaperio-de-mamerto",
+      "name": "El Chaperío de Mamerto",
+      "category": "comer",
+      "shortDescription": "Restó rústico y minutas sobre Av. Campanas del Rosario.",
+      "description": "Propuesta gastronómica rústica y amigable en Piedra Blanca. Lomitos completos, empanadas caseras, papas fritas y bebidas en un entorno distendido.",
+      "address": "Sobre Av. Campanas del Rosario, Piedra Blanca",
+      "locality": "San José de Piedra Blanca",
+      "lat": -28.3941799,
+      "lng": -65.7138119,
+      "googleMapsUrl": "https://maps.app.goo.gl/RLqDk8Q5Lko7hQpe7",
+      "image": "",
+      "gallery": [],
+      "openingHours": "Noches de fin de semana. Consultar por WhatsApp.",
+      "phone": "3573-411077",
+      "whatsapp": "5493573411077",
+      "tags": [
+        "Al aire libre",
+        "Acepta Mercado Pago",
+        "Económico"
+      ],
+      "services": [
+        "Cocina criolla y minutas",
+        "Mesas al aire libre",
+        "Take away"
+      ],
+      "priceLevel": "$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "resto-bar-los-abus",
+      "name": "Resto Bar Los Abus",
+      "category": "comer",
+      "shortDescription": "Almuerzo de campo y merienda buffet libre en Las Pirquitas.",
+      "description": "Restó familiar en Las Pirquitas con almuerzo criollo de campo los fines de semana y merienda buffet libre por las tardes.",
+      "address": "Sobre Av. San Martín, Las Pirquitas",
+      "locality": "Villa Las Pirquitas",
+      "lat": -28.277,
+      "lng": -65.7295,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Sábados, domingos y feriados: almuerzo de 12:00 a 16:00 hs, merienda de 17:00 a 22:00 hs.",
+      "phone": "3834-294467",
+      "whatsapp": "5493834294467",
+      "tags": [
+        "Al aire libre",
+        "Con niños",
+        "Estacionamiento",
+        "Vista a las sierras",
+        "Acepta Mercado Pago"
+      ],
+      "services": [
+        "Almuerzos criollos de campo",
+        "Buffet libre de meriendas",
+        "Galería techada y parque",
+        "Menú familiar"
+      ],
+      "priceLevel": "$$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "don-paulino-resto-bar",
+      "name": "Don Paulino Resto Bar",
+      "category": "comer",
+      "shortDescription": "Pizzas, minutas y tragos frente al Parque Chacarero en San Antonio.",
+      "description": "Punto gastronómico de encuentro nocturno frente al Parque Chacarero. Amplia carta de pizzas, sándwiches de lomo, minutas y bebidas en un ambiente familiar.",
+      "address": "Frente al Parque Chacarero, San Antonio",
+      "locality": "San Antonio",
+      "lat": -28.4068,
+      "lng": -65.738,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Abierto desde las 20:30 hs.",
+      "phone": "3834-655985 / 3834-196379",
+      "whatsapp": "5493834655985",
+      "tags": [
+        "Al aire libre",
+        "Con niños",
+        "Acepta Mercado Pago",
+        "Económico"
+      ],
+      "services": [
+        "Mesas frente a la plaza",
+        "Variedad de minutas y tragos",
+        "Atención nocturna",
+        "Fácil estacionamiento"
+      ],
+      "priceLevel": "$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "urbana-resto-pub",
+      "name": "Urbana Resto Pub",
+      "category": "comer",
+      "shortDescription": "Restó pub nocturno con música, tragos y almuerzos de domingo.",
+      "description": "Restó pub ubicado sobre RP 41 en San Antonio. Ambiente festivo los sábados por la noche con tragos y cena, y almuerzos relajados los domingos al mediodía.",
+      "address": "Ruta Provincial Nº 41, San Antonio",
+      "locality": "San Antonio",
+      "lat": -28.405,
+      "lng": -65.736,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Sábado de 21:00 a 05:00 hs. Domingo de 12:00 a 16:00 hs.",
+      "phone": "3834-619923",
+      "whatsapp": "5493834619923",
+      "tags": [
+        "Al aire libre",
+        "Acepta Mercado Pago",
+        "Estacionamiento"
+      ],
+      "services": [
+        "Barra de coctelería",
+        "Sector de pista y música",
+        "Cenas de fin de semana",
+        "Seguridad"
+      ],
+      "priceLevel": "$$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "buena-vida-resto",
+      "name": "Buena Vida",
+      "category": "comer",
+      "shortDescription": "Gastronomía y eventos en un entorno natural en Vista Larga.",
+      "description": "Restaurante y espacio social en Vista Larga (San Antonio). Cocina cuidada, vinos seleccionados, mesas en galería y salón para disfrutar el fin de semana.",
+      "address": "Vista Larga, San Antonio",
+      "locality": "San Antonio",
+      "lat": -28.411,
+      "lng": -65.732,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Viernes y sábado a partir de las 21:00 hs. Domingos desde las 12:00 hs.",
+      "phone": "3834-021919",
+      "whatsapp": "5493834021919",
+      "tags": [
+        "Al aire libre",
+        "Pet friendly",
+        "Estacionamiento",
+        "Vista a las sierras",
+        "Wi-Fi",
+        "Acepta Mercado Pago"
+      ],
+      "services": [
+        "Salón y galería panorámica",
+        "Almuerzos y cenas de fin de semana",
+        "Carta de vinos",
+        "Espacio para eventos"
+      ],
+      "priceLevel": "$$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "alvin-resto-bar",
+      "name": "Alvin Resto Bar (Ex Graciana)",
+      "category": "comer",
+      "shortDescription": "Restó y cafetería con menú diario sobre Av. La Callecita.",
+      "description": "Clásico punto de encuentro en Piedra Blanca sobre La Callecita. Desayunos, almuerzos con menú ejecutivo, cafetería de tarde y cenas de jueves a domingos.",
+      "address": "Av. La Callecita, Piedra Blanca",
+      "locality": "San José de Piedra Blanca",
+      "lat": -28.3838,
+      "lng": -65.7332,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Dom a Jue de 08:00 a 15:00 y 19:30 a 00:30 hs. Vie y Sáb de 08:00 a 15:00 y 19:30 a 02:30 hs.",
+      "phone": "3834-814020",
+      "whatsapp": "5493834814020",
+      "tags": [
+        "Abierto ahora",
+        "Accesible",
+        "Con niños",
+        "Wi-Fi",
+        "Acepta Mercado Pago"
+      ],
+      "services": [
+        "Menú del día",
+        "Cafetería y pastelería",
+        "Cenas y minutas",
+        "Salón interior y vereda"
+      ],
+      "priceLevel": "$$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "caligula-salon-eventos",
+      "name": "Calígula Salón de Eventos",
+      "category": "comer",
+      "shortDescription": "Salón para celebraciones familiares, eventos privados y corporativos.",
+      "description": "Espacio integral para eventos familiares, casamientos, cumpleaños y encuentros institucionales sobre la Ruta Provincial 1 en La Carrera.",
+      "address": "Ruta Provincial Nº 1, La Carrera",
+      "locality": "La Carrera",
+      "lat": -28.349,
+      "lng": -65.7235,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Atención y reserva para eventos privados.",
+      "phone": "3834-041980 / 3834-478681",
+      "whatsapp": "5493834041980",
+      "tags": [
+        "Estacionamiento",
+        "Vista a las sierras",
+        "Al aire libre"
+      ],
+      "services": [
+        "Salón cerrado y parque",
+        "Servicio de catering",
+        "Sonido e iluminación",
+        "Amplio estacionamiento"
+      ],
+      "priceLevel": "$$$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "hotel-don-oresttes",
+      "name": "Hotel Don Oresttes",
+      "category": "dormir",
+      "shortDescription": "Hospedaje confortable sobre Ruta Provincial 1 en La Tercena.",
+      "description": "Hotel familiar sobre la Ruta Provincial 1 en La Tercena. Habitaciones equipadas, cochera y atención personalizada para una estadía tranquila en el valle.",
+      "address": "Ruta Provincial Nº 1, La Tercena",
+      "locality": "La Tercena",
+      "lat": -28.366,
+      "lng": -65.73,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Recepción permanente con reserva previa.",
+      "phone": "3834-303250",
+      "whatsapp": "5493834303250",
+      "tags": [
+        "Estacionamiento",
+        "Wi-Fi",
+        "Con niños",
+        "Accesible"
+      ],
+      "services": [
+        "Habitaciones climatizadas",
+        "Cocheras cubiertas",
+        "Wi-Fi gratuito",
+        "Atención personalizada"
+      ],
+      "priceLevel": "$$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "cabanas-las-lomitas",
+      "name": "Cabañas Las Lomitas",
+      "category": "dormir",
+      "shortDescription": "Cabañas equipadas con piscina y asador en La Tercena.",
+      "description": "Complejo de cabañas al pie de las lomas en La Tercena. Cuentan con pileta, parrilla individual, parque y equipamiento para cocinar.",
+      "address": "Ruta Provincial Nº 1, La Tercena",
+      "locality": "La Tercena",
+      "lat": -28.367,
+      "lng": -65.729,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Recepción permanente. Reserva previa.",
+      "phone": "3834-326167",
+      "whatsapp": "5493834326167",
+      "tags": [
+        "Piscina",
+        "Vista a las sierras",
+        "Pet friendly",
+        "Estacionamiento",
+        "Con niños"
+      ],
+      "services": [
+        "Cabañas totalmente equipadas",
+        "Piscina",
+        "Parrillas individuales",
+        "Parque verde"
+      ],
+      "priceLevel": "$$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "cabanas-don-demetrio",
+      "name": "Cabañas Don Demetrio",
+      "category": "dormir",
+      "shortDescription": "Cabañas familiares con pileta y quincho en San Antonio.",
+      "description": "Cabañas totalmente amobladas en San Antonio con piscina, quincho con asador y ambiente seguro para disfrutar en familia o en pareja.",
+      "address": "San Antonio",
+      "locality": "San Antonio",
+      "lat": -28.407,
+      "lng": -65.7355,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Atención y reservas por WhatsApp.",
+      "phone": "3834-257325",
+      "whatsapp": "5493834257325",
+      "tags": [
+        "Piscina",
+        "Con niños",
+        "Estacionamiento",
+        "Wi-Fi"
+      ],
+      "services": [
+        "Cocina equipada",
+        "Asadores",
+        "Piscina",
+        "Ropa blanca"
+      ],
+      "priceLevel": "$$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "departamentos-san-antonio",
+      "name": "Departamentos San Antonio",
+      "category": "dormir",
+      "shortDescription": "Departamentos amoblados para alquiler turístico en San Antonio.",
+      "description": "Departamentos independientes equipados con cocina, vajilla, aire acondicionado y Wi-Fi en el centro de San Antonio.",
+      "address": "San Antonio",
+      "locality": "San Antonio",
+      "lat": -28.408,
+      "lng": -65.737,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Check-in y reservas por teléfono.",
+      "phone": "3834-641001",
+      "whatsapp": "5493834641001",
+      "tags": [
+        "Con niños",
+        "Wi-Fi",
+        "Estacionamiento",
+        "Acepta Mercado Pago"
+      ],
+      "services": [
+        "Departamentos amoblados",
+        "Wi-Fi de alta velocidad",
+        "Aire acondicionado",
+        "Cocina equipada"
+      ],
+      "priceLevel": "$$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "complejo-ruta-1-la-carrera",
+      "name": "Complejo Ruta 1 (Anexo Granja)",
+      "category": "dormir",
+      "shortDescription": "Cabañas y agroturismo con granja en La Carrera.",
+      "description": "Complejo turístico y recreativo con cabañas de campo y anexo de granja educativa con animales, huerta y actividades al aire libre.",
+      "address": "Ruta 1 KM 14, La Carrera",
+      "locality": "La Carrera",
+      "lat": -28.342,
+      "lng": -65.7215,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Reservas y visitas coordinadas por WhatsApp.",
+      "phone": "3834-265088",
+      "whatsapp": "5493834265088",
+      "tags": [
+        "Piscina",
+        "Con niños",
+        "Pet friendly",
+        "Al aire libre",
+        "Vista a las sierras",
+        "Estacionamiento"
+      ],
+      "services": [
+        "Cabañas de campo",
+        "Visita a la granja y animales",
+        "Piscina y asadores",
+        "Senderos rurales"
+      ],
+      "priceLevel": "$$",
+      "featured": true,
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "paraiso-colla-collagasta",
+      "name": "Paraíso Colla",
+      "category": "dormir",
+      "shortDescription": "Descanso rural y cabañas serranas en Collagasta.",
+      "description": "Hospedaje y casas de campo en Collagasta. Entorno sereno con vista a los cerros, sombra y naturaleza para desconectar de la rutina.",
+      "address": "Ruta Nº 22, Collagasta",
+      "locality": "Collagasta",
+      "lat": -28.372,
+      "lng": -65.741,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Consultas y reservas por WhatsApp.",
+      "phone": "3834-403667",
+      "whatsapp": "5493834403667",
+      "tags": [
+        "Vista a las sierras",
+        "Pet friendly",
+        "Estacionamiento",
+        "Al aire libre"
+      ],
+      "services": [
+        "Casas y cabañas de campo",
+        "Parque arbolado",
+        "Asadores",
+        "Paz serrana"
+      ],
+      "priceLevel": "$$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "terrazas-del-huayra",
+      "name": "Terrazas del Huayra",
+      "category": "dormir",
+      "shortDescription": "Cabañas con terrazas panorámicas a las sierras en La Carrera.",
+      "description": "Complejo de cabañas en altura sobre RP 41 en La Carrera. Vistas panorámicas privilegiadas del valle, piscina y asadores individuales.",
+      "address": "Ruta Nº 41, La Carrera",
+      "locality": "La Carrera",
+      "lat": -28.344,
+      "lng": -65.7225,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Recepción y reservas por teléfono.",
+      "phone": "3834-238505",
+      "whatsapp": "5493834238505",
+      "tags": [
+        "Vista a las sierras",
+        "Piscina",
+        "Estacionamiento",
+        "Wi-Fi"
+      ],
+      "services": [
+        "Terrazas con vista panorámica",
+        "Piscina",
+        "Asadores individuales",
+        "Equipamiento completo"
+      ],
+      "priceLevel": "$$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "hospedaje-las-pirquitas",
+      "name": "Hospedaje Las Pirquitas",
+      "category": "dormir",
+      "shortDescription": "Hospedaje cálido a metros del dique y el río.",
+      "description": "Hospedaje familiar en Villa Las Pirquitas. Excelente ubicación para quienes practican pesca o kayak, y familias que buscan tranquilidad.",
+      "address": "Villa Las Pirquitas",
+      "locality": "Villa Las Pirquitas",
+      "lat": -28.28,
+      "lng": -65.7305,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Atención y reservas por WhatsApp.",
+      "phone": "3834-367835",
+      "whatsapp": "5493834367835",
+      "tags": [
+        "Con niños",
+        "Estacionamiento",
+        "Vista a las sierras",
+        "Económico"
+      ],
+      "services": [
+        "Habitaciones y departamentos",
+        "Cochera",
+        "Patio con asador",
+        "Asesoramiento turístico"
+      ],
+      "priceLevel": "$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "finca-pacara-hostel",
+      "name": "Finca Pacará Hostel de Campo",
+      "category": "dormir",
+      "shortDescription": "Hostel de campo y retiro en una finca arbolada en La Falda.",
+      "description": "Hostel campestre en La Falda de San Antonio. Ofrece habitaciones compartidas y privadas en una casona histórica rodeada de pacarás y frutales.",
+      "address": "Falda de San Antonio",
+      "locality": "La Falda de San Antonio",
+      "lat": -28.417,
+      "lng": -65.728,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Recepción y reservas por teléfono.",
+      "phone": "3834-519232",
+      "whatsapp": "5493834519232",
+      "tags": [
+        "Al aire libre",
+        "Pet friendly",
+        "Económico",
+        "Estacionamiento",
+        "Wi-Fi"
+      ],
+      "services": [
+        "Habitaciones privadas y compartidas",
+        "Cocina equipada",
+        "Fogón nocturno",
+        "Parque de frutales"
+      ],
+      "priceLevel": "$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "nina-juana-alojamiento",
+      "name": "Niña Juana",
+      "category": "dormir",
+      "shortDescription": "Hospedaje con encanto tradicional en San Antonio.",
+      "description": "Alojamiento boutique con calidez de hogar y detalles de diseño tradicional en San Antonio. Jardines interiores y descanso asegurado.",
+      "address": "Calle Juan Lavalle S/N, San Antonio",
+      "locality": "San Antonio",
+      "lat": -28.406,
+      "lng": -65.736,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Atención y reservas por WhatsApp.",
+      "phone": "3834-676767",
+      "whatsapp": "5493834676767",
+      "tags": [
+        "Wi-Fi",
+        "Estacionamiento",
+        "Vista a las sierras",
+        "Con niños"
+      ],
+      "services": [
+        "Suites confortables",
+        "Desayuno casero",
+        "Jardín privado",
+        "Atención personalizada"
+      ],
+      "priceLevel": "$$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "posada-pomancillo",
+      "name": "Posada Pomancillo",
+      "category": "dormir",
+      "shortDescription": "Posada serrana y relax absoluto en Collagasta.",
+      "description": "Hospedaje serrano en Pomancillo / Collagasta sobre la Ruta 22. Privacidad, piscina de verano, vista abierta a las cumbres y silencio reparador.",
+      "address": "Ruta 22, Collagasta",
+      "locality": "Collagasta",
+      "lat": -28.32,
+      "lng": -65.72,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Consultas y reservas por WhatsApp.",
+      "phone": "3834-572860",
+      "whatsapp": "5493834572860",
+      "tags": [
+        "Piscina",
+        "Vista a las sierras",
+        "Pet friendly",
+        "Estacionamiento"
+      ],
+      "services": [
+        "Habitaciones con vista",
+        "Piscina de verano",
+        "Asadores",
+        "Paseos serranos"
+      ],
+      "priceLevel": "$$",
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "estado_validacion_pendiente_validacion",
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "guillermina-zarate-textil",
+      "name": "Guillermina Zárate e Hijas (Artesanías Textiles)",
+      "category": "historia",
+      "shortDescription": "Maestra artesana nacional: ponchos de vicuña hilados en telar criollo.",
+      "description": "Taller de la distinguida maestra artesana Guillermina Zárate e Hijas, orgullo cultural de Fray Mamerto Esquiú. Confeccionan piezas únicas en telar criollo, hiladas a mano con fibra de vicuña y lana de oveja.",
+      "address": "Ruta Provincial Nº 41, La Tercena",
+      "locality": "La Tercena",
+      "lat": -28.3685,
+      "lng": -65.731,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Atención y visitas coordinadas por WhatsApp.",
+      "phone": "3834-670761",
+      "whatsapp": "5493834670761",
+      "tags": [
+        "Accesible",
+        "Con niños",
+        "Estacionamiento"
+      ],
+      "services": [
+        "Demostración de telar criollo",
+        "Venta de ponchos y prendas de vicuña",
+        "Artesanías textiles tradicionales"
+      ],
+      "priceLevel": "$$$",
+      "featured": true,
+      "validationStatus": "pendiente_validacion",
+      "validationNote": "Información de la Guía Oficial. Pendiente de validación 2026/2027.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "tienda-artesanias-trapiche",
+      "name": "Tienda de Artesanías (Trapiche Azucarero)",
+      "category": "historia",
+      "shortDescription": "Tienda de regalos, artesanías y productos regionales en el Trapiche.",
+      "description": "Punto de venta oficial de artesanías de Fray Mamerto Esquiú ubicado en el Complejo del Trapiche Azucarero. Cerámica, tejidos, dulces caseros y souvenirs.",
+      "address": "Complejo Trapiche Azucarero, La Falda de San Antonio",
+      "locality": "La Falda de San Antonio",
+      "lat": -28.3782,
+      "lng": -65.7282,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Todos los días de 09:00 a 13:00 y de 17:00 a 21:00 hs.",
+      "phone": "383-4491020",
+      "whatsapp": "5493834491020",
+      "tags": [
+        "Accesible",
+        "Con niños",
+        "Económico",
+        "Estacionamiento"
+      ],
+      "services": [
+        "Venta de artesanías locales",
+        "Productos regionales certificados",
+        "Atención e informes turísticos"
+      ],
+      "priceLevel": "$",
+      "validationStatus": "verificado",
+      "validationNote": "Punto de información y venta municipal permanente.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "plaza-parque-chacarero",
+      "name": "Plaza Parque Chacarero",
+      "category": "historia",
+      "shortDescription": "Espacio verde, juegos modernos, ferias y gastronomía en San Antonio.",
+      "description": "Punto de encuentro central en San Antonio con juegos infantiles modernos, arboleda, iluminación LED, ferias de emprendedores y opciones gastronómicas al paso.",
+      "address": "San Antonio (Frente a Don Paulino)",
+      "locality": "San Antonio",
+      "lat": -28.4067,
+      "lng": -65.7381,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Acceso público y gratuito las 24 hs.",
+      "phone": "383-4491000",
+      "whatsapp": "5493834491000",
+      "tags": [
+        "Al aire libre",
+        "Con niños",
+        "Pet friendly",
+        "Económico",
+        "Estacionamiento"
+      ],
+      "services": [
+        "Juegos infantiles",
+        "Caminería iluminada",
+        "Espacio para ferias y música",
+        "Bancos de descanso"
+      ],
+      "priceLevel": "$",
+      "validationStatus": "verificado",
+      "validationNote": "Espacio público municipal permanente.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    },
+    {
+      "motivosRevision": [
+        "sin_imagen_asignada",
+        "sin_enlace_google_maps"
+      ],
+      "id": "vertedero-dique-pirquitas",
+      "name": "Vertedero y Mirador Dique Las Pirquitas",
+      "category": "naturaleza",
+      "shortDescription": "Vista icónica del embalse, vertedero en flor y cascada panorámica.",
+      "description": "Punto de observación imprescindible sobre el vertedero en forma de tulipán del embalse Las Pirquitas. En épocas de cota alta, el agua cae en cascada generando un espectáculo visual y sonoro impactante.",
+      "address": "Ruta Provincial 1, Las Pirquitas",
+      "locality": "Las Pirquitas",
+      "lat": -28.279,
+      "lng": -65.73,
+      "image": "",
+      "gallery": [],
+      "openingHours": "Acceso y miradores públicos permanentes.",
+      "phone": "383-4491020",
+      "whatsapp": "5493834491020",
+      "tags": [
+        "Al aire libre",
+        "Vista a las sierras",
+        "Con niños",
+        "Económico",
+        "Estacionamiento"
+      ],
+      "services": [
+        "Mirador fotográfico",
+        "Cartelería explicativa",
+        "Balcones de observación"
+      ],
+      "priceLevel": "$",
+      "featured": true,
+      "validationStatus": "verificado",
+      "validationNote": "Atractivo natural y mirador permanente.",
+      "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
+    }
+  ],
+  "categorias": [
+    {
+      "id": "visitar",
+      "label": "Qué visitar",
+      "shortLabel": "Visitar",
+      "emoji": "🏛️",
+      "iconName": "Landmark",
+      "color": "from-amber-600 to-stone-700",
+      "bgLight": "bg-amber-50 text-amber-900 border-amber-200",
+      "description": "Puntos turísticos, monumentos y atractivos principales de Fray Mamerto Esquiú."
+    },
+    {
+      "id": "comer",
+      "label": "Dónde comer",
+      "shortLabel": "Comer",
+      "emoji": "🍴",
+      "iconName": "Utensils",
+      "color": "from-orange-500 to-amber-600",
+      "bgLight": "bg-orange-50 text-orange-900 border-orange-200",
+      "description": "Restaurantes, empanadas al horno de barro, parrilladas y comida criolla tradicional."
+    },
+    {
+      "id": "merendar",
+      "label": "Dónde merendar",
+      "shortLabel": "Merendar",
+      "emoji": "☕",
+      "iconName": "Coffee",
+      "color": "from-rose-500 to-amber-600",
+      "bgLight": "bg-rose-50 text-rose-900 border-rose-200",
+      "description": "Casas de té, cafeterías, heladerías y repostería artesanal."
+    },
+    {
+      "id": "dormir",
+      "label": "Dónde dormir",
+      "shortLabel": "Dormir",
+      "emoji": "🛏️",
+      "iconName": "BedDouble",
+      "color": "from-blue-600 to-indigo-700",
+      "bgLight": "bg-blue-50 text-blue-900 border-blue-200",
+      "description": "Cabañas con pileta, hosterías, posadas y alojamientos turísticos."
+    },
+    {
+      "id": "naturaleza",
+      "label": "Naturaleza",
+      "shortLabel": "Naturaleza",
+      "emoji": "🌿",
+      "iconName": "Trees",
+      "color": "from-emerald-600 to-teal-700",
+      "bgLight": "bg-emerald-50 text-emerald-900 border-emerald-200",
+      "description": "Dique Las Pirquitas, balnearios, ríos, quebradas y paisajes de las sierras."
+    },
+    {
+      "id": "religioso",
+      "label": "Turismo religioso",
+      "shortLabel": "Religioso",
+      "emoji": "⛪",
+      "iconName": "Landmark",
+      "color": "from-indigo-600 to-purple-700",
+      "bgLight": "bg-indigo-50 text-indigo-900 border-indigo-200",
+      "description": "Casa Natal del Beato Esquiú, templos históricos de 1780 y santuarios de fe."
+    },
+    {
+      "id": "actividades",
+      "label": "Qué hacer",
+      "shortLabel": "Qué hacer",
+      "emoji": "🧗",
+      "iconName": "Compass",
+      "color": "from-teal-600 to-cyan-700",
+      "bgLight": "bg-teal-50 text-teal-900 border-teal-200",
+      "description": "Senderismo serrano, kayak, paseos en bici, recreación y agenda de actividades."
+    },
+    {
+      "id": "cerca",
+      "label": "Cerca de mí",
+      "shortLabel": "Cerca de mí",
+      "emoji": "📍",
+      "iconName": "MapPin",
+      "color": "from-sky-600 to-blue-700",
+      "bgLight": "bg-sky-50 text-sky-900 border-sky-200",
+      "description": "Mapa interactivo con atractivos y servicios ordenados por cercanía."
+    }
+  ],
+  "localidades": [
+    {
+      "id": "san-jose",
+      "name": "San José de Piedra Blanca",
+      "shortName": "San José",
+      "tagline": "Cuna del Beato Esquiú, historia colonial y plaza central",
+      "description": "Capital histórica y cultural del departamento. Alberga la Casa Natal de Fray Mamerto Esquiú, la Iglesia Parroquial de 1780, el Monumento Mirador y las Ruinas del Trapiche Azucarero.",
+      "badge": "Historia & Fe",
+      "gradient": "from-amber-900 via-stone-850 to-stone-950",
+      "filterKeywords": [
+        "San José",
+        "Piedra Blanca"
+      ]
+    },
+    {
+      "id": "villa-las-pirquitas",
+      "name": "Villa Las Pirquitas",
+      "shortName": "Las Pirquitas",
+      "tagline": "Dique, deportes náuticos, murallón y descanso serrano",
+      "description": "El gran centro recreativo y náutico de Catamarca. Su embalse verde esmeralda invita a navegar en kayak, pescar pejerrey, acampar en su camping municipal y recorrer el Paseo Las Moras.",
+      "badge": "Lago & Montaña",
+      "gradient": "from-blue-900 via-slate-850 to-cyan-950",
+      "filterKeywords": [
+        "Pirquitas",
+        "Las Pirquitas",
+        "Dique"
+      ]
+    },
+    {
+      "id": "san-antonio",
+      "name": "San Antonio",
+      "shortName": "San Antonio",
+      "tagline": "Costanera del Río del Valle, gastronomía y balnearios",
+      "description": "Famoso por su agradable costanera arbolada junto al Río del Valle, parrilladas criollas, alquiler de bicicletas de paseo y vida social al aire libre.",
+      "badge": "Río & Sabores",
+      "gradient": "from-emerald-900 via-slate-850 to-teal-950",
+      "filterKeywords": [
+        "San Antonio",
+        "La Falda de San Antonio"
+      ]
+    },
+    {
+      "id": "la-tercena",
+      "name": "La Tercena",
+      "shortName": "La Tercena",
+      "tagline": "Santuario del Señor de los Milagros y acceso a Casa de Piedra",
+      "description": "Pueblo de arraigada fe y tradiciones. Punto de partida para los ascensos y trekking a la Sierra de Gracián y sede del venerado templo del Señor de los Milagros.",
+      "badge": "Devoción & Sierras",
+      "gradient": "from-rose-900 via-stone-850 to-stone-950",
+      "filterKeywords": [
+        "La Tercena",
+        "Tercena"
+      ]
+    },
+    {
+      "id": "la-carrera",
+      "name": "La Carrera",
+      "shortName": "La Carrera",
+      "tagline": "Caminos serranos, Cuesta del Gracián y gastronomía de campo",
+      "description": "Entorno de campos verdes y vistas panorámicas hacia la sierra. Ideal para el cicloturismo, cabalgatas guiadas, clubes de campo y meriendas criollas.",
+      "badge": "Paisaje Rural",
+      "gradient": "from-teal-900 via-slate-850 to-emerald-950",
+      "filterKeywords": [
+        "La Carrera",
+        "Carrera"
+      ]
+    },
+    {
+      "id": "collagasta",
+      "name": "Collagasta",
+      "shortName": "Collagasta",
+      "tagline": "Casonas de adobe, Laguna Victoria y casas de té con encanto",
+      "description": "Rincón de paz con nogales centenarios, arquitectura tradicional y espacios de relajación como Laguna Victoria y acogedoras casas de té artesanales.",
+      "badge": "Tranquilidad & Té",
+      "gradient": "from-orange-900 via-stone-850 to-amber-950",
+      "filterKeywords": [
+        "Collagasta"
+      ]
+    },
+    {
+      "id": "pomancillo-este",
+      "name": "Pomancillo Este",
+      "shortName": "Pomancillo Este",
+      "tagline": "Ribera del Río del Valle, bosque nativo y cabañas",
+      "description": "Ubicado en la margen este del río, ofrece un contacto íntimo con la flora del Chaco Serrano, arboledas frondosas y complejos de cabañas para desconectar.",
+      "badge": "Naturaleza Pura",
+      "gradient": "from-green-900 via-slate-850 to-emerald-950",
+      "filterKeywords": [
+        "Pomancillo Este",
+        "Pomancillo"
+      ]
+    },
+    {
+      "id": "pomancillo-oeste",
+      "name": "Pomancillo Oeste",
+      "shortName": "Pomancillo Oeste",
+      "tagline": "Sierras del oeste, senderos campestres y vistas abiertas",
+      "description": "Pequeño paraje rural donde el tiempo parece detenerse. Senderos de montaña entre jarillas y algarrobos con amplias vistas panorámicas al valle.",
+      "badge": "Sierras & Silencio",
+      "gradient": "from-slate-900 via-stone-850 to-stone-950",
+      "filterKeywords": [
+        "Pomancillo Oeste"
+      ]
+    }
+  ],
+  "puntos_referencia_mapa": [
+    {
+      "name": "Plaza San José (Piedra Blanca)",
+      "lat": -28.3846,
+      "lng": -65.7335,
+      "isCustomPreset": true
+    },
+    {
+      "name": "Dique Las Pirquitas",
+      "lat": -28.2798,
+      "lng": -65.7302,
+      "isCustomPreset": true
+    },
+    {
+      "name": "San Antonio (Costanera)",
+      "lat": -28.4067,
+      "lng": -65.7381,
+      "isCustomPreset": true
+    },
+    {
+      "name": "La Falda de San Antonio",
+      "lat": -28.4182,
+      "lng": -65.7265,
+      "isCustomPreset": true
+    }
+  ],
+  "imagenes_almacenadas": [
+    {
+      "carpeta": "public",
+      "archivo": "baMFZ98dshLU0VUfau1lUinVDw5nejBlB3tdJdtJ1qd-u002P84AVJA0K2AyzuKt2vmf_WkAswaEbqqbakEpRBOfu_v8hbuvbnDQGiKLRxQyGDgMcBsdcOcwGBvvQZx4hrBV7NINUDNlzNt5keRT4eK6LQG4Vwis-1CoKi2zCRI6-zkUAwmuaQ42KN8FIR-n.jpg",
+      "rutaUrl": "/baMFZ98dshLU0VUfau1lUinVDw5nejBlB3tdJdtJ1qd-u002P84AVJA0K2AyzuKt2vmf_WkAswaEbqqbakEpRBOfu_v8hbuvbnDQGiKLRxQyGDgMcBsdcOcwGBvvQZx4hrBV7NINUDNlzNt5keRT4eK6LQG4Vwis-1CoKi2zCRI6-zkUAwmuaQ42KN8FIR-n.jpg",
+      "tamanoBytes": 175404,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "public",
+      "archivo": "dique las pirquitas.jpg",
+      "rutaUrl": "/dique las pirquitas.jpg",
+      "tamanoBytes": 583459,
+      "referenciadaEnDatos": true
+    },
+    {
+      "carpeta": "public",
+      "archivo": "dique%20las%20pirquitas.jpg",
+      "rutaUrl": "/dique%20las%20pirquitas.jpg",
+      "tamanoBytes": 583459,
+      "referenciadaEnDatos": true
+    },
+    {
+      "carpeta": "public",
+      "archivo": "icon.svg",
+      "rutaUrl": "/icon.svg",
+      "tamanoBytes": 2180,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "public",
+      "archivo": "mXG2ZidWgDjQjWZ5P0eeSrjkyKtQgty9c09qP6V-8KdhiacXEAw0qU1ljp_V7ST3KPPm0kR_Paro9eAO7M4ZjtX5-oH5cK3f0kWVoCXv4ARnRCxh2vLO7hC6qF7NoWgWOgOoUk2fvZMI_EB-Q8d9aibT8EO6nfpa7Xcf7rXDLzZ_SxI3FkW8jD9OIb8F7Uy9.jpg",
+      "rutaUrl": "/mXG2ZidWgDjQjWZ5P0eeSrjkyKtQgty9c09qP6V-8KdhiacXEAw0qU1ljp_V7ST3KPPm0kR_Paro9eAO7M4ZjtX5-oH5cK3f0kWVoCXv4ARnRCxh2vLO7hC6qF7NoWgWOgOoUk2fvZMI_EB-Q8d9aibT8EO6nfpa7Xcf7rXDLzZ_SxI3FkW8jD9OIb8F7Uy9.jpg",
+      "tamanoBytes": 135234,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "public",
+      "archivo": "monumento-esquiu.jpg",
+      "rutaUrl": "/monumento-esquiu.jpg",
+      "tamanoBytes": 175404,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "public",
+      "archivo": "regenerated_image_1787694217834.jpg",
+      "rutaUrl": "/regenerated_image_1787694217834.jpg",
+      "tamanoBytes": 955179,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "public",
+      "archivo": "regenerated_image_1787694440297.jpg",
+      "rutaUrl": "/regenerated_image_1787694440297.jpg",
+      "tamanoBytes": 74625,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "public/images",
+      "archivo": "Monumento Fray.jpg",
+      "rutaUrl": "/images/Monumento Fray.jpg",
+      "tamanoBytes": 10503905,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "public/images",
+      "archivo": "Monumento%20Fray.jpg",
+      "rutaUrl": "/images/Monumento%20Fray.jpg",
+      "tamanoBytes": 10503905,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "public/images",
+      "archivo": "baMFZ98dshLU0VUfau1lUinVDw5nejBlB3tdJdtJ1qd-u002P84AVJA0K2AyzuKt2vmf_WkAswaEbqqbakEpRBOfu_v8hbuvbnDQGiKLRxQyGDgMcBsdcOcwGBvvQZx4hrBV7NINUDNlzNt5keRT4eK6LQG4Vwis-1CoKi2zCRI6-zkUAwmuaQ42KN8FIR-n.jpg",
+      "rutaUrl": "/images/baMFZ98dshLU0VUfau1lUinVDw5nejBlB3tdJdtJ1qd-u002P84AVJA0K2AyzuKt2vmf_WkAswaEbqqbakEpRBOfu_v8hbuvbnDQGiKLRxQyGDgMcBsdcOcwGBvvQZx4hrBV7NINUDNlzNt5keRT4eK6LQG4Vwis-1CoKi2zCRI6-zkUAwmuaQ42KN8FIR-n.jpg",
+      "tamanoBytes": 175404,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "public/images",
+      "archivo": "casa-natal-esquiu.jpg",
+      "rutaUrl": "/images/casa-natal-esquiu.jpg",
+      "tamanoBytes": 41671,
+      "referenciadaEnDatos": true
+    },
+    {
+      "carpeta": "public/images",
+      "archivo": "casona-piedra-blanca.jpg",
+      "rutaUrl": "/images/casona-piedra-blanca.jpg",
+      "tamanoBytes": 97748,
+      "referenciadaEnDatos": true
+    },
+    {
+      "carpeta": "public/images",
+      "archivo": "dique las pirquitas.jpg",
+      "rutaUrl": "/images/dique las pirquitas.jpg",
+      "tamanoBytes": 583459,
+      "referenciadaEnDatos": true
+    },
+    {
+      "carpeta": "public/images",
+      "archivo": "dique%20las%20pirquitas.jpg",
+      "rutaUrl": "/images/dique%20las%20pirquitas.jpg",
+      "tamanoBytes": 1054350,
+      "referenciadaEnDatos": true
+    },
+    {
+      "carpeta": "public/images",
+      "archivo": "dique-las-pirquitas-hero.jpg",
+      "rutaUrl": "/images/dique-las-pirquitas-hero.jpg",
+      "tamanoBytes": 583459,
+      "referenciadaEnDatos": true
+    },
+    {
+      "carpeta": "public/images",
+      "archivo": "dique-las-pirquitas.jpg",
+      "rutaUrl": "/images/dique-las-pirquitas.jpg",
+      "tamanoBytes": 583459,
+      "referenciadaEnDatos": true
+    },
+    {
+      "carpeta": "public/images",
+      "archivo": "iglesia-san-jose.jpg",
+      "rutaUrl": "/images/iglesia-san-jose.jpg",
+      "tamanoBytes": 317099,
+      "referenciadaEnDatos": true
+    },
+    {
+      "carpeta": "public/images",
+      "archivo": "mXG2ZidWgDjQjWZ5P0eeSrjkyKtQgty9c09qP6V-8KdhiacXEAw0qU1ljp_V7ST3KPPm0kR_Paro9eAO7M4ZjtX5-oH5cK3f0kWVoCXv4ARnRCxh2vLO7hC6qF7NoWgWOgOoUk2fvZMI_EB-Q8d9aibT8EO6nfpa7Xcf7rXDLzZ_SxI3FkW8jD9OIb8F7Uy9.jpg",
+      "rutaUrl": "/images/mXG2ZidWgDjQjWZ5P0eeSrjkyKtQgty9c09qP6V-8KdhiacXEAw0qU1ljp_V7ST3KPPm0kR_Paro9eAO7M4ZjtX5-oH5cK3f0kWVoCXv4ARnRCxh2vLO7hC6qF7NoWgWOgOoUk2fvZMI_EB-Q8d9aibT8EO6nfpa7Xcf7rXDLzZ_SxI3FkW8jD9OIb8F7Uy9.jpg",
+      "tamanoBytes": 135234,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "public/images",
+      "archivo": "monumento-beato-esquiu.jpg",
+      "rutaUrl": "/images/monumento-beato-esquiu.jpg",
+      "tamanoBytes": 10503905,
+      "referenciadaEnDatos": true
+    },
+    {
+      "carpeta": "public/images",
+      "archivo": "monumento-esquiu.jpg",
+      "rutaUrl": "/images/monumento-esquiu.jpg",
+      "tamanoBytes": 10503905,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "public/images",
+      "archivo": "regenerated_image_1787694217834.jpg",
+      "rutaUrl": "/images/regenerated_image_1787694217834.jpg",
+      "tamanoBytes": 955179,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "public/images",
+      "archivo": "regenerated_image_1787694440297.jpg",
+      "rutaUrl": "/images/regenerated_image_1787694440297.jpg",
+      "tamanoBytes": 74625,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "public/images",
+      "archivo": "templo san josé de piedra blanca.jpg",
+      "rutaUrl": "/images/templo san josé de piedra blanca.jpg",
+      "tamanoBytes": 317099,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "public/images",
+      "archivo": "templo-san-jose-piedra-blanca.jpg",
+      "rutaUrl": "/images/templo-san-jose-piedra-blanca.jpg",
+      "tamanoBytes": 317099,
+      "referenciadaEnDatos": true
+    },
+    {
+      "carpeta": "public/uploads",
+      "archivo": "baMFZ98dshLU0VUfau1lUinVDw5nejBlB3tdJdtJ1qd-u002P84AVJA0K2AyzuKt2vmf_WkAswaEbqqbakEpRBOfu_v8hbuvbnDQGiKLRxQyGDgMcBsdcOcwGBvvQZx4hrBV7NINUDNlzNt5keRT4eK6LQG4Vwis-1CoKi2zCRI6-zkUAwmuaQ42KN8FIR-n.jpg",
+      "rutaUrl": "/uploads/baMFZ98dshLU0VUfau1lUinVDw5nejBlB3tdJdtJ1qd-u002P84AVJA0K2AyzuKt2vmf_WkAswaEbqqbakEpRBOfu_v8hbuvbnDQGiKLRxQyGDgMcBsdcOcwGBvvQZx4hrBV7NINUDNlzNt5keRT4eK6LQG4Vwis-1CoKi2zCRI6-zkUAwmuaQ42KN8FIR-n.jpg",
+      "tamanoBytes": 175404,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "public/uploads",
+      "archivo": "casa-natal-esquiu.jpg",
+      "rutaUrl": "/uploads/casa-natal-esquiu.jpg",
+      "tamanoBytes": 175404,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "public/uploads",
+      "archivo": "casona-piedra-blanca.jpg",
+      "rutaUrl": "/uploads/casona-piedra-blanca.jpg",
+      "tamanoBytes": 97748,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "public/uploads",
+      "archivo": "cuesta-las-pirquitas.jpg",
+      "rutaUrl": "/uploads/cuesta-las-pirquitas.jpg",
+      "tamanoBytes": 955179,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "public/uploads",
+      "archivo": "dique-las-pirquitas-2026.jpg",
+      "rutaUrl": "/uploads/dique-las-pirquitas-2026.jpg",
+      "tamanoBytes": 1054350,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "public/uploads",
+      "archivo": "dique-las-pirquitas-hero.jpg",
+      "rutaUrl": "/uploads/dique-las-pirquitas-hero.jpg",
+      "tamanoBytes": 583459,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "public/uploads",
+      "archivo": "dique-las-pirquitas-panoramica.jpg",
+      "rutaUrl": "/uploads/dique-las-pirquitas-panoramica.jpg",
+      "tamanoBytes": 955179,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "public/uploads",
+      "archivo": "dique-las-pirquitas-principal.jpg",
+      "rutaUrl": "/uploads/dique-las-pirquitas-principal.jpg",
+      "tamanoBytes": 955179,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "public/uploads",
+      "archivo": "fray_1787687267931_test_upload.jpg",
+      "rutaUrl": "/uploads/fray_1787687267931_test_upload.jpg",
+      "tamanoBytes": 286,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "public/uploads",
+      "archivo": "mXG2ZidWgDjQjWZ5P0eeSrjkyKtQgty9c09qP6V-8KdhiacXEAw0qU1ljp_V7ST3KPPm0kR_Paro9eAO7M4ZjtX5-oH5cK3f0kWVoCXv4ARnRCxh2vLO7hC6qF7NoWgWOgOoUk2fvZMI_EB-Q8d9aibT8EO6nfpa7Xcf7rXDLzZ_SxI3FkW8jD9OIb8F7Uy9.jpg",
+      "rutaUrl": "/uploads/mXG2ZidWgDjQjWZ5P0eeSrjkyKtQgty9c09qP6V-8KdhiacXEAw0qU1ljp_V7ST3KPPm0kR_Paro9eAO7M4ZjtX5-oH5cK3f0kWVoCXv4ARnRCxh2vLO7hC6qF7NoWgWOgOoUk2fvZMI_EB-Q8d9aibT8EO6nfpa7Xcf7rXDLzZ_SxI3FkW8jD9OIb8F7Uy9.jpg",
+      "tamanoBytes": 135234,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "public/uploads",
+      "archivo": "monumento-beato-esquiu.jpg",
+      "rutaUrl": "/uploads/monumento-beato-esquiu.jpg",
+      "tamanoBytes": 175404,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "public/uploads",
+      "archivo": "monumento-esquiu.jpg",
+      "rutaUrl": "/uploads/monumento-esquiu.jpg",
+      "tamanoBytes": 175404,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "public/uploads",
+      "archivo": "regenerated_image_1787694217834.jpg",
+      "rutaUrl": "/uploads/regenerated_image_1787694217834.jpg",
+      "tamanoBytes": 955179,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "public/uploads",
+      "archivo": "regenerated_image_1787694440297.jpg",
+      "rutaUrl": "/uploads/regenerated_image_1787694440297.jpg",
+      "tamanoBytes": 74625,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "src/assets/images",
+      "archivo": "Cuesta%20de%20Las%20Pirquitas%20STEFAN%20SAUZUK.%20Catamarca%20paisajes.jpg",
+      "rutaUrl": "/src/assets/images/Cuesta%20de%20Las%20Pirquitas%20STEFAN%20SAUZUK.%20Catamarca%20paisajes.jpg",
+      "tamanoBytes": 583459,
+      "referenciadaEnDatos": true
+    },
+    {
+      "carpeta": "src/assets/images",
+      "archivo": "Monumento%20Fray.jpg",
+      "rutaUrl": "/src/assets/images/Monumento%20Fray.jpg",
+      "tamanoBytes": 10503905,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "src/assets/images",
+      "archivo": "baMFZ98dshLU0VUfau1lUinVDw5nejBlB3tdJdtJ1qd-u002P84AVJA0K2AyzuKt2vmf_WkAswaEbqqbakEpRBOfu_v8hbuvbnDQGiKLRxQyGDgMcBsdcOcwGBvvQZx4hrBV7NINUDNlzNt5keRT4eK6LQG4Vwis-1CoKi2zCRI6-zkUAwmuaQ42KN8FIR-n.jpg",
+      "rutaUrl": "/src/assets/images/baMFZ98dshLU0VUfau1lUinVDw5nejBlB3tdJdtJ1qd-u002P84AVJA0K2AyzuKt2vmf_WkAswaEbqqbakEpRBOfu_v8hbuvbnDQGiKLRxQyGDgMcBsdcOcwGBvvQZx4hrBV7NINUDNlzNt5keRT4eK6LQG4Vwis-1CoKi2zCRI6-zkUAwmuaQ42KN8FIR-n.jpg",
+      "tamanoBytes": 583459,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "src/assets/images",
+      "archivo": "dique%20las%20pirquitas.jpg",
+      "rutaUrl": "/src/assets/images/dique%20las%20pirquitas.jpg",
+      "tamanoBytes": 583459,
+      "referenciadaEnDatos": true
+    },
+    {
+      "carpeta": "src/assets/images",
+      "archivo": "mXG2ZidWgDjQjWZ5P0eeSrjkyKtQgty9c09qP6V-8KdhiacXEAw0qU1ljp_V7ST3KPPm0kR_Paro9eAO7M4ZjtX5-oH5cK3f0kWVoCXv4ARnRCxh2vLO7hC6qF7NoWgWOgOoUk2fvZMI_EB-Q8d9aibT8EO6nfpa7Xcf7rXDLzZ_SxI3FkW8jD9OIb8F7Uy9.jpg",
+      "rutaUrl": "/src/assets/images/mXG2ZidWgDjQjWZ5P0eeSrjkyKtQgty9c09qP6V-8KdhiacXEAw0qU1ljp_V7ST3KPPm0kR_Paro9eAO7M4ZjtX5-oH5cK3f0kWVoCXv4ARnRCxh2vLO7hC6qF7NoWgWOgOoUk2fvZMI_EB-Q8d9aibT8EO6nfpa7Xcf7rXDLzZ_SxI3FkW8jD9OIb8F7Uy9.jpg",
+      "tamanoBytes": 10503905,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "src/assets/images",
+      "archivo": "monumento-esquiu.jpg",
+      "rutaUrl": "/src/assets/images/monumento-esquiu.jpg",
+      "tamanoBytes": 175404,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "src/assets/images",
+      "archivo": "regenerated_image_1787694217834.jpg",
+      "rutaUrl": "/src/assets/images/regenerated_image_1787694217834.jpg",
+      "tamanoBytes": 534314,
+      "referenciadaEnDatos": false
+    },
+    {
+      "carpeta": "src/assets/images",
+      "archivo": "regenerated_image_1787694440297.jpg",
+      "rutaUrl": "/src/assets/images/regenerated_image_1787694440297.jpg",
+      "tamanoBytes": 41671,
+      "referenciadaEnDatos": false
+    }
+  ],
+  "eventos_agenda": [
+    {
+      "id": "ev-peña-verano",
+      "title": "Gran Peña Folclórica \"Canto a Fray\"",
+      "date": "2026-08-28",
+      "dateBadge": "VIE 28 AGO",
+      "time": "21:30 hs",
+      "category": "peña",
+      "locationName": "Plaza San José de Piedra Blanca",
+      "address": "Plaza Central de Piedra Blanca",
+      "lat": -28.3846,
+      "lng": -65.7335,
+      "description": "Noche de guitarras, zambas, empanadas calientes y grupos folclóricos en vivo. Entrada libre y gratuita para toda la familia.",
+      "image": "",
+      "isFree": true,
+      "priceText": "Entrada Libre y Gratuita",
+      "organizer": "Dirección de Cultura y Turismo FME",
+      "placeId": "iglesia-san-jose"
+    },
+    {
+      "id": "ev-kayak-atardecer",
+      "title": "Travesía en Kayak al Atardecer & Música en el Lago",
+      "date": "2026-08-29",
+      "dateBadge": "SÁB 29 AGO",
+      "time": "18:00 hs",
+      "category": "deporte",
+      "locationName": "Dique Las Pirquitas (Bajada Náutica)",
+      "address": "Ruta Provincial 1, Las Pirquitas",
+      "lat": -28.2815,
+      "lng": -65.732,
+      "description": "Navegación grupal en kayak guiada para contemplar la puesta de sol sobre los cerros, con fogón acústico y degustación de vinos regionales al finalizar.",
+      "image": "",
+      "isFree": false,
+      "priceText": "$5.000 (Incluye equipo, chaleco y brindis)",
+      "organizer": "Club Náutico Las Pirquitas & Turismo FME",
+      "placeId": "aventura-nautica-kayak"
+    },
+    {
+      "id": "ev-feria-artesanos",
+      "title": "Feria de Sabores y Artesanías del Valle",
+      "date": "2026-08-30",
+      "dateBadge": "DOM 30 AGO",
+      "time": "16:00 a 22:00 hs",
+      "category": "feria",
+      "locationName": "Paseo de la Costanera San Antonio",
+      "address": "Costanera del Río del Valle, San Antonio",
+      "lat": -28.4072,
+      "lng": -65.7389,
+      "description": "Más de 40 artesanos en cerámica, telar criollo, cuero, dulces caseros de nuez y cayote, cerveza artesanal y show de títeres para niños.",
+      "image": "",
+      "isFree": true,
+      "priceText": "Acceso Gratuito",
+      "organizer": "Secretaría de Producción y Empleo FME",
+      "placeId": "balneario-rio-del-valle"
+    },
+    {
+      "id": "ev-cicloturismo-nocturno",
+      "title": "Cicloturismo Familiar por el Camino Real",
+      "date": "2026-09-04",
+      "dateBadge": "VIE 04 SEP",
+      "time": "20:00 hs",
+      "category": "deporte",
+      "locationName": "Punto de encuentro: Casa Natal de Esquiú",
+      "address": "Calle del Beato s/n, Piedra Blanca",
+      "lat": -28.3812,
+      "lng": -65.7311,
+      "description": "Recorrido en bicicleta de 8 km a ritmo recreativo por calles históricas arboladas, con paradas explicativas y refrigerio de frutas.",
+      "image": "",
+      "isFree": true,
+      "priceText": "Actividad Gratuita (Llevar casco y luz)",
+      "organizer": "Deportes Municipalidad de FME",
+      "placeId": "casa-natal-esquiu"
+    },
+    {
+      "id": "ev-taller-ceramica",
+      "title": "Taller de Modelado en Arcilla Catamarqueña",
+      "date": "2026-09-05",
+      "dateBadge": "SÁB 05 SEP",
+      "time": "17:00 hs",
+      "category": "taller",
+      "locationName": "Casa de Té La Calera (Collagasta)",
+      "address": "Calle Pública s/n, Collagasta",
+      "lat": -28.3712,
+      "lng": -65.739,
+      "description": "Taller práctico al aire libre para modelar piezas con técnicas ancestrales de la cultura Aguada y Santa María, acompañado de merienda serrana.",
+      "image": "",
+      "isFree": false,
+      "priceText": "$3.500 (Incluye arcilla y merienda)",
+      "organizer": "Colectivo Artesanos del Valle",
+      "placeId": "casa-de-te-la-calera"
+    }
+  ],
+  "audioguias": [
+    {
+      "id": "audio-casa-natal",
+      "placeId": "casa-natal-esquiu",
+      "title": "Casa Natal del Beato Fray Mamerto Esquiú",
+      "subtitle": "El hogar de adobe donde nació la voz de la Constitución Nacional",
+      "duration": "3:40 min",
+      "audioSeconds": 220,
+      "coverImage": "/images/casa-natal-esquiu.jpg",
+      "shortSummary": "Descubrí la humilde casa de adobe donde creció el fraile franciscano que pacificó a la República Argentina en 1853.",
+      "narrativeText": "Bienvenido a la Casa Natal de Fray Mamerto de la Ascensión Esquiú, declarada Monumento Histórico Nacional. Estás parado frente a una de las construcciones de adobe y caña más significativas de la historia argentina. Aquí, en este valle de Piedra Blanca, un 11 de mayo de 1826 nació un niño frágil que marcaría el destino de la patria.\n\nSu madre, María de las Nieves Medina, vistió a su hijo con el sayal franciscano en cumplimiento de una promesa por su salud. Mamerto creció entre estos muros de tierra cruda, aprendiendo las primeras letras y forjando una profunda devoción. \n\nAños más tarde, el 9 de julio de 1853 en la Iglesia Matriz de Catamarca, pronunció su célebre Sermón de la Constitución, donde exhortó al pueblo a acatar la Carta Magna para sellar la unión nacional: \"¡Obedeced señores! Sin sumisión a la ley, la patria es imposible\".\n\nObserva el templete de hierro y vidrio que resguarda la vivienda original para protegerla de la erosión del tiempo, y admira los telares y elementos de labranza originales de la época colonial.",
+      "historicalFacts": [
+        "Monumento Histórico Nacional desde 1935.",
+        "Construida enteramente con adobes amasados con paja y barro local.",
+        "Fray Mamerto Esquiú fue beatificado solemnemente el 4 de septiembre de 2021 en este mismo departamento.",
+        "Conserva intacta la habitación natalicia con su puerta original de algarrobo."
+      ],
+      "nextPlaceId": "iglesia-san-jose",
+      "nextPlaceReason": "A sólo 3 minutos en auto podés visitar la histórica Iglesia de San José (año 1780), donde fue bautizado el Beato Esquiú."
+    },
+    {
+      "id": "audio-dique-pirquitas",
+      "placeId": "dique-las-pirquitas",
+      "title": "Dique y Embalse Las Pirquitas",
+      "subtitle": "La joya hídrica y paisajística entre las sierras del Ambato y Gracián",
+      "duration": "3:15 min",
+      "audioSeconds": 195,
+      "coverImage": "/dique%20las%20pirquitas.jpg",
+      "shortSummary": "Conocé la historia de una de las obras de ingeniería más emblemáticas de Catamarca y su ecosistema serrano.",
+      "narrativeText": "Estás contemplando el Dique Las Pirquitas, el embalse más importante del Valle Central de Catamarca, emplazado a más de 800 metros sobre el nivel del mar. Inaugurado a mediados del siglo XX, esta colosal obra transformó la geografía del departamento Fray Mamerto Esquiú.\n\nEl muro de contención embalsa las aguas del Río del Valle, creando un lago artificial de tonalidades esmeralda que contrasta con el paisaje agreste de las sierras. Su función es vital: provee agua potable, riego para los campos productivos y generación de energía hidroeléctrica.\n\nDurante los meses estivales, el dique se convierte en el corazón del turismo activo: decenas de kayaks navegan sus aguas tranquilas, mientras que los pescadores prueban suerte con pejerreyes y carpas. En lo alto del vertedero podés contemplar el salto de agua en época de crecidas, un espectáculo de fuerza natural inigualable.",
+      "historicalFacts": [
+        "Capacidad de embalse superior a 65 hectómetros cúbicos de agua pura de deshielo.",
+        "Su vertedero en forma de tulipán o embudo es una atracción fotográfica icónica.",
+        "Hábitat de garzas blancas, patos silvestres y sauces criollos en sus orillas."
+      ],
+      "nextPlaceId": "aventura-nautica-kayak",
+      "nextPlaceReason": "A pocos metros sobre la costa podés alquilar kayaks y tablas de SUP en el Parador Náutico."
+    },
+    {
+      "id": "audio-iglesia-sanjose",
+      "placeId": "iglesia-san-jose",
+      "title": "Iglesia de San José de Piedra Blanca",
+      "subtitle": "Monumento Nacional de 1780 y testigo de la devoción vallista",
+      "duration": "2:55 min",
+      "audioSeconds": 175,
+      "coverImage": "/images/iglesia-san-jose.jpg",
+      "shortSummary": "El templo más antiguo del departamento, con su pila bautismal histórica y retablo colonial.",
+      "narrativeText": "Frente a la apacible plaza principal de San José de Piedra Blanca se alza este templo erigido hacia 1780. Sus robustas paredes de adobe de más de un metro de espesor han resistido más de dos siglos de historia.\n\nAl ingresar, el silencio y la frescura del templo te transportan a los tiempos coloniales. A la izquierda se conserva la pila bautismal de piedra labrada donde el párroco local bautizó al pequeño Mamerto Esquiú el 15 de mayo de 1826. El retablo mayor dorado y las imágenes imagineras cuzqueñas son piezas invaluables del patrimonio sacro del norte argentino.",
+      "historicalFacts": [
+        "Declarada Monumento Histórico Nacional en 1941.",
+        "Conserva el libro parroquial con el acta original de bautismo del Beato Esquiú.",
+        "Campanas forjadas con aleaciones de bronce y plata donadas por los vecinos coloniales."
+      ],
+      "nextPlaceId": "monumento-esquiu",
+      "nextPlaceReason": "Subiendo la colina a 4 minutos podés ascender al Mirador y Monumento del Beato para una vista panorámica."
+    },
+    {
+      "id": "audio-trapiche",
+      "placeId": "trapiche-azucarero",
+      "title": "Ruinas del Trapiche Azucarero",
+      "subtitle": "Arqueología industrial y los albores de la producción en Catamarca",
+      "duration": "2:40 min",
+      "audioSeconds": 160,
+      "coverImage": "",
+      "shortSummary": "Las ruinas del primer ingenio azucarero de la zona y la fuerza hidráulica del siglo XIX.",
+      "narrativeText": "El Antiguo Trapiche de San José representa el ingenio y el espíritu pionero de los pobladores de Fray Mamerto Esquiú. A comienzos del siglo XIX se introdujo aquí la caña de azúcar y se construyeron canales de derivación hídrica para mover pesadas ruedas de molienda.\n\nCaminar entre sus piedras y acequias centenarias permite comprender cómo convivían la agricultura tradicional, la producción de aguardientes y la molienda de trigo y maíz que abastecía a toda la provincia.",
+      "historicalFacts": [
+        "Primer ingenio azucarero documentado en el Valle de Catamarca.",
+        "Utilizaba energía hidráulica limpia derivada de las vertientes de montaña."
+      ],
+      "nextPlaceId": "casa-de-te-la-calera",
+      "nextPlaceReason": "A sólo 5 minutos hacia Collagasta podés disfrutar una merienda con tortas caseras en La Calera."
+    },
+    {
+      "id": "audio-monumento",
+      "placeId": "monumento-esquiu",
+      "title": "Mirador y Monumento al Beato Esquiú",
+      "subtitle": "El guardián de las sierras y el mejor atardecer de Piedra Blanca",
+      "duration": "2:20 min",
+      "audioSeconds": 140,
+      "coverImage": "/images/monumento-beato-esquiu.jpg",
+      "shortSummary": "Una panorámica inigualable del valle, los campos de olivos y las cumbres del Ambato.",
+      "narrativeText": "Ubicado en la cima de la colina de San José, este mirador rinde tributo al prócer y beato catamarqueño. La escultura de bronce se eleva contra el cielo norteño, bendiciendo el valle fértil.\n\nDesde este punto podés identificar el curso del Río del Valle, los techos coloniales de Piedra Blanca, los olivares de La Falda y, hacia el norte, el camino que conduce hacia el embalse de Las Pirquitas. Al caer la tarde, las montañas se tiñen de tonos violáceos y dorados únicos.",
+      "historicalFacts": [
+        "Escultura monumental erigida en tributo a la figura histórica de Fray Mamerto Esquiú.",
+        "Punto panorámico con visión de 360 grados del departamento."
+      ],
+      "nextPlaceId": "casona-piedra-blanca",
+      "nextPlaceReason": "Para terminar el día, a sólo 600 metros te espera La Casona de Piedra Blanca con empanadas al horno de barro."
+    }
+  ],
+  "experiencias": [
+    {
+      "id": "exp-las-pirquitas",
+      "title": "Una tarde en Las Pirquitas",
+      "tagline": "Kayak en aguas turquesas, relax bajo los sauces y atardecer serrano",
+      "category": "Naturaleza & Aventura",
+      "duration": "4 a 5 horas",
+      "idealFor": "Parejas, grupos de amigos y amantes del agua",
+      "coverImage": "/dique%20las%20pirquitas.jpg",
+      "description": "Una experiencia imperdible: salí a navegar en kayak por el lago más lindo de Catamarca, merendá frente al agua y descansá en la costanera con vista a las sierras.",
+      "stops": [
+        {
+          "placeId": "dique-las-pirquitas",
+          "stopOrder": 1,
+          "tip": "Llegá cerca de las 15:30 hs para disfrutar el paisaje del embalse y el vertedero con luz diurna."
+        },
+        {
+          "placeId": "aventura-nautica-kayak",
+          "stopOrder": 2,
+          "tip": "Alquilá un kayak o tabla de SUP para remar 1 hora por la bahía protegida del viento."
+        },
+        {
+          "placeId": "hosteria-municipal-pirquitas",
+          "stopOrder": 3,
+          "tip": "Tomate un café helado o licuado en el restaurante panorámico de la hostería."
+        }
+      ],
+      "highlights": [
+        "Paseo náutico en kayak",
+        "Fotos en el vertedero",
+        "Atardecer reflejado en el lago"
+      ],
+      "badgeText": "Experiencia Destacada ⭐"
+    },
+    {
+      "id": "exp-fray-historico",
+      "title": "Fray histórico y de la Fe",
+      "tagline": "Huellas coloniales, el legado del Beato Esquiú y casonas de adobe",
+      "category": "Cultura & Patrimonio",
+      "duration": "3 horas",
+      "idealFor": "Familias, turistas culturales y devotos",
+      "coverImage": "",
+      "description": "Un viaje emotivo por las raíces de la patria. Conocé la cuna del fraile orador de la Constitución, iglesias coloniales de 1780 y antiguas maquinarias industriales.",
+      "stops": [
+        {
+          "placeId": "casa-natal-esquiu",
+          "stopOrder": 1,
+          "tip": "Escuchá la audioguía in situ mientras recorres las habitaciones de adobe colonial."
+        },
+        {
+          "placeId": "iglesia-san-jose",
+          "stopOrder": 2,
+          "tip": "Observá la pila bautismal de piedra tallada y el retablo de madera dorada."
+        },
+        {
+          "placeId": "monumento-esquiu",
+          "stopOrder": 3,
+          "tip": "Subí las escalinatas al mirador para una vista panorámica de todo el valle."
+        }
+      ],
+      "highlights": [
+        "Casa Natal del Beato",
+        "Pila bautismal de 1826",
+        "Mirador panorámico 360°"
+      ],
+      "badgeText": "Patrimonio Nacional ⛪"
+    },
+    {
+      "id": "exp-fray-ninos",
+      "title": "Fray con niños y en familia",
+      "tagline": "Chapuzón en el río, juegos al aire libre y helados artesanales",
+      "category": "Familia",
+      "duration": "Mediodía o tarde completa",
+      "idealFor": "Familias con niños pequeños y adolescentes",
+      "coverImage": "",
+      "description": "La combinación ideal de agua segura, espacios verdes con sombra y delicias dulces para que los más chicos se diviertan sin pantallas.",
+      "stops": [
+        {
+          "placeId": "balneario-rio-del-valle",
+          "stopOrder": 1,
+          "tip": "Llevá reposeras, toallas y baldes para jugar en las playitas de arena del río."
+        },
+        {
+          "placeId": "helados-plaza-sanjose",
+          "stopOrder": 2,
+          "tip": "Pedí los cucuruchos artesanales y sentate en los bancos de la plaza arbolada."
+        }
+      ],
+      "highlights": [
+        "Juegos en el río",
+        "Sombra natural de sauces",
+        "Heladería artesanal"
+      ],
+      "badgeText": "Plan Familiar 👨‍👩‍👧‍👦"
+    },
+    {
+      "id": "exp-fray-gastronomico",
+      "title": "Fray gastronómico: Sabores del Valle",
+      "tagline": "Empanadas catamarqueñas en horno de barro, cabrito y casas de té",
+      "category": "Gastronomía",
+      "duration": "Almuerzo + Tarde",
+      "idealFor": "Amantes del buen comer y enoturistas",
+      "coverImage": "",
+      "description": "Catamarca en cada bocado: desde las mejores empanadas jugosas y picantes hasta tortas caseras con cayote y nueces de la zona.",
+      "stops": [
+        {
+          "placeId": "casona-piedra-blanca",
+          "stopOrder": 1,
+          "tip": "Reservá mesa en el patio bajo los parrales y pedí la docena de empanadas al horno de barro."
+        },
+        {
+          "placeId": "casa-de-te-la-calera",
+          "stopOrder": 2,
+          "tip": "Probá el té en hebras con hierbas serranas y la tarta de nuez catamarqueña."
+        }
+      ],
+      "highlights": [
+        "Empanadas a cuchillo",
+        "Patio colonial con parral",
+        "Té con hierbas serranas"
+      ],
+      "badgeText": "Sabores Típicos 🥟"
+    },
+    {
+      "id": "exp-fray-bicicleta",
+      "title": "Fray en bicicleta por el Camino Real",
+      "tagline": "Pedaleo recreativo por calles arboladas, acequias y miradores",
+      "category": "Cicloturismo & Aventura",
+      "duration": "2 a 3 horas (8 km)",
+      "idealFor": "Ciclistas principiantes e intermedios",
+      "coverImage": "",
+      "description": "Circuito plano y pintoresco uniendo Piedra Blanca, Collagasta y San Antonio a la sombra de eucaliptos y sauces centenarios.",
+      "stops": [
+        {
+          "placeId": "casa-natal-esquiu",
+          "stopOrder": 1,
+          "tip": "Punto de largada en la explanada de la Casa Natal."
+        },
+        {
+          "placeId": "trapiche-azucarero",
+          "stopOrder": 2,
+          "tip": "Parada intermedia para hidratarse y sacar fotos en las ruinas históricas."
+        },
+        {
+          "placeId": "balneario-rio-del-valle",
+          "stopOrder": 3,
+          "tip": "Llegada a la costanera para refrescar los pies en el agua del río."
+        }
+      ],
+      "highlights": [
+        "Ruta pavimentada y de ripio suave",
+        "Túneles de árboles",
+        "Cero tránsito pesado"
+      ],
+      "badgeText": "Eco Tour 🚲"
+    },
+    {
+      "id": "exp-planes-gratuitos",
+      "title": "Planes 100% gratuitos en Fray",
+      "tagline": "Disfrutá lo mejor del departamento sin gastar un solo peso",
+      "category": "Económico",
+      "duration": "Todo el día",
+      "idealFor": "Mochileros, familias y presupuestos cuidados",
+      "coverImage": "",
+      "description": "Museos con entrada libre, senderos de trekking públicos, miradores panorámicos y balnearios de acceso irrestricto.",
+      "stops": [
+        {
+          "placeId": "casa-natal-esquiu",
+          "stopOrder": 1,
+          "tip": "Entrada y visitas guiadas 100% gratuitas del municipio."
+        },
+        {
+          "placeId": "sendero-gracian",
+          "stopOrder": 2,
+          "tip": "Caminata libre por el cerro con avistaje de aves y fotos."
+        },
+        {
+          "placeId": "balneario-rio-del-valle",
+          "stopOrder": 3,
+          "tip": "Tarde de mate en los asadores públicos de la costanera."
+        }
+      ],
+      "highlights": [
+        "0 pesos de gasto",
+        "Naturaleza pura",
+        "Cultura accesible"
+      ],
+      "badgeText": "Gratis Total 🆓"
+    }
+  ],
+  "informacion_util_y_emergencias": {
+    "emergencyNumbers": [
+      {
+        "title": "Centro de Salud Piedra Blanca",
+        "phone": "383 4491030",
+        "address": "Calle San José s/n",
+        "desc": "Atención médica y guardia de enfermería 24 hs."
+      },
+      {
+        "title": "SAME Catamarca (Emergencias Médicas)",
+        "phone": "107",
+        "address": "Móvil de asistencia rápida",
+        "desc": "Llamada gratuita desde cualquier celular."
+      },
+      {
+        "title": "Policía Comisaría San José (FME)",
+        "phone": "383 4491010",
+        "address": "Frente a Plaza Piedra Blanca",
+        "desc": "Guardia y patrullaje preventivo."
+      },
+      {
+        "title": "Defensa Civil y Bomberos FME",
+        "phone": "100 / 383 4491000",
+        "address": "Ruta Prov. 1",
+        "desc": "Asistencia ante contingencias climáticas."
+      }
+    ],
+    "touristOffices": [
+      {
+        "title": "Centro de Información Turística Piedra Blanca",
+        "phone": "383 4491020",
+        "address": "Plaza San José (Explanada Municipal)",
+        "hours": "Lunes a Domingo 08:00 a 20:00 hs"
+      },
+      {
+        "title": "Puesto de Información Las Pirquitas",
+        "phone": "383 4491020",
+        "address": "Ingreso al Dique Las Pirquitas",
+        "hours": "Viernes a Domingo 09:00 a 19:00 hs"
+      }
+    ],
+    "transportLines": [
+      {
+        "name": "Línea 201 (San José - San Antonio - Catamarca Capital)",
+        "frequency": "Cada 15 minutos",
+        "detail": "Conecta la Terminal de Catamarca con Piedra Blanca, San Antonio y Collagasta. Pago con tarjeta SUBE."
+      },
+      {
+        "name": "Línea 204 (Catamarca - Las Pirquitas por RP 1)",
+        "frequency": "Cada 45 minutos",
+        "detail": "Recorrido directo hacia el Embalse Las Pirquitas, Villa Las Pirquitas y Camping."
+      }
+    ],
+    "pharmacies": [
+      {
+        "name": "Farmacia San José (Turno Farmacéutico)",
+        "address": "Av. Vicente Saadi 210, Piedra Blanca",
+        "phone": "383 4491234"
+      },
+      {
+        "name": "Farmacia Del Valle",
+        "address": "Ruta 41 esq. San Martín, San Antonio",
+        "phone": "383 4492345"
+      }
+    ],
+    "officialContacts": {
+      "whatsappTurismo": "5493834491020",
+      "instagram": "turismofray",
+      "facebook": "municipalidadfraymamertoesquiu",
+      "web": "https://fraymamertoesquiu.gob.ar"
+    }
+  }
+}

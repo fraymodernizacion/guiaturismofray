@@ -1,0 +1,6 @@
+{
+  "name": "Fray Turismo",
+  "description": "PWA Oficial de Turismo de Fray Mamerto Esquiú, Catamarca. Todo Fray en tu celular: atractivos, naturaleza, patrimonio del Beato Esquiú, gastronomía, agenda y mapa.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

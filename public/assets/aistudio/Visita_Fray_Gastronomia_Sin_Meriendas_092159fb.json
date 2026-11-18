@@ -1,0 +1,329 @@
+{
+  "proyecto": "Visita Fray",
+  "version_fuente": "Guía de Verano 2025-2026",
+  "origen": "Guía de Verano Fray (1)(1).pdf, páginas 6, 7 y 8",
+  "categoria_destino": "Dónde comer",
+  "total_registros": 13,
+  "instrucciones_importacion": {
+    "accion": "Agregar o actualizar registros de la categoría Dónde comer sin eliminar fichas existentes y evitando duplicados por nombre + dirección",
+    "no_incluir_en_esta_importacion": [
+      "Sabores Caseros Casa de Té (sección Para merendar)",
+      "Ficha de merienda de Hostería Las Pirquitas (su restaurante se incluye aquí)"
+    ],
+    "valores_nulos": "Los campos null no se publican ni se inventan",
+    "imagenes": "No hay fotografías adjuntas a este JSON. No copiar imágenes de este PDF al paquete de la aplicación",
+    "enlaces_maps": "No se proporcionan enlaces exactos de Google Maps en la guía. Deben validarse antes de cargarse.",
+    "horarios": "Corresponden a la Guía de Verano 2025-2026 y deben reconfirmarse antes de presentarlos como vigentes",
+    "salon_eventos": "Calígula requiere revisión editorial por no ser un restaurante de atención habitual"
+  },
+  "establecimientos": [
+    {
+      "id": "gas-001",
+      "nombre": "Paluma Cervecería",
+      "categoria_app": "Dónde comer",
+      "subcategoria": "Bares y cervecerías",
+      "direccion": "Av. La Callecita; estacionamiento por ingreso Campanas del Rosario",
+      "localidad": "Piedra Blanca",
+      "municipio": "Fray Mamerto Esquiú",
+      "provincia": "Catamarca",
+      "pais": "Argentina",
+      "horarios": "Jueves, viernes, sábado y domingo desde las 21:00",
+      "telefonos": [
+        "3834683333",
+        "3834329062",
+        "3834343454"
+      ],
+      "instagram": null,
+      "servicios": [],
+      "observaciones": null,
+      "google_maps_url": null,
+      "imagen_url": null,
+      "audioguia_url": null,
+      "fuente_pagina": 6
+    },
+    {
+      "id": "gas-002",
+      "nombre": "Amadeus Bar",
+      "categoria_app": "Dónde comer",
+      "subcategoria": "Bares y cervecerías",
+      "direccion": "Camino Real",
+      "localidad": "Piedra Blanca",
+      "municipio": "Fray Mamerto Esquiú",
+      "provincia": "Catamarca",
+      "pais": "Argentina",
+      "horarios": "Miércoles a domingo desde las 20:30. Domingo: almuerzo de 13:00 a 15:30",
+      "telefonos": [
+        "3834036644"
+      ],
+      "instagram": null,
+      "servicios": [],
+      "observaciones": null,
+      "google_maps_url": null,
+      "imagen_url": null,
+      "audioguia_url": null,
+      "fuente_pagina": 6
+    },
+    {
+      "id": "gas-003",
+      "nombre": "Astor Pizza In Te-Glia",
+      "categoria_app": "Dónde comer",
+      "subcategoria": "Pizzerías y bares",
+      "direccion": "Sargento Cabral esquina Ruta Provincial 41",
+      "localidad": "San Antonio",
+      "municipio": "Fray Mamerto Esquiú",
+      "provincia": "Catamarca",
+      "pais": "Argentina",
+      "horarios": "Jueves a domingo de 20:00 a 02:00",
+      "telefonos": [
+        "3834653008"
+      ],
+      "instagram": "@astorpizzainteglia",
+      "servicios": [
+        "Envíos"
+      ],
+      "observaciones": null,
+      "google_maps_url": null,
+      "imagen_url": null,
+      "audioguia_url": null,
+      "fuente_pagina": 6
+    },
+    {
+      "id": "gas-004",
+      "nombre": "El Chaperío de Mamerto",
+      "categoria_app": "Dónde comer",
+      "subcategoria": "Bares y cervecerías",
+      "direccion": "Av. Campanas del Rosario",
+      "localidad": "Piedra Blanca",
+      "municipio": "Fray Mamerto Esquiú",
+      "provincia": "Catamarca",
+      "pais": "Argentina",
+      "horarios": null,
+      "telefonos": [
+        "3573411077"
+      ],
+      "instagram": null,
+      "servicios": [],
+      "observaciones": null,
+      "google_maps_url": null,
+      "imagen_url": null,
+      "audioguia_url": null,
+      "fuente_pagina": 6
+    },
+    {
+      "id": "gas-005",
+      "nombre": "Pan y Café",
+      "categoria_app": "Dónde comer",
+      "subcategoria": "Restaurantes y cafeterías",
+      "direccion": "Av. La Callecita, a metros del Club Defensores de Esquiú",
+      "localidad": "Piedra Blanca",
+      "municipio": "Fray Mamerto Esquiú",
+      "provincia": "Catamarca",
+      "pais": "Argentina",
+      "horarios": "Todos los días de 07:00 a 15:00 y de 18:00 a 02:00",
+      "telefonos": [
+        "3834322392",
+        "3934044785"
+      ],
+      "instagram": null,
+      "servicios": [
+        "Desayuno",
+        "Almuerzo",
+        "Merienda",
+        "Cena"
+      ],
+      "observaciones": "Ofrece meriendas, pero se incluye en Dónde comer porque también ofrece almuerzo y cena. Revisar segundo teléfono si se actualizan datos.",
+      "google_maps_url": null,
+      "imagen_url": null,
+      "audioguia_url": null,
+      "fuente_pagina": 7
+    },
+    {
+      "id": "gas-006",
+      "nombre": "Restaurante Hostería Las Pirquitas",
+      "categoria_app": "Dónde comer",
+      "subcategoria": "Restaurantes y resto bares",
+      "direccion": "Av. San Martín",
+      "localidad": "Villa Las Pirquitas",
+      "municipio": "Fray Mamerto Esquiú",
+      "provincia": "Catamarca",
+      "pais": "Argentina",
+      "horarios": "Martes a domingo de 09:00 a 21:00",
+      "telefonos": [
+        "3834414903"
+      ],
+      "instagram": null,
+      "servicios": [],
+      "observaciones": "También figura la hostería en la sección exclusiva de meriendas; esta ficha corresponde al restaurante.",
+      "google_maps_url": null,
+      "imagen_url": null,
+      "audioguia_url": null,
+      "fuente_pagina": 7
+    },
+    {
+      "id": "gas-007",
+      "nombre": "Las Lilas",
+      "categoria_app": "Dónde comer",
+      "subcategoria": "Restaurantes y resto bares",
+      "direccion": "Ruta Provincial 41, frente a rotonda de entrada a El Hueco",
+      "localidad": "San Antonio",
+      "municipio": "Fray Mamerto Esquiú",
+      "provincia": "Catamarca",
+      "pais": "Argentina",
+      "horarios": "Viernes a domingo y feriados. Meriendas sábados, domingos y feriados desde las 18:00",
+      "telefonos": [
+        "3834559563",
+        "3512031171"
+      ],
+      "instagram": null,
+      "servicios": [
+        "Meriendas"
+      ],
+      "observaciones": "La guía informa horarios de merienda y días de apertura, pero no detalla el horario de otras comidas. Confirmar servicio gastronómico antes de publicar.",
+      "google_maps_url": null,
+      "imagen_url": null,
+      "audioguia_url": null,
+      "fuente_pagina": 7
+    },
+    {
+      "id": "gas-008",
+      "nombre": "Resto Bar Los Abus",
+      "categoria_app": "Dónde comer",
+      "subcategoria": "Restaurantes y resto bares",
+      "direccion": "Av. San Martín",
+      "localidad": "Villa Las Pirquitas",
+      "municipio": "Fray Mamerto Esquiú",
+      "provincia": "Catamarca",
+      "pais": "Argentina",
+      "horarios": "Sábados, domingos y feriados: almuerzo de campo de 12:00 a 16:00; merienda bufet libre de 17:00 a 22:00",
+      "telefonos": [
+        "3834294467"
+      ],
+      "instagram": null,
+      "servicios": [
+        "Almuerzo de campo",
+        "Merienda bufet libre"
+      ],
+      "observaciones": null,
+      "google_maps_url": null,
+      "imagen_url": null,
+      "audioguia_url": null,
+      "fuente_pagina": 7
+    },
+    {
+      "id": "gas-009",
+      "nombre": "Don Paulino Resto Bar",
+      "categoria_app": "Dónde comer",
+      "subcategoria": "Restaurantes y resto bares",
+      "direccion": "Frente al Parque Chacarero",
+      "localidad": "San Antonio",
+      "municipio": "Fray Mamerto Esquiú",
+      "provincia": "Catamarca",
+      "pais": "Argentina",
+      "horarios": "Abierto desde las 20:30",
+      "telefonos": [
+        "3834655985",
+        "3834196379"
+      ],
+      "instagram": null,
+      "servicios": [],
+      "observaciones": null,
+      "google_maps_url": null,
+      "imagen_url": null,
+      "audioguia_url": null,
+      "fuente_pagina": 7
+    },
+    {
+      "id": "gas-010",
+      "nombre": "Urbana Resto Pub",
+      "categoria_app": "Dónde comer",
+      "subcategoria": "Restaurantes y resto bares",
+      "direccion": "Ruta Provincial 41",
+      "localidad": "San Antonio",
+      "municipio": "Fray Mamerto Esquiú",
+      "provincia": "Catamarca",
+      "pais": "Argentina",
+      "horarios": "Sábados de 21:00 a 05:00; domingos de 12:00 a 16:00",
+      "telefonos": [
+        "3834619923"
+      ],
+      "instagram": null,
+      "servicios": [],
+      "observaciones": null,
+      "google_maps_url": null,
+      "imagen_url": null,
+      "audioguia_url": null,
+      "fuente_pagina": 8
+    },
+    {
+      "id": "gas-011",
+      "nombre": "Buena Vida",
+      "categoria_app": "Dónde comer",
+      "subcategoria": "Restaurantes y resto bares",
+      "direccion": "Vista Larga",
+      "localidad": "San Antonio",
+      "municipio": "Fray Mamerto Esquiú",
+      "provincia": "Catamarca",
+      "pais": "Argentina",
+      "horarios": "Viernes y sábados desde las 21:00; domingos desde las 12:00",
+      "telefonos": [
+        "3834021919"
+      ],
+      "instagram": null,
+      "servicios": [],
+      "observaciones": null,
+      "google_maps_url": null,
+      "imagen_url": null,
+      "audioguia_url": null,
+      "fuente_pagina": 8
+    },
+    {
+      "id": "gas-012",
+      "nombre": "Calígula Salón de Eventos",
+      "categoria_app": "Dónde comer",
+      "subcategoria": "Salones de eventos",
+      "direccion": "Ruta Provincial 1",
+      "localidad": "La Carrera",
+      "municipio": "Fray Mamerto Esquiú",
+      "provincia": "Catamarca",
+      "pais": "Argentina",
+      "horarios": "Eventos privados; no informa horarios de atención",
+      "telefonos": [
+        "3834041980",
+        "3834478681"
+      ],
+      "instagram": null,
+      "servicios": [
+        "Celebraciones familiares",
+        "Eventos empresariales",
+        "Eventos institucionales"
+      ],
+      "observaciones": "Es salón de eventos, no se presenta en la guía como restaurante de atención habitual. Revisar si debe publicarse en Dónde comer o en una futura categoría Eventos.",
+      "google_maps_url": null,
+      "imagen_url": null,
+      "audioguia_url": null,
+      "fuente_pagina": 8
+    },
+    {
+      "id": "gas-013",
+      "nombre": "Alvin Resto Bar",
+      "categoria_app": "Dónde comer",
+      "subcategoria": "Restaurantes y resto bares",
+      "direccion": "Ex Graciana, Av. La Callecita",
+      "localidad": "Piedra Blanca",
+      "municipio": "Fray Mamerto Esquiú",
+      "provincia": "Catamarca",
+      "pais": "Argentina",
+      "horarios": "Domingo a jueves de 08:00 a 15:00 y de 19:30 a 00:30; viernes y sábados de 08:00 a 15:00 y de 19:30 a 02:30",
+      "telefonos": [
+        "3834814020"
+      ],
+      "instagram": null,
+      "servicios": [],
+      "observaciones": null,
+      "google_maps_url": null,
+      "imagen_url": null,
+      "audioguia_url": null,
+      "fuente_pagina": 8
+    }
+  ]
+}

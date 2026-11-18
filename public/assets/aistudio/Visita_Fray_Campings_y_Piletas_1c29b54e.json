@@ -1,0 +1,166 @@
+{
+  "proyecto": "Visita Fray",
+  "version_fuente": "Guía de Verano 2025-2026",
+  "origen": "Guía de Verano Fray (1)(1).pdf, páginas 3 y 4",
+  "categoria_destino": "Campings y piletas",
+  "subcategorias": [
+    "Campings y espacios recreativos",
+    "Piletas"
+  ],
+  "total_registros": 6,
+  "instrucciones_importacion": {
+    "accion": "Crear sección Campings y piletas e importar fichas sin modificar categorías existentes.",
+    "duplicados": "Si un sitio ya aparece en otras categorías, reutilizar su ficha y asociarlo a esta nueva categoría.",
+    "vigencia": "Los horarios provienen de una guía estacional de verano 2025-2026; deben verificarse antes de publicarse como actuales.",
+    "valores_nulos": "Los valores null indican información no publicada en la fuente, no inventarla.",
+    "archivos": "No incluye fotografías, enlaces Maps ni audios; no incrustar archivos multimedia en el proyecto.",
+    "advertencia": "Club de Campo Municipal La Carrera figura como espacio recreativo, sin confirmación de servicio de acampe."
+  },
+  "establecimientos": [
+    {
+      "id": "camp-001",
+      "nombre": "Camping Municipal Las Pirquitas",
+      "categoria_app": "Campings y piletas",
+      "subcategoria": "Campings y espacios recreativos",
+      "direccion": "Villa Las Pirquitas",
+      "localidad": "Villa Las Pirquitas",
+      "municipio": "Fray Mamerto Esquiú",
+      "provincia": "Catamarca",
+      "pais": "Argentina",
+      "horarios": "Viernes a domingo y feriados de 11:00 a 20:00",
+      "telefonos": [
+        "3834196324"
+      ],
+      "servicios": [
+        "Camping"
+      ],
+      "observaciones": "Camping municipal. La guía no especifica si permite pernoctar ni tarifas.",
+      "google_maps_url": null,
+      "imagen_url": null,
+      "audioguia_url": null,
+      "fuente_pagina": 3,
+      "otras_categorias": []
+    },
+    {
+      "id": "camp-002",
+      "nombre": "Club de Campo Municipal La Carrera",
+      "categoria_app": "Campings y piletas",
+      "subcategoria": "Campings y espacios recreativos",
+      "direccion": "La Carrera",
+      "localidad": "La Carrera",
+      "municipio": "Fray Mamerto Esquiú",
+      "provincia": "Catamarca",
+      "pais": "Argentina",
+      "horarios": "Viernes a domingo y feriados de 10:00 a 20:00",
+      "telefonos": [
+        "3834355669"
+      ],
+      "servicios": [
+        "Espacio recreativo"
+      ],
+      "observaciones": "Espacio recreativo municipal. La guía no confirma servicio de camping o pernocte.",
+      "google_maps_url": null,
+      "imagen_url": null,
+      "audioguia_url": null,
+      "fuente_pagina": 3,
+      "otras_categorias": []
+    },
+    {
+      "id": "pileta-001",
+      "nombre": "Pileta Polideportivo Vial",
+      "categoria_app": "Campings y piletas",
+      "subcategoria": "Piletas",
+      "direccion": "Piedra Blanca",
+      "localidad": "Piedra Blanca",
+      "municipio": "Fray Mamerto Esquiú",
+      "provincia": "Catamarca",
+      "pais": "Argentina",
+      "horarios": "Todos los días de 09:00 a 20:00",
+      "telefonos": [
+        "3834246715"
+      ],
+      "servicios": [
+        "Pileta"
+      ],
+      "observaciones": "La guía no informa tarifas ni requisitos de acceso.",
+      "google_maps_url": null,
+      "imagen_url": null,
+      "audioguia_url": null,
+      "fuente_pagina": 4,
+      "otras_categorias": []
+    },
+    {
+      "id": "pileta-002",
+      "nombre": "Pileta Quinta Amadeus",
+      "categoria_app": "Campings y piletas",
+      "subcategoria": "Piletas",
+      "direccion": "Piedra Blanca",
+      "localidad": "Piedra Blanca",
+      "municipio": "Fray Mamerto Esquiú",
+      "provincia": "Catamarca",
+      "pais": "Argentina",
+      "horarios": "Jueves a domingo de 15:00 a 20:30",
+      "telefonos": [
+        "3834254343"
+      ],
+      "servicios": [
+        "Pileta",
+        "Meriendas"
+      ],
+      "observaciones": "La guía señala que se puede merendar en el lugar.",
+      "google_maps_url": null,
+      "imagen_url": null,
+      "audioguia_url": null,
+      "fuente_pagina": 4,
+      "otras_categorias": [
+        "Dónde merendar"
+      ]
+    },
+    {
+      "id": "pileta-003",
+      "nombre": "Pileta Centro de Empleados de Comercio",
+      "categoria_app": "Campings y piletas",
+      "subcategoria": "Piletas",
+      "direccion": "San Antonio, al lado del Estadio Evita",
+      "localidad": "San Antonio",
+      "municipio": "Fray Mamerto Esquiú",
+      "provincia": "Catamarca",
+      "pais": "Argentina",
+      "horarios": null,
+      "telefonos": [
+        "3834090172"
+      ],
+      "servicios": [
+        "Pileta"
+      ],
+      "observaciones": "Sin días ni horarios informados en la guía.",
+      "google_maps_url": null,
+      "imagen_url": null,
+      "audioguia_url": null,
+      "fuente_pagina": 4,
+      "otras_categorias": []
+    },
+    {
+      "id": "pileta-004",
+      "nombre": "Pileta Polideportivo Evita",
+      "categoria_app": "Campings y piletas",
+      "subcategoria": "Piletas",
+      "direccion": "Estadio Evita, San Antonio",
+      "localidad": "San Antonio",
+      "municipio": "Fray Mamerto Esquiú",
+      "provincia": "Catamarca",
+      "pais": "Argentina",
+      "horarios": "Sábados, domingos y feriados de 14:00 a 20:00",
+      "telefonos": [],
+      "servicios": [
+        "Pileta"
+      ],
+      "observaciones": "La guía no informa teléfono de contacto.",
+      "google_maps_url": null,
+      "imagen_url": null,
+      "audioguia_url": null,
+      "fuente_pagina": 4,
+      "otras_categorias": []
+    }
+  ]
+}

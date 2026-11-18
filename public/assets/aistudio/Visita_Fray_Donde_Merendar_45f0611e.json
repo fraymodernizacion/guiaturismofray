@@ -1,0 +1,187 @@
+{
+  "proyecto": "Visita Fray",
+  "version_fuente": "Guía de Verano 2025-2026",
+  "origen": "Guía de Verano Fray (1)(1).pdf, páginas 4, 5 y 7",
+  "categoria_destino": "Dónde merendar",
+  "total_registros": 6,
+  "instrucciones_importacion": {
+    "accion": "Agregar o actualizar fichas en Dónde merendar sin borrar ni modificar otras categorías; evitar duplicados por nombre y domicilio. Un mismo lugar puede aparecer en Dónde comer y Dónde merendar sin crear negocios duplicados en la base.",
+    "criterio_inclusion": "Solo lugares que la guía identifica explícitamente como sitios para merendar o que mencionan ofrecer meriendas, incluidos los mixtos.",
+    "horarios": "Horarios de una guía estacional 2025-2026; verificar vigencia antes de publicarlos como actuales.",
+    "valores_nulos": "Los valores null señalan datos no suministrados; no inventar.",
+    "imagenes": "No incluye imágenes. No incrustar fotografías ni audio en el paquete de publicación.",
+    "enlaces_maps": "La guía no contiene enlaces de Maps validados; no inventar.",
+    "notas": "Revisar horarios discrepantes de Hostería Las Pirquitas y confirmar modalidad de meriendas de Quinta Amadeus."
+  },
+  "establecimientos": [
+    {
+      "id": "mer-001",
+      "nombre": "Pileta Quinta Amadeus",
+      "categoria_app": "Dónde merendar",
+      "subcategoria": "Meriendas y recreación",
+      "direccion": null,
+      "localidad": "Piedra Blanca",
+      "municipio": "Fray Mamerto Esquiú",
+      "provincia": "Catamarca",
+      "pais": "Argentina",
+      "horarios": "Jueves a domingo de 15:00 a 20:30",
+      "telefonos": [
+        "3834254343"
+      ],
+      "instagram": null,
+      "servicios": [
+        "Pileta",
+        "Meriendas"
+      ],
+      "observaciones": "La guía indica «Podés merendar». Figura en la sección Piletas; confirmar si el servicio de merienda funciona de manera independiente y si requiere entrada.",
+      "google_maps_url": null,
+      "imagen_url": null,
+      "audioguia_url": null,
+      "fuente_pagina": 4,
+      "otras_categorias": []
+    },
+    {
+      "id": "mer-002",
+      "nombre": "Sabores Caseros Casa de Té",
+      "categoria_app": "Dónde merendar",
+      "subcategoria": "Casa de té",
+      "direccion": "La Carrera",
+      "localidad": "La Carrera",
+      "municipio": "Fray Mamerto Esquiú",
+      "provincia": "Catamarca",
+      "pais": "Argentina",
+      "horarios": "Sábados y domingos de 18:00 a 22:00; también abierto feriados nacionales",
+      "telefonos": [
+        "3834535453"
+      ],
+      "instagram": "@cbsabores",
+      "servicios": [
+        "Casa de té",
+        "Meriendas"
+      ],
+      "observaciones": "La guía recomienda reservar.",
+      "google_maps_url": null,
+      "imagen_url": null,
+      "audioguia_url": null,
+      "fuente_pagina": 5,
+      "otras_categorias": []
+    },
+    {
+      "id": "mer-003",
+      "nombre": "Hostería Las Pirquitas",
+      "categoria_app": "Dónde merendar",
+      "subcategoria": "Hostería y meriendas",
+      "direccion": "Villa Las Pirquitas",
+      "localidad": "Las Pirquitas",
+      "municipio": "Fray Mamerto Esquiú",
+      "provincia": "Catamarca",
+      "pais": "Argentina",
+      "horarios": "Todos los días de 09:00 a 21:00 (sección meriendas)",
+      "telefonos": [
+        "3834414903"
+      ],
+      "instagram": "@hosterialaspirquitas",
+      "servicios": [
+        "Meriendas",
+        "Hostería",
+        "Restaurante"
+      ],
+      "observaciones": "La sección gastronómica de la misma guía indica para el restaurante martes a domingo de 09:00 a 21:00. Confirmar los horarios diferenciados antes de publicar.",
+      "google_maps_url": null,
+      "imagen_url": null,
+      "audioguia_url": null,
+      "fuente_pagina": 5,
+      "otras_categorias": [
+        "Dónde comer",
+        "Dónde dormir"
+      ]
+    },
+    {
+      "id": "mer-004",
+      "nombre": "Pan y Café",
+      "categoria_app": "Dónde merendar",
+      "subcategoria": "Cafetería y restaurante",
+      "direccion": "Av. La Callecita, a metros del Club Defensores de Esquiú",
+      "localidad": "Piedra Blanca",
+      "municipio": "Fray Mamerto Esquiú",
+      "provincia": "Catamarca",
+      "pais": "Argentina",
+      "horarios": "Todos los días de 07:00 a 15:00 y de 18:00 a 02:00",
+      "telefonos": [
+        "3834322392",
+        "3934044785"
+      ],
+      "instagram": null,
+      "servicios": [
+        "Desayuno",
+        "Almuerzo",
+        "Merienda",
+        "Cena"
+      ],
+      "observaciones": "La merienda se menciona expresamente en la sección gastronómica. Confirmar horarios específicos de merienda si son diferentes.",
+      "google_maps_url": null,
+      "imagen_url": null,
+      "audioguia_url": null,
+      "fuente_pagina": 7,
+      "otras_categorias": [
+        "Dónde comer"
+      ]
+    },
+    {
+      "id": "mer-005",
+      "nombre": "Las Lilas",
+      "categoria_app": "Dónde merendar",
+      "subcategoria": "Gastronomía y meriendas",
+      "direccion": "Ruta Provincial 41, frente a la rotonda de entrada a El Hueco",
+      "localidad": "San Antonio",
+      "municipio": "Fray Mamerto Esquiú",
+      "provincia": "Catamarca",
+      "pais": "Argentina",
+      "horarios": "Abierto viernes a domingo y feriados; meriendas sábados, domingos y feriados desde las 18:00",
+      "telefonos": [
+        "3834559563",
+        "3512031171"
+      ],
+      "instagram": null,
+      "servicios": [
+        "Meriendas"
+      ],
+      "observaciones": "La guía recomienda reservar. No indica hora de cierre para meriendas.",
+      "google_maps_url": null,
+      "imagen_url": null,
+      "audioguia_url": null,
+      "fuente_pagina": 7,
+      "otras_categorias": [
+        "Dónde comer"
+      ]
+    },
+    {
+      "id": "mer-006",
+      "nombre": "Resto Bar Los Abus",
+      "categoria_app": "Dónde merendar",
+      "subcategoria": "Resto bar y meriendas",
+      "direccion": "Av. San Martín",
+      "localidad": "Las Pirquitas",
+      "municipio": "Fray Mamerto Esquiú",
+      "provincia": "Catamarca",
+      "pais": "Argentina",
+      "horarios": "Sábados, domingos y feriados; almuerzo de 12:00 a 16:00 y merienda buffet libre de 17:00 a 22:00",
+      "telefonos": [
+        "3834294467"
+      ],
+      "instagram": null,
+      "servicios": [
+        "Almuerzo de campo",
+        "Merienda buffet libre"
+      ],
+      "observaciones": "Incluido en ambas categorías porque la guía anuncia expresamente merienda buffet libre.",
+      "google_maps_url": null,
+      "imagen_url": null,
+      "audioguia_url": null,
+      "fuente_pagina": 7,
+      "otras_categorias": [
+        "Dónde comer"
+      ]
+    }
+  ]
+}
