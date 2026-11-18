@@ -174,9 +174,6 @@ export const HomeExploreView: React.FC = () => {
             {isAuthenticated && isEditorMode && (
               <SectionEditButton sectionId="hero" sectionTitle="Portada / Hero" />
             )}
-            <span className="text-[11px] text-emerald-100 font-bold bg-black/40 backdrop-blur-md px-3 py-1 rounded-full border border-white/15">
-              {heroData.seasonBadge || 'Guía Oficial de Verano'}
-            </span>
           </div>
         </div>
 

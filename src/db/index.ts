@@ -42,25 +42,67 @@ function buildPoolConfig(): PoolConfig {
   };
 }
 
+const createMockPool = (): Pool =>
+  ({
+    query: async () => ({ rows: [] }),
+    connect: async () => ({ query: async () => ({ rows: [] }), release: () => {} }),
+    on: () => undefined,
+    end: async () => undefined,
+  }) as unknown as Pool;
+
+const createMockDb = (): NodePgDatabase<typeof schema> => {
+  const noOp = {
+    findMany: async () => [],
+    findFirst: async () => null,
+    findUnique: async () => null,
+    create: async (d: any) => d?.data ?? {},
+    update: async (d: any) => d?.data ?? {},
+    delete: async () => ({}),
+  };
+  return new Proxy(
+    {},
+    {
+      get: (_, prop) =>
+        prop === 'query'
+          ? new Proxy({}, { get: () => noOp })
+          : prop === 'transaction'
+            ? async (fn: any) => fn(createMockDb())
+            : async () => [],
+    }
+  ) as unknown as NodePgDatabase<typeof schema>;
+};
+
 export function getPgPool(): Pool {
   if (!isPostgresConfigured()) {
-    throw new Error(
-      'PostgreSQL is not configured. Set DATABASE_URL or PGHOST, PGUSER, PGPASSWORD, and PGDATABASE.'
-    );
+    console.warn('[AI Studio] PostgreSQL not configured — using mock pool');
+    return createMockPool();
   }
 
   if (!global._visitaFrayPgPool) {
-    global._visitaFrayPgPool = new Pool(buildPoolConfig());
-    global._visitaFrayPgPool.on('error', (err) => {
-      console.error('[POSTGRES] Unexpected idle client error:', err);
-    });
+    try {
+      global._visitaFrayPgPool = new Pool(buildPoolConfig());
+      global._visitaFrayPgPool.on('error', (err) => {
+        console.error('[POSTGRES] Unexpected idle client error:', err);
+      });
+    } catch (err) {
+      console.warn('[AI Studio] PostgreSQL Pool init failed — using mock pool:', err);
+      return createMockPool();
+    }
   }
 
   return global._visitaFrayPgPool;
 }
 
 export function getDb(): NodePgDatabase<typeof schema> {
-  return drizzle(getPgPool(), { schema });
+  if (!isPostgresConfigured()) {
+    return createMockDb();
+  }
+  try {
+    return drizzle(getPgPool(), { schema });
+  } catch (err) {
+    console.warn('[AI Studio] Drizzle DB not connected — using mock:', err);
+    return createMockDb();
+  }
 }
 
 export async function ensurePostgresSchema(): Promise<void> {

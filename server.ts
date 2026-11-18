@@ -145,7 +145,11 @@ async function startServer() {
       }
 
       if (isPostgresConfigured()) {
-        await saveMediaUpload(cleanName, mimeType, rawBase64, buffer.length);
+        try {
+          await saveMediaUpload(cleanName, mimeType, rawBase64, buffer.length);
+        } catch (pgErr) {
+          console.warn('[STORAGE] PostgreSQL media save failed, keeping local file:', pgErr);
+        }
       }
 
       const permanentUrl = `/uploads/${cleanName}`;
@@ -173,8 +177,12 @@ async function startServer() {
   app.get('/api/site-config', async (req, res) => {
     try {
       if (isPostgresConfigured()) {
-        const config = await getSiteConfig();
-        return res.json({ config });
+        try {
+          const config = await getSiteConfig();
+          return res.json({ config });
+        } catch (pgErr) {
+          console.warn('[DATABASE] PostgreSQL site-config read failed, falling back to JSON:', pgErr);
+        }
       }
       if (fs.existsSync(siteConfigFilePath)) {
         const content = fs.readFileSync(siteConfigFilePath, 'utf-8');
@@ -195,10 +203,15 @@ async function startServer() {
         return res.status(400).json({ error: 'Expected valid site config object' });
       }
       if (isPostgresConfigured()) {
-        await saveSiteConfig(config);
-      } else {
-        fs.writeFileSync(siteConfigFilePath, JSON.stringify(config, null, 2), 'utf-8');
+        try {
+          await saveSiteConfig(config);
+          console.log('[DATABASE] Saved site configuration to PostgreSQL.');
+          return res.json({ success: true });
+        } catch (pgErr) {
+          console.warn('[DATABASE] PostgreSQL site-config save failed, falling back to JSON:', pgErr);
+        }
       }
+      fs.writeFileSync(siteConfigFilePath, JSON.stringify(config, null, 2), 'utf-8');
       console.log('[DATABASE] Saved site configuration to persistent storage.');
       return res.json({ success: true });
     } catch (err: any) {
@@ -211,8 +224,12 @@ async function startServer() {
   app.get('/api/events', async (req, res) => {
     try {
       if (isPostgresConfigured()) {
-        const events = await getAllEvents();
-        return res.json({ events });
+        try {
+          const events = await getAllEvents();
+          return res.json({ events });
+        } catch (pgErr) {
+          console.warn('[DATABASE] PostgreSQL events read failed, falling back to JSON:', pgErr);
+        }
       }
       if (fs.existsSync(eventsFilePath)) {
         const content = fs.readFileSync(eventsFilePath, 'utf-8');
@@ -233,8 +250,12 @@ async function startServer() {
         return res.status(400).json({ error: 'Expected array of events' });
       }
       if (isPostgresConfigured()) {
-        const count = await replaceAllEvents(events);
-        return res.json({ success: true, count });
+        try {
+          const count = await replaceAllEvents(events);
+          return res.json({ success: true, count });
+        } catch (pgErr) {
+          console.warn('[DATABASE] PostgreSQL events save failed, falling back to JSON:', pgErr);
+        }
       }
       fs.writeFileSync(eventsFilePath, JSON.stringify(events, null, 2), 'utf-8');
       return res.json({ success: true, count: events.length });
@@ -248,8 +269,12 @@ async function startServer() {
   app.get('/api/audioguides', async (req, res) => {
     try {
       if (isPostgresConfigured()) {
-        const audioguides = await getAllAudioguides();
-        return res.json({ audioguides });
+        try {
+          const audioguides = await getAllAudioguides();
+          return res.json({ audioguides });
+        } catch (pgErr) {
+          console.warn('[DATABASE] PostgreSQL audioguides read failed, falling back to JSON:', pgErr);
+        }
       }
       if (fs.existsSync(audioguidesFilePath)) {
         const content = fs.readFileSync(audioguidesFilePath, 'utf-8');
@@ -270,8 +295,12 @@ async function startServer() {
         return res.status(400).json({ error: 'Expected array of audioguides' });
       }
       if (isPostgresConfigured()) {
-        const count = await replaceAllAudioguides(audioguides);
-        return res.json({ success: true, count });
+        try {
+          const count = await replaceAllAudioguides(audioguides);
+          return res.json({ success: true, count });
+        } catch (pgErr) {
+          console.warn('[DATABASE] PostgreSQL audioguides save failed, falling back to JSON:', pgErr);
+        }
       }
       fs.writeFileSync(audioguidesFilePath, JSON.stringify(audioguides, null, 2), 'utf-8');
       return res.json({ success: true, count: audioguides.length });
@@ -284,8 +313,12 @@ async function startServer() {
   app.get('/api/places', async (req, res) => {
     try {
       if (isPostgresConfigured()) {
-        const places = await getAllPlaces();
-        return res.json({ places });
+        try {
+          const places = await getAllPlaces();
+          return res.json({ places });
+        } catch (pgErr) {
+          console.warn('[DATABASE] PostgreSQL places read failed, falling back to JSON:', pgErr);
+        }
       }
       if (fs.existsSync(placesFilePath)) {
         const content = fs.readFileSync(placesFilePath, 'utf-8');
@@ -306,9 +339,13 @@ async function startServer() {
         return res.status(400).json({ error: 'Expected array of places' });
       }
       if (isPostgresConfigured()) {
-        const count = await replaceAllPlaces(places);
-        console.log(`[DATABASE] Saved ${count} places to PostgreSQL.`);
-        return res.json({ success: true, count });
+        try {
+          const count = await replaceAllPlaces(places);
+          console.log(`[DATABASE] Saved ${count} places to PostgreSQL.`);
+          return res.json({ success: true, count });
+        } catch (pgErr) {
+          console.warn('[DATABASE] PostgreSQL places save failed, falling back to JSON:', pgErr);
+        }
       }
       fs.writeFileSync(placesFilePath, JSON.stringify(places, null, 2), 'utf-8');
       console.log(`[DATABASE] Saved ${places.length} places to persistent storage.`);
