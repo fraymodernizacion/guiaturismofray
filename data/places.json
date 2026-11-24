@@ -14,6 +14,7 @@
     "localityId": "san-jose",
     "lat": -28.362,
     "lng": -65.719,
+    "googleMapsUrl": "https://maps.app.goo.gl/xGB2fTKZWxpKmfXm6",
     "image": "/uploads/fray_1795557993534_subida_a_casa_de_piedra_1795558010556.jpg",
     "gallery": [
       "/uploads/fray_1795557993534_subida_a_casa_de_piedra_1795558010556.jpg"
@@ -59,8 +60,7 @@
         "No ascender con pronóstico de lluvias o tormentas eléctricas.",
         "Avisar en la Secretaría de Turismo o a conocidos antes de iniciar el ascenso."
       ]
-    },
-    "googleMapsUrl": "https://maps.app.goo.gl/xGB2fTKZWxpKmfXm6"
+    }
   },
   {
     "id": "santuario-senor-de-los-milagros",
@@ -441,6 +441,7 @@
     "localityId": "las-pirquitas",
     "lat": -28.281,
     "lng": -65.73,
+    "googleMapsUrl": "https://maps.app.goo.gl/accdxym7u4D16rJ77",
     "image": "/uploads/fray_1795558195893_paseo_las_moras_complejo_municip_1795558212684.jpg",
     "gallery": [
       "/uploads/fray_1795558195893_paseo_las_moras_complejo_municip_1795558212684.jpg"
@@ -459,8 +460,7 @@
     ],
     "validationStatus": "pendiente_validacion",
     "validationNote": "Confirmar horarios actuales del complejo, de Turismo y de cada sala; pueden ser distintos.",
-    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)",
-    "googleMapsUrl": "https://maps.app.goo.gl/accdxym7u4D16rJ77"
+    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)"
   },
   {
     "id": "casa-natal-esquiu",
@@ -698,6 +698,7 @@
     "localityId": "las-pirquitas",
     "lat": 0,
     "lng": 0,
+    "googleMapsUrl": "https://maps.app.goo.gl/UGnA5JKS2hhGuJia8",
     "image": "/uploads/fray_1795558285855_sala_de_exposicion_malvinas_1795558302861.webp",
     "gallery": [
       "/uploads/fray_1795558285855_sala_de_exposicion_malvinas_1795558302861.webp"
@@ -715,8 +716,7 @@
     ],
     "validationStatus": "pendiente_validacion",
     "validationNote": "El horario de jueves a domingo 17–21 h publicado en marzo de 2026 fue para un fin de semana específico; no publicarlo como horario permanente. Teléfono para coordinar visitas escolares según nota de marzo 2026, confirmar vigencia.",
-    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)",
-    "googleMapsUrl": "https://maps.app.goo.gl/UGnA5JKS2hhGuJia8"
+    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)"
   },
   {
     "id": "plaza-san-jose",
@@ -730,6 +730,7 @@
     "localityId": "san-jose",
     "lat": 0,
     "lng": 0,
+    "googleMapsUrl": "https://maps.app.goo.gl/n2Ycavcph9qbUKyx6",
     "image": "/uploads/fray_1795558318293_plaza_de_san_jose_1795558335154.webp",
     "gallery": [
       "/uploads/fray_1795558318293_plaza_de_san_jose_1795558335154.webp"
@@ -746,8 +747,7 @@
     ],
     "validationStatus": "pendiente_validacion",
     "validationNote": "Corroborar punto exacto para navegación y posibles servicios actuales.",
-    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)",
-    "googleMapsUrl": "https://maps.app.goo.gl/n2Ycavcph9qbUKyx6"
+    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)"
   },
   {
     "id": "puente-colgante-pirquitas",
@@ -761,6 +761,7 @@
     "localityId": "las-pirquitas",
     "lat": 0,
     "lng": 0,
+    "googleMapsUrl": "https://maps.app.goo.gl/846FnTEtiTMX7bFx6",
     "image": "/uploads/fray_1795558348614_puente_colgante_de_pirquitas_1795558365585.webp",
     "gallery": [
       "/uploads/fray_1795558348614_puente_colgante_de_pirquitas_1795558365585.webp",
@@ -776,8 +777,7 @@
     "validationStatus": "pendiente_validacion",
     "validationNote": "PRIORIDAD ALTA: verificar existencia, nombre oficial, ubicación y accesibilidad. Algunas publicaciones mencionan un puente colgante en La Carrera, que NO debe confundirse con este sitio.",
     "safetyWarning": "No publicar rutas ni asegurar habilitación de paso hasta verificarlo.",
-    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)",
-    "googleMapsUrl": "https://maps.app.goo.gl/846FnTEtiTMX7bFx6"
+    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)"
   },
   {
     "id": "murallon-dique-las-pirquitas",
@@ -791,6 +791,7 @@
     "localityId": "las-pirquitas",
     "lat": 0,
     "lng": 0,
+    "googleMapsUrl": "https://maps.app.goo.gl/wVYL3DmYqtYnc9598",
     "image": "/uploads/fray_1795558366323_murallon_del_dique_las_pirquitas_1795558383152.webp",
     "gallery": [
       "/uploads/fray_1795558366323_murallon_del_dique_las_pirquitas_1795558383152.webp"
@@ -808,8 +809,7 @@
     "validationStatus": "pendiente_validacion",
     "validationNote": "Confirmar accesos, restricciones de circulación y estado actual de miradores.",
     "safetyWarning": "Respetar vallados, señalización y restricciones de acceso a infraestructura hidráulica.",
-    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)",
-    "googleMapsUrl": "https://maps.app.goo.gl/wVYL3DmYqtYnc9598"
+    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)"
   },
   {
     "id": "los-palmares",
@@ -822,6 +822,7 @@
     "locality": "Ruta Provincial 1, Fray Mamerto Esquiú",
     "lat": 0,
     "lng": 0,
+    "googleMapsUrl": "https://maps.app.goo.gl/7rBKVwviMqCvKGjJ9",
     "image": "/uploads/fray_1795558386735_los_palmares_parque_los_palmares_1795558403733.jpg",
     "gallery": [
       "/uploads/fray_1795558386735_los_palmares_parque_los_palmares_1795558403733.jpg"
@@ -837,8 +838,7 @@
     "validationStatus": "pendiente_validacion",
     "validationNote": "PRIORIDAD ALTA: definir si la ficha trata del palmar natural o del parque proyectado; verificar estado de obra, habilitación, acceso y ubicación puntual. No afirmar que es un parque operativo.",
     "safetyWarning": "No recomendar ingreso a áreas de obra o terrenos sin acceso público confirmado.",
-    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)",
-    "googleMapsUrl": "https://maps.app.goo.gl/7rBKVwviMqCvKGjJ9"
+    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)"
   },
   {
     "id": "aventura-nautica-kayak",
@@ -919,6 +919,7 @@
     "locality": "Sierra de Gracián",
     "lat": -28.33,
     "lng": -65.721,
+    "googleMapsUrl": "https://maps.app.goo.gl/UtZ1t91Xd1434pNCA",
     "image": "/uploads/fray_1795558401149_subida_al_gracian_1795558418151.webp",
     "gallery": [
       "/uploads/fray_1795558401149_subida_al_gracian_1795558418151.webp"
@@ -937,8 +938,7 @@
     "validationStatus": "pendiente_validacion",
     "validationNote": "Confirmar nombre del sendero, inicio, recorrido, desnivel, dificultad, permisos, guía local y estado de accesos.",
     "safetyWarning": "Actividad de montaña; consultar condiciones meteorológicas y orientación local. No prometer acceso libre ni señalar sendero exacto.",
-    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)",
-    "googleMapsUrl": "https://maps.app.goo.gl/UtZ1t91Xd1434pNCA"
+    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)"
   },
   {
     "id": "monumento-esquiu",
@@ -1226,15 +1226,21 @@
     "localityId": "san-jose",
     "lat": -28.383,
     "lng": -65.735,
-    "image": "",
-    "gallery": [],
+    "image": "/uploads/fray_1795563738365_pileta_quinta_amadeus_1795563755188.jpg",
+    "gallery": [
+      "/uploads/fray_1795563738365_pileta_quinta_amadeus_1795563755188.jpg"
+    ],
     "openingHours": "Jueves a domingo de 15:00 a 20:30",
     "phone": "3834254343",
     "whatsapp": "5493834254343",
     "tags": [
       "Piscina",
       "Al aire libre",
-      "Con niños"
+      "Con niños",
+      "Estacionamiento",
+      "Vista a las sierras",
+      "Acepta Mercado Pago",
+      "Accesible"
     ],
     "services": [
       "Pileta",
@@ -1242,7 +1248,9 @@
     ],
     "validationStatus": "pendiente_validacion",
     "validationNote": "Guía de Verano 2025-2026 (pág. 4). La guía señala que se puede merendar en el lugar. Horarios estacionales sujetos a verificación.",
-    "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú"
+    "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú",
+    "googleMapsUrl": "https://maps.app.goo.gl/ssezTSzjDVM3hdec8",
+    "instagram": ""
   },
   {
     "id": "pileta-empleados-comercio",
@@ -1324,15 +1332,22 @@
     "localityId": "la-carrera",
     "lat": -28.346,
     "lng": -65.723,
-    "image": "",
-    "gallery": [],
+    "image": "/uploads/fray_1795563780473_sabores_caseros_casa_de_te_1795563797374.jpg",
+    "gallery": [
+      "/uploads/fray_1795563780473_sabores_caseros_casa_de_te_1795563797374.jpg"
+    ],
     "openingHours": "Sábados y domingos de 18:00 a 22:00; también abierto feriados nacionales",
     "phone": "3834535453",
     "whatsapp": "5493834535453",
     "instagram": "cbsabores",
     "tags": [
       "Al aire libre",
-      "Vista a las sierras"
+      "Vista a las sierras",
+      "Estacionamiento",
+      "Acepta Mercado Pago",
+      "Con niños",
+      "Accesible",
+      "Wi-Fi"
     ],
     "services": [
       "Casa de té",
@@ -1342,7 +1357,8 @@
     "validationStatus": "pendiente_validacion",
     "validationNote": "Guía de Verano 2025-2026 (pág. 5). La guía recomienda reservar. Horarios estacionales a verificar.",
     "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú",
-    "priceLevel": "$$"
+    "priceLevel": "$$",
+    "googleMapsUrl": "https://maps.app.goo.gl/BHGvZTziByeREeQ47"
   },
   {
     "id": "pan-y-cafe-la-callecita",
@@ -1356,13 +1372,18 @@
     "localityId": "san-jose",
     "lat": -28.3825,
     "lng": -65.732,
-    "image": "",
-    "gallery": [],
+    "image": "/uploads/fray_1795563822627_pan_y_cafe_1795563839663.webp",
+    "gallery": [
+      "/uploads/fray_1795563822627_pan_y_cafe_1795563839663.webp"
+    ],
     "openingHours": "Todos los días de 07:00 a 15:00 y de 18:00 a 02:00",
     "phone": "3834322392 / 3934044785",
     "whatsapp": "5493834322392",
     "tags": [
-      "Con niños"
+      "Con niños",
+      "Acepta Mercado Pago",
+      "Accesible",
+      "Wi-Fi"
     ],
     "services": [
       "Desayuno",
@@ -1373,7 +1394,9 @@
     "validationStatus": "pendiente_validacion",
     "validationNote": "Guía de Verano 2025-2026 (pág. 7). Confirmar horarios específicos de merienda si son diferentes.",
     "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú",
-    "priceLevel": "$"
+    "priceLevel": "$",
+    "googleMapsUrl": "https://maps.app.goo.gl/dux21njMdchepWFa7",
+    "instagram": ""
   },
   {
     "id": "las-lilas-resto-merienda",
@@ -1387,13 +1410,18 @@
     "localityId": "san-antonio",
     "lat": -28.403,
     "lng": -65.735,
-    "image": "",
-    "gallery": [],
+    "image": "/uploads/fray_1795563889897_las_lilas_1795563906864.jpg",
+    "gallery": [
+      "/uploads/fray_1795563889897_las_lilas_1795563906864.jpg"
+    ],
     "openingHours": "Abierto viernes a domingo y feriados; meriendas sábados, domingos y feriados desde las 18:00",
     "phone": "3834559563 / 3512031171",
     "whatsapp": "5493834559563",
     "tags": [
-      "Al aire libre"
+      "Al aire libre",
+      "Acepta Mercado Pago",
+      "Con niños",
+      "Accesible"
     ],
     "services": [
       "Meriendas"
@@ -1401,7 +1429,9 @@
     "validationStatus": "pendiente_validacion",
     "validationNote": "Guía de Verano 2025-2026 (pág. 7). La guía recomienda reservar. No indica hora de cierre para meriendas.",
     "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú",
-    "priceLevel": "$$"
+    "priceLevel": "$$",
+    "googleMapsUrl": "https://maps.app.goo.gl/a9dxeThwZKqfC5KA7",
+    "instagram": ""
   },
   {
     "id": "hosteria-las-pirquitas-merienda",
@@ -1415,15 +1445,21 @@
     "localityId": "las-pirquitas",
     "lat": -28.276,
     "lng": -65.729,
-    "image": "",
-    "gallery": [],
+    "image": "/uploads/fray_1795563926590_hosteria_las_pirquitas_1795563943633.webp",
+    "gallery": [
+      "/uploads/fray_1795563926590_hosteria_las_pirquitas_1795563943633.webp"
+    ],
     "openingHours": "Todos los días de 09:00 a 21:00 (sección meriendas)",
     "phone": "3834414903",
     "whatsapp": "5493834414903",
     "instagram": "hosterialaspirquitas",
     "tags": [
       "Vista a las sierras",
-      "Con niños"
+      "Con niños",
+      "Acepta Mercado Pago",
+      "Piscina",
+      "Accesible",
+      "Wi-Fi"
     ],
     "services": [
       "Meriendas",
@@ -1433,7 +1469,8 @@
     "validationStatus": "pendiente_validacion",
     "validationNote": "Guía de Verano 2025-2026 (pág. 5). La sección gastronómica indica martes a domingo de 09:00 a 21:00 para el restaurante; confirmar los horarios diferenciados antes de publicar.",
     "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú",
-    "priceLevel": "$$"
+    "priceLevel": "$$",
+    "googleMapsUrl": "https://maps.app.goo.gl/pLDnBaMwDkZd5crz9"
   },
   {
     "id": "paluma-cerveceria",
@@ -1572,6 +1609,7 @@
     "localityId": "las-pirquitas",
     "lat": -28.276,
     "lng": -65.729,
+    "googleMapsUrl": "https://maps.app.goo.gl/pLDnBaMwDkZd5crz9",
     "image": "/uploads/fray_1795562387711_restaurante_hosteria_las_pirquit_1795562404657.webp",
     "gallery": [
       "/uploads/fray_1795562387711_restaurante_hosteria_las_pirquit_1795562404657.webp"
@@ -1587,7 +1625,6 @@
     "validationStatus": "pendiente_validacion",
     "validationNote": "Corresponde al servicio de restaurante (Guía de Verano 2025-2026, pág. 7). Horarios y enlace Maps a reconfirmar.",
     "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú",
-    "googleMapsUrl": "https://maps.app.goo.gl/pLDnBaMwDkZd5crz9",
     "instagram": ""
   },
   {
@@ -1602,6 +1639,7 @@
     "localityId": "san-antonio",
     "lat": -28.403,
     "lng": -65.735,
+    "googleMapsUrl": "https://maps.app.goo.gl/c3M42JCSR4SFHqBS6",
     "image": "/uploads/fray_1795562440144_las_lilas_1795562457248.jpg",
     "gallery": [
       "/uploads/fray_1795562440144_las_lilas_1795562457248.jpg"
@@ -1618,7 +1656,6 @@
     "validationStatus": "pendiente_validacion",
     "validationNote": "Guía de Verano 2025-2026 (pág. 7). Confirmar horario de otras comidas y enlace Maps.",
     "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú",
-    "googleMapsUrl": "https://maps.app.goo.gl/c3M42JCSR4SFHqBS6",
     "instagram": ""
   },
   {
@@ -1636,6 +1673,7 @@
     "localityId": "las-pirquitas",
     "lat": -28.277,
     "lng": -65.7295,
+    "googleMapsUrl": "https://maps.app.goo.gl/qG6EFLgMo3qP8ZcW9",
     "image": "/uploads/fray_1795562479827_resto_bar_los_abus_1795562496784.jpg",
     "gallery": [
       "/uploads/fray_1795562479827_resto_bar_los_abus_1795562496784.jpg"
@@ -1656,7 +1694,6 @@
     "validationNote": "Datos de Guía de Verano 2025-2026 (pág. 7). Horarios y enlace Maps sujetos a validación.",
     "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú",
     "priceLevel": "$$",
-    "googleMapsUrl": "https://maps.app.goo.gl/qG6EFLgMo3qP8ZcW9",
     "instagram": ""
   },
   {
@@ -1671,6 +1708,7 @@
     "localityId": "san-antonio",
     "lat": -28.4068,
     "lng": -65.738,
+    "googleMapsUrl": "https://maps.app.goo.gl/eVx52GS1NDUiP2Mv6",
     "image": "/uploads/fray_1795562512322_don_paulino_resto_bar_1795562529409.jpg",
     "gallery": [
       "/uploads/fray_1795562512322_don_paulino_resto_bar_1795562529409.jpg"
@@ -1687,7 +1725,6 @@
     "validationNote": "Datos de Guía de Verano 2025-2026 (pág. 7). Horarios y enlace Maps sujetos a validación.",
     "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú",
     "priceLevel": "$",
-    "googleMapsUrl": "https://maps.app.goo.gl/eVx52GS1NDUiP2Mv6",
     "instagram": ""
   },
   {
@@ -1702,6 +1739,7 @@
     "localityId": "san-antonio",
     "lat": -28.405,
     "lng": -65.736,
+    "googleMapsUrl": "https://maps.app.goo.gl/d8wbuBbSCt4VsBrv7",
     "image": "/uploads/fray_1795562561294_urbana_resto_pub_1795562578418.jpg",
     "gallery": [
       "/uploads/fray_1795562561294_urbana_resto_pub_1795562578418.jpg"
@@ -1720,7 +1758,6 @@
     "validationNote": "Datos de Guía de Verano 2025-2026 (pág. 8). Horarios y enlace Maps sujetos a validación.",
     "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú",
     "priceLevel": "$$",
-    "googleMapsUrl": "https://maps.app.goo.gl/d8wbuBbSCt4VsBrv7",
     "instagram": ""
   },
   {
@@ -1735,6 +1772,7 @@
     "localityId": "la-carrera",
     "lat": -28.349,
     "lng": -65.7235,
+    "googleMapsUrl": "https://maps.app.goo.gl/uK94VxUNgP2zciwcA",
     "image": "/uploads/fray_1795562599663_caligula_salon_de_eventos_1795562616757.jpg",
     "gallery": [
       "/uploads/fray_1795562599663_caligula_salon_de_eventos_1795562616757.jpg"
@@ -1759,7 +1797,6 @@
     "validationNote": "Guía de Verano 2025-2026 (pág. 8). Requiere revisión editorial por no ser un restaurante de atención habitual.",
     "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú",
     "priceLevel": "$$$",
-    "googleMapsUrl": "https://maps.app.goo.gl/uK94VxUNgP2zciwcA",
     "instagram": ""
   },
   {
@@ -1774,6 +1811,7 @@
     "localityId": "san-jose",
     "lat": -28.3838,
     "lng": -65.7332,
+    "googleMapsUrl": "https://maps.app.goo.gl/5wxzkysKT5AyjySt8",
     "image": "/uploads/fray_1795562651584_alvin_resto_bar_1795562668663.jpg",
     "gallery": [
       "/uploads/fray_1795562651584_alvin_resto_bar_1795562668663.jpg"
@@ -1793,7 +1831,6 @@
     "validationNote": "Datos de Guía de Verano 2025-2026 (pág. 8). Horarios y enlace Maps sujetos a validación.",
     "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú",
     "priceLevel": "$$",
-    "googleMapsUrl": "https://maps.app.goo.gl/5wxzkysKT5AyjySt8",
     "instagram": ""
   },
   {
@@ -2230,6 +2267,7 @@
     "localityId": "san-antonio",
     "lat": -28.4067,
     "lng": -65.7381,
+    "googleMapsUrl": "https://maps.app.goo.gl/maxHzxfvgr4miboi8",
     "image": "/uploads/fray_1795558420843_plaza_parque_chacarero_1795558437763.webp",
     "gallery": [
       "/uploads/fray_1795558420843_plaza_parque_chacarero_1795558437763.webp"
@@ -2247,8 +2285,7 @@
     ],
     "validationStatus": "pendiente_validacion",
     "validationNote": "No se obtuvo un pin de Google Maps verificado; corroborar ubicación exacta y equipamiento actual.",
-    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)",
-    "googleMapsUrl": "https://maps.app.goo.gl/maxHzxfvgr4miboi8"
+    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)"
   },
   {
     "id": "vertedero-dique-pirquitas",

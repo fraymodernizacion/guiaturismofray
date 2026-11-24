@@ -223,16 +223,11 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({ place, compact = false }) 
       {/* Card Body */}
       <div className="p-4 flex-1 flex flex-col justify-between">
         <div>
-          {/* Title & Price */}
+          {/* Title */}
           <div className="flex items-start justify-between gap-2">
             <h3 className="font-display font-bold text-base sm:text-lg text-slate-900 group-hover:text-emerald-700 transition-colors leading-tight">
               {place.name}
             </h3>
-            {place.priceLevel && (
-              <span className="text-xs font-bold text-emerald-900 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-                {place.priceLevel}
-              </span>
-            )}
           </div>
 
           {/* Short Description */}
