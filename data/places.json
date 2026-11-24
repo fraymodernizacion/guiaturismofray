@@ -619,40 +619,6 @@
     "featured": true
   },
   {
-    "id": "casa-de-te-la-calera",
-    "name": "Casa de Té & Café La Calera",
-    "category": "merendar",
-    "shortDescription": "Paredones de adobe, repostería artesanal, licuados de frutas de estación y té en hebras.",
-    "description": "Un rincón mágico bajo la sombra de nogales y algarrobos. Especialistas en tostadas de campo con dulce casero de cayote y nuez, torta húmeda de chocolate con frutos rojos, café de especialidad y limonadas con menta del huerto.",
-    "address": "Calle Pública s/n, Collagasta",
-    "locality": "Collagasta",
-    "lat": -28.3712,
-    "lng": -65.739,
-    "image": "",
-    "gallery": [],
-    "openingHours": "Jue a Dom: 16:30 a 21:30 hs.",
-    "phone": "+54 383 4812345",
-    "whatsapp": "5493834812345",
-    "instagram": "lacalera.te",
-    "tags": [
-      "Abierto ahora",
-      "Pet friendly",
-      "Al aire libre",
-      "Con niños",
-      "Opciones vegetarianas",
-      "Wi-Fi",
-      "Acepta Mercado Pago"
-    ],
-    "services": [
-      "Jardín de té",
-      "Pastelería casera",
-      "Juegos para niños",
-      "Venta de mermeladas artesanales"
-    ],
-    "priceLevel": "$$",
-    "featured": true
-  },
-  {
     "id": "hosteria-municipal-pirquitas",
     "name": "Hostería y Cabañas del Dique",
     "category": "dormir",

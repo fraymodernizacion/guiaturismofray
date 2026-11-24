@@ -310,12 +310,16 @@ async function startServer() {
     }
   });
 
+  const removedPlaceIds = new Set(['casa-de-te-la-calera']);
+  const filterRemovedPlaces = (list: any[]) =>
+    list.filter((p) => p && !removedPlaceIds.has(p.id));
+
   app.get('/api/places', async (req, res) => {
     try {
       if (isPostgresConfigured()) {
         try {
           const places = await getAllPlaces();
-          return res.json({ places });
+          return res.json({ places: filterRemovedPlaces(places) });
         } catch (pgErr) {
           console.warn('[DATABASE] PostgreSQL places read failed, falling back to JSON:', pgErr);
         }
@@ -323,7 +327,7 @@ async function startServer() {
       if (fs.existsSync(placesFilePath)) {
         const content = fs.readFileSync(placesFilePath, 'utf-8');
         const data = JSON.parse(content);
-        return res.json({ places: data });
+        return res.json({ places: Array.isArray(data) ? filterRemovedPlaces(data) : data });
       }
       return res.json({ places: null });
     } catch (err: any) {
@@ -338,18 +342,19 @@ async function startServer() {
       if (!Array.isArray(places)) {
         return res.status(400).json({ error: 'Expected array of places' });
       }
+      const sanitizedPlaces = filterRemovedPlaces(places);
       if (isPostgresConfigured()) {
         try {
-          const count = await replaceAllPlaces(places);
+          const count = await replaceAllPlaces(sanitizedPlaces);
           console.log(`[DATABASE] Saved ${count} places to PostgreSQL.`);
           return res.json({ success: true, count });
         } catch (pgErr) {
           console.warn('[DATABASE] PostgreSQL places save failed, falling back to JSON:', pgErr);
         }
       }
-      fs.writeFileSync(placesFilePath, JSON.stringify(places, null, 2), 'utf-8');
-      console.log(`[DATABASE] Saved ${places.length} places to persistent storage.`);
-      return res.json({ success: true, count: places.length });
+      fs.writeFileSync(placesFilePath, JSON.stringify(sanitizedPlaces, null, 2), 'utf-8');
+      console.log(`[DATABASE] Saved ${sanitizedPlaces.length} places to persistent storage.`);
+      return res.json({ success: true, count: sanitizedPlaces.length });
     } catch (err: any) {
       console.error('[DATABASE ERROR] Failed to save places:', err);
       return res.status(500).json({ error: 'Error saving places database' });

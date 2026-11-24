@@ -456,8 +456,9 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     // Also include any newly created places that were not in INITIAL_PLACES
+    const removedPlaceIds = new Set(['campanas-del-rosario', 'casa-de-te-la-calera']);
     const additionalPlaces = Array.from(storedMap.values())
-      .filter((p) => p.id !== 'campanas-del-rosario')
+      .filter((p) => !removedPlaceIds.has(p.id))
       .map((p) => {
         const { image, gallery } = resolveSafePlaceImages(p);
         return { ...p, image, gallery };
@@ -466,9 +467,12 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   });
 
   // Events state
-  const [events, setEvents] = useState<TouristEvent[]>(() =>
-    getStoredOrDefault(STORAGE_KEYS.EVENTS, 'fray_verano_events_v1', INITIAL_EVENTS)
-  );
+  const [events, setEvents] = useState<TouristEvent[]>(() => {
+    const raw = getStoredOrDefault(STORAGE_KEYS.EVENTS, 'fray_verano_events_v1', INITIAL_EVENTS);
+    return Array.isArray(raw)
+      ? raw.filter((ev) => ev.placeId !== 'casa-de-te-la-calera' && ev.id !== 'ev-taller-ceramica')
+      : INITIAL_EVENTS;
+  });
 
   // Audioguides state with image fallback
   const [audioguides, setAudioguides] = useState<Audioguide[]>(() => {
@@ -482,10 +486,17 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const coverImage = stored.coverImage && isValidImagePath(stored.coverImage)
         ? normalizeLegacyImagePath(stored.coverImage)
         : (initGuide.coverImage && isValidImagePath(initGuide.coverImage) ? normalizeLegacyImagePath(initGuide.coverImage) : '');
+      const hasRemovedNextPlace = stored.nextPlaceId === 'casa-de-te-la-calera';
       return {
         ...initGuide,
         ...stored,
         coverImage,
+        ...(hasRemovedNextPlace
+          ? {
+              nextPlaceId: initGuide.nextPlaceId,
+              nextPlaceReason: initGuide.nextPlaceReason,
+            }
+          : {}),
       };
     });
     return [...merged, ...Array.from(storedMap.values())];
@@ -519,9 +530,10 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [badges, setBadges] = useState<TouristBadge[]>(INITIAL_BADGES);
 
   // Favorites
-  const [favorites, setFavorites] = useState<string[]>(() =>
-    getStoredOrDefault(STORAGE_KEYS.FAVORITES, 'fray_verano_favorites_v1', ['casa-natal-esquiu', 'dique-las-pirquitas'])
-  );
+  const [favorites, setFavorites] = useState<string[]>(() => {
+    const raw = getStoredOrDefault(STORAGE_KEYS.FAVORITES, 'fray_verano_favorites_v1', ['casa-natal-esquiu', 'dique-las-pirquitas']);
+    return Array.isArray(raw) ? raw.filter((id) => id !== 'casa-de-te-la-calera') : ['casa-natal-esquiu', 'dique-las-pirquitas'];
+  });
 
   // User location default (Plaza San José de Piedra Blanca). 
   // We do NOT persist old GPS coordinates as if they were current live GPS across new sessions.
@@ -879,15 +891,16 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
           });
 
           // Also include remaining server and client newly created places
+          const removedPlaceIds = new Set(['campanas-del-rosario', 'casa-de-te-la-calera']);
           const remainingServer = Array.from(serverMap.values())
-            .filter((p) => p.id !== 'campanas-del-rosario')
+            .filter((p) => !removedPlaceIds.has(p.id))
             .map((p) => {
               const { image, gallery } = resolveSafePlaceImages(p);
               return { ...p, image, gallery };
             });
 
           const remainingClient = Array.from(prevMap.values())
-            .filter((p) => p.id !== 'campanas-del-rosario' && !serverPlaces.some((sp) => sp.id === p.id))
+            .filter((p) => !removedPlaceIds.has(p.id) && !serverPlaces.some((sp) => sp.id === p.id))
             .map((p) => {
               const { image, gallery } = resolveSafePlaceImages(p);
               return { ...p, image, gallery };

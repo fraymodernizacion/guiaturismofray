@@ -13,6 +13,10 @@ import { UsefulInfoModal } from './components/UsefulInfoModal';
 import { QrShareModal } from './components/QrShareModal';
 import { AdminPanelModal } from './components/AdminPanelModal';
 import { AdminRouteView } from './components/AdminRouteView';
+import { AdminTopBar } from './components/AdminTopBar';
+import { AdminLoginModal } from './components/AdminLoginModal';
+import { SectionEditorModal } from './components/SectionEditorModal';
+import { PlaceEditorModal } from './components/PlaceEditorModal';
 import { AudioPlayerFloating } from './components/AudioPlayerFloating';
 import { LocationWelcomeModal } from './components/LocationWelcomeModal';
 import { GpsTestView } from './components/GpsTestView';
@@ -50,6 +54,9 @@ const MainAppRouter: React.FC = () => {
   // Public Tourist PWA
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-sky-500 selection:text-white">
+      {/* Admin Top Bar (visible only when authenticated) */}
+      <AdminTopBar />
+
       {/* Top Fixed App Bar */}
       <Header />
 
@@ -68,7 +75,7 @@ const MainAppRouter: React.FC = () => {
       {/* Mobile-first Bottom Navigation Bar */}
       <BottomNav />
 
-      {/* Public Modals & Dialogs */}
+      {/* Public & Admin Modals / Dialogs */}
       <LocationWelcomeModal
         isOpen={isLocationPromptModalOpen}
         onAllow={allowLocationPermission}
@@ -79,6 +86,9 @@ const MainAppRouter: React.FC = () => {
       <UsefulInfoModal />
       <QrShareModal />
       <AdminPanelModal />
+      <AdminLoginModal />
+      <SectionEditorModal />
+      <PlaceEditorModal />
     </div>
   );
 };

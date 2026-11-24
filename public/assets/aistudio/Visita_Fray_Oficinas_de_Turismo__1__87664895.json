@@ -1,0 +1,125 @@
+{
+  "categoria": "Oficinas de Turismo",
+  "ubicacion_en_app": "Inicio, debajo del carrusel de bienvenida",
+  "tipo_visualizacion": "Tres botones o tarjetas compactas con ficha de detalle",
+  "telefono_compartido": "3834 69-3224",
+  "whatsapp_url_compartido": "https://wa.me/5493834693224",
+  "nota_whatsapp": "Confirmar que este número está habilitado para recibir mensajes por WhatsApp antes de publicar.",
+  "oficinas": [
+    {
+      "id": "turismo-san-jose",
+      "nombre_boton": "Turismo San José",
+      "nombre": "Oficina de Turismo de San José (Casa Natal)",
+      "ubicacion": "Casa Natal del Beato Mamerto Esquiú, San José de Piedra Blanca, Fray Mamerto Esquiú, Catamarca, Argentina",
+      "horarios": [
+        {
+          "dias": "Todos los días",
+          "desde": "08:00",
+          "hasta": "20:00"
+        }
+      ],
+      "telefono": "3834 69-3224",
+      "whatsapp_url": "https://wa.me/5493834693224",
+      "google_maps_url": "https://maps.app.goo.gl/uPSTtDTTPk1Ci1un7",
+      "observaciones": "El enlace de ubicación proporcionado corresponde a Casa Natal. Confirmar que el pin coincide con el ingreso de la oficina."
+    },
+    {
+      "id": "turismo-trapiche",
+      "nombre_boton": "Turismo Trapiche",
+      "nombre": "Oficina de Turismo del Trapiche Azucarero",
+      "ubicacion": "Trapiche Azucarero, antiguo Camino Real, Piedra Blanca, Fray Mamerto Esquiú, Catamarca, Argentina",
+      "horarios": [
+        {
+          "dias": "Lunes a viernes",
+          "tramos": [
+            {
+              "desde": "08:00",
+              "hasta": "14:00"
+            },
+            {
+              "desde": "15:00",
+              "hasta": "19:00"
+            }
+          ]
+        },
+        {
+          "dias": "Sábados, domingos y feriados",
+          "desde": "08:00",
+          "hasta": "20:00"
+        }
+      ],
+      "telefono": "3834 69-3224",
+      "whatsapp_url": "https://wa.me/5493834693224",
+      "google_maps_url": null,
+      "observaciones": "Falta enlace de Google Maps confirmado. No generar coordenadas ni usar un pin aproximado como dirección exacta."
+    },
+    {
+      "id": "turismo-las-moras",
+      "nombre_boton": "Turismo Las Moras",
+      "nombre": "Oficina de Turismo Las Moras",
+      "ubicacion": "Paseo Las Moras, Villa Las Pirquitas, Fray Mamerto Esquiú, Catamarca, Argentina",
+      "horarios": [
+        {
+          "dias": "Lunes a viernes",
+          "tramos": [
+            {
+              "desde": "08:00",
+              "hasta": "13:00"
+            },
+            {
+              "desde": "14:00",
+              "hasta": "18:00"
+            }
+          ]
+        },
+        {
+          "dias": "Sábados, domingos y feriados",
+          "desde": "08:00",
+          "hasta": "20:00"
+        }
+      ],
+      "telefono": "3834 69-3224",
+      "whatsapp_url": "https://wa.me/5493834693224",
+      "google_maps_url": "https://maps.app.goo.gl/MW1HUEGpGNuoLMWc7",
+      "observaciones": "Confirmar que el pin proporcionado coincide con el ingreso de la oficina."
+    }
+  ],
+  "carrusel_bienvenida": {
+    "titulo": "Lugares recomendados de Fray",
+    "ubicacion_en_app": "Inicio, dentro del espacio que ocupa la imagen principal de bienvenida",
+    "reproduccion_automatica": true,
+    "intervalo_ms": 5000,
+    "bucle": true,
+    "transicion": "fundido suave",
+    "controles": [
+      "anterior",
+      "siguiente",
+      "pausar o reanudar"
+    ],
+    "permitir_deslizar_en_celular": true,
+    "mostrar_nombre_del_lugar": true,
+    "instrucciones": "Conservar el texto de bienvenida y el buscador en sus posiciones actuales. Usar únicamente fotos reales proporcionadas o ya disponibles en el proyecto para cada lugar. Mostrar solo diapositivas con una foto válida. Si no hay ninguna, conservar la imagen de bienvenida actual. Si hay una sola, mostrarla fija. Respetar la preferencia de movimiento reducido.",
+    "lugares": [
+      {
+        "nombre": "Dique Las Pirquitas",
+        "imagen": null
+      },
+      {
+        "nombre": "Parque Botánico de San Antonio",
+        "imagen": null
+      },
+      {
+        "nombre": "Paseo Las Moras",
+        "imagen": null
+      },
+      {
+        "nombre": "Casa Natal del Beato Mamerto Esquiú",
+        "imagen": null
+      },
+      {
+        "nombre": "Trapiche Azucarero",
+        "imagen": null
+      }
+    ]
+  }
+}

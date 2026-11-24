@@ -2,20 +2,19 @@ import React, { useState } from 'react';
 import {
   Search,
   X,
-  Sparkles,
   ChevronRight,
 } from 'lucide-react';
 import { useData } from '../context/DataContext';
-import { useAuth } from '../context/AuthContext';
 import { CategoryPills } from './CategoryPills';
 import { PlaceCard } from './PlaceCard';
 import { ReligiousPlaceCard } from './ReligiousPlaceCard';
 import { ConoceFraySection } from './ConoceFraySection';
 import { ImperdiblesSection } from './ImperdiblesSection';
 import { RecorridoEsquiuSection } from './RecorridoEsquiuSection';
+import { WelcomeHeroCarousel } from './WelcomeHeroCarousel';
+import { TourismOfficesSection } from './TourismOfficesSection';
 import { CATEGORIES } from '../data/initialData';
 import { InstitutionalFooterBanner, TierraDeMilagrosBadge } from './BrandLogos';
-import { SectionEditButton } from './SectionEditButton';
 import { Place } from '../types';
 import { getCategoryDisplay, matchesPlaceSearch } from '../utils/searchPlaces';
 
@@ -104,19 +103,7 @@ export const HomeExploreView: React.FC = () => {
     searchQuery,
     setSearchQuery,
     setSelectedPlace,
-    siteConfig,
   } = useData();
-
-  const { isAuthenticated, isEditorMode } = useAuth();
-  const heroData = siteConfig?.hero || {
-    title: 'FRAY TURISMO',
-    subtitle: 'Un lugar para descubrir, disfrutar y volver a visitar.',
-    tagline: 'Naturaleza · Historia · Paisaje',
-    locationBadge: 'Catamarca · Argentina',
-    seasonBadge: 'Guía Oficial de Verano',
-    bgImage: '/images/dique-las-pirquitas.webp',
-    searchPlaceholder: '¿Qué lugar estás buscando?',
-  };
 
   const hasSearchQuery = Boolean(searchQuery && searchQuery.trim() !== '');
 
@@ -140,67 +127,14 @@ export const HomeExploreView: React.FC = () => {
   const isCategoryFiltering = Boolean(activeCategory && !hasSearchQuery);
 
   return (
-    <div id="home-view" className="space-y-8 pb-10">
-      {/* 1. HERO PRINCIPAL: Verde, Naturaleza, Vida & Paisaje */}
-      <div
-        id="hero-principal"
-        className="relative rounded-3xl overflow-hidden shadow-xl border border-emerald-200/80 bg-emerald-950 min-h-[360px] sm:min-h-[400px] flex flex-col justify-between p-5 sm:p-7 group text-white"
-      >
-        {/* Real photo background (Dique Las Pirquitas - official photography) */}
-        <img
-          src={heroData.bgImage || '/images/dique-las-pirquitas.webp'}
-          alt="Fray Turismo - Dique Las Pirquitas, Catamarca"
-          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 brightness-[0.72]"
-          referrerPolicy="no-referrer"
-          onError={(e) => {
-            const target = e.currentTarget;
-            if (!target.src.endsWith('/images/dique-las-pirquitas.webp')) {
-              target.src = '/images/dique-las-pirquitas.webp';
-            }
-          }}
-        />
+    <div id="home-view" className="space-y-6 sm:space-y-7 pb-10">
+      {/* 1. HERO PRINCIPAL CON CARRUSEL DE LUGARES RECOMENDADOS */}
+      <WelcomeHeroCarousel />
 
-        {/* Gradiente fresco natural verde esmeralda y teal */}
-        <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/95 via-teal-950/45 to-black/25 pointer-events-none" />
+      {/* 2. OFICINAS DE TURISMO DE FRAY (Debajo del carrusel de bienvenida) */}
+      <TourismOfficesSection />
 
-        {/* Top bar in Hero */}
-        <div className="relative z-10 flex items-center justify-between">
-          <span className="bg-emerald-600/90 backdrop-blur-md text-white text-[11px] font-bold px-3 py-1 rounded-full border border-emerald-400/40 shadow-xs flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-300 animate-pulse" />
-            <span>{heroData.locationBadge || 'Catamarca · Argentina'}</span>
-          </span>
-
-          <div className="flex items-center gap-2">
-            {isAuthenticated && isEditorMode && (
-              <SectionEditButton sectionId="hero" sectionTitle="Portada / Hero" />
-            )}
-          </div>
-        </div>
-
-        {/* Center / Bottom Hero Content */}
-        <div className="relative z-10 space-y-4 mt-auto pt-6">
-          <div>
-            {heroData.tagline && (
-              <div className="inline-flex items-center gap-1.5 bg-emerald-400/20 backdrop-blur-xs text-emerald-300 text-xs font-black uppercase tracking-wider px-3 py-0.5 rounded-full border border-emerald-300/30 mb-2">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>{heroData.tagline}</span>
-              </div>
-            )}
-            <h1 className="font-display font-black text-3xl sm:text-4xl text-white tracking-tight leading-none drop-shadow-sm">
-              {heroData.title || 'FRAY TURISMO'}
-            </h1>
-            <p className="text-emerald-100 text-sm sm:text-base font-medium mt-1 drop-shadow-xs max-w-lg">
-              {!heroData.subtitle ||
-              heroData.subtitle ===
-                'Valles serranos, agua esmeralda, cuna del Beato y tradiciones vivas en Catamarca.'
-                ? 'Un lugar para descubrir, disfrutar y volver a visitar.'
-                : heroData.subtitle}
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* 2. ÚNICO BUSCADOR GENERAL (Debajo del banner principal y antes de las categorías) */}
+      {/* 3. ÚNICO BUSCADOR GENERAL (Debajo del sector principal y antes de las categorías) */}
       <section id="buscador-general-section" aria-label="Buscador general de Visitá Fray" className="space-y-4">
         <div className="relative w-full">
           <label htmlFor="general-search-input" className="sr-only">
