@@ -59,9 +59,15 @@ export const ConoceFraySection: React.FC = () => {
       {/* Narrative overview card */}
       <div className="bg-gradient-to-br from-emerald-950 via-teal-950 to-slate-900 text-white rounded-3xl p-5 sm:p-6 shadow-md border border-emerald-500/20 space-y-3 relative overflow-hidden">
         <div className="relative z-10 space-y-2.5">
-          <p className="text-emerald-50 text-xs sm:text-sm font-normal leading-relaxed">
-            Ubicado en la <span className="text-white font-bold">Región Centro de Catamarca</span> e integrado al Valle Central, <span className="text-emerald-300 font-bold">Fray Mamerto Esquiú</span> combina paisajes serranos, naturaleza, historia, espiritualidad y una profunda identidad cultural.
-          </p>
+          {conoceConfig.leadParagraph ? (
+            <p className="text-emerald-50 text-xs sm:text-sm font-normal leading-relaxed">
+              {conoceConfig.leadParagraph}
+            </p>
+          ) : (
+            <p className="text-emerald-50 text-xs sm:text-sm font-normal leading-relaxed">
+              Ubicado en la <span className="text-white font-bold">Región Centro de Catamarca</span> e integrado al Valle Central, <span className="text-emerald-300 font-bold">Fray Mamerto Esquiú</span> combina paisajes serranos, naturaleza, historia, espiritualidad y una profunda identidad cultural.
+            </p>
+          )}
 
           <p className="text-teal-100/80 text-xs leading-relaxed">
             Su territorio se despliega en un valle rodeado por formaciones montañosas: la imponente <span className="text-white font-semibold">Sierra de Gracián</span> al este y las sierras hacia la Capital al oeste. El <span className="text-white font-semibold">Río del Valle</span> atraviesa sus pueblos y da vida al emblemático <span className="text-emerald-300 font-semibold">Dique Las Pirquitas</span>.
@@ -69,25 +75,45 @@ export const ConoceFraySection: React.FC = () => {
 
           {showFullHistory && (
             <div className="pt-3 border-t border-emerald-700/40 space-y-2 text-xs text-slate-300">
-              <div className="flex items-start gap-2 bg-emerald-900/40 p-3 rounded-2xl border border-emerald-600/30">
-                <Calendar className="w-4 h-4 text-amber-300 shrink-0 mt-0.5" />
-                <div>
-                  <span className="font-bold text-white block">20 de Octubre de 1621 · Merced de Allpatauca</span>
-                  <p className="text-[11px] text-emerald-100/80 mt-0.5">
-                    Hito fundacional documentado del poblamiento del actual territorio departamental, con antecedentes ancestrales de culturas originarias prehispánicas.
-                  </p>
-                </div>
-              </div>
+              {Array.isArray(conoceConfig.pillars) && conoceConfig.pillars.length > 0 ? (
+                conoceConfig.pillars.map((pillar) => (
+                  <div
+                    key={pillar.id}
+                    className="flex items-start gap-2 bg-emerald-900/40 p-3 rounded-2xl border border-emerald-600/30"
+                  >
+                    <Sparkles className="w-4 h-4 text-emerald-300 shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-bold text-white block">
+                        {pillar.title}
+                        {pillar.subtitle ? ` · ${pillar.subtitle}` : ''}
+                      </span>
+                      <p className="text-[11px] text-emerald-100/80 mt-0.5">{pillar.phrase}</p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <>
+                  <div className="flex items-start gap-2 bg-emerald-900/40 p-3 rounded-2xl border border-emerald-600/30">
+                    <Calendar className="w-4 h-4 text-amber-300 shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-bold text-white block">20 de Octubre de 1621 · Merced de Allpatauca</span>
+                      <p className="text-[11px] text-emerald-100/80 mt-0.5">
+                        Hito fundacional documentado del poblamiento del actual territorio departamental, con antecedentes ancestrales de culturas originarias prehispánicas.
+                      </p>
+                    </div>
+                  </div>
 
-              <div className="flex items-start gap-2 bg-emerald-900/40 p-3 rounded-2xl border border-emerald-600/30">
-                <Sparkles className="w-4 h-4 text-emerald-300 shrink-0 mt-0.5" />
-                <div>
-                  <span className="font-bold text-white block">De Piedra Blanca a Fray Mamerto Esquiú (1934)</span>
-                  <p className="text-[11px] text-emerald-100/80 mt-0.5">
-                    Conocido históricamente como Piedra Blanca, adoptó en 1934 el nombre del beato orador de la Constitución nacido aquí el 11 de mayo de 1826.
-                  </p>
-                </div>
-              </div>
+                  <div className="flex items-start gap-2 bg-emerald-900/40 p-3 rounded-2xl border border-emerald-600/30">
+                    <Sparkles className="w-4 h-4 text-emerald-300 shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-bold text-white block">De Piedra Blanca a Fray Mamerto Esquiú (1934)</span>
+                      <p className="text-[11px] text-emerald-100/80 mt-0.5">
+                        Conocido históricamente como Piedra Blanca, adoptó en 1934 el nombre del beato orador de la Constitución nacido aquí el 11 de mayo de 1826.
+                      </p>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           )}
         </div>

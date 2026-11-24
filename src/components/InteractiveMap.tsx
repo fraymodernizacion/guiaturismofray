@@ -14,7 +14,7 @@ import {
 import { useData } from '../context/DataContext';
 import { CATEGORIES, INITIAL_USER_PRESETS } from '../data/initialData';
 import { CategoryId, Place } from '../types';
-import { formatDistance, getDirectionsUrl, getWhatsAppUrl, isValidCoordinate } from '../utils/geoUtils';
+import { getDirectionsUrl, getWhatsAppUrl, isValidCoordinate } from '../utils/geoUtils';
 
 // Fix Leaflet's default icon path issues in bundled React
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -415,11 +415,6 @@ export const InteractiveMap: React.FC = () => {
                       <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100/80 px-2 py-0.5 rounded-md truncate">
                         {place.locality}
                       </span>
-                      {place.distanceKm !== undefined && (
-                        <span className="text-[10px] font-bold text-slate-500">
-                          {formatDistance(place.distanceKm)}
-                        </span>
-                      )}
                     </div>
                     <h4 className="font-bold text-xs text-slate-900 truncate mt-1">
                       {place.name}

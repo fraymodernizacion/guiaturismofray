@@ -15,6 +15,9 @@ import {
   TourismOffice,
   OfficeScheduleEntry,
 } from '../data/tourismOfficesData';
+import { useData } from '../context/DataContext';
+import { useAuth } from '../context/AuthContext';
+import { SectionEditButton } from './SectionEditButton';
 
 const formatScheduleHours = (entry: OfficeScheduleEntry): string => {
   if (entry.tramos && entry.tramos.length > 0) {
@@ -32,7 +35,18 @@ const getCleanPhoneHref = (phone: string): string => {
 };
 
 export const TourismOfficesSection: React.FC = () => {
+  const { siteConfig } = useData();
+  const { isAuthenticated, isEditorMode } = useAuth();
   const [selectedOffice, setSelectedOffice] = useState<TourismOffice | null>(null);
+
+  const sectionTitle = siteConfig?.tourismOffices?.title || TOURISM_OFFICES_META.categoria;
+  const sharedPhone =
+    siteConfig?.tourismOffices?.sharedPhone || TOURISM_OFFICES_META.telefono_compartido;
+  const officesList =
+    Array.isArray(siteConfig?.tourismOffices?.offices) &&
+    siteConfig.tourismOffices.offices.length > 0
+      ? siteConfig.tourismOffices.offices
+      : TOURISM_OFFICES;
 
   useEffect(() => {
     if (!selectedOffice) return;
@@ -51,21 +65,26 @@ export const TourismOfficesSection: React.FC = () => {
       aria-labelledby="oficinas-turismo-heading"
       className="space-y-2.5"
     >
-      <div className="flex items-baseline justify-between gap-2 px-1">
+      <div className="flex items-center justify-between gap-2 px-1 flex-wrap">
         <h2
           id="oficinas-turismo-heading"
           className="font-display font-bold text-sm sm:text-base text-slate-900 tracking-tight"
         >
-          {TOURISM_OFFICES_META.categoria}
+          {sectionTitle}
         </h2>
-        <span className="text-xs text-slate-500 font-medium tabular-nums whitespace-nowrap">
-          Tel. {TOURISM_OFFICES_META.telefono_compartido}
-        </span>
+        <div className="flex items-center gap-2">
+          {isAuthenticated && isEditorMode && (
+            <SectionEditButton sectionId="tourismOffices" sectionTitle="Oficinas de Turismo" />
+          )}
+          <span className="text-xs text-slate-500 font-medium tabular-nums whitespace-nowrap">
+            Tel. {sharedPhone}
+          </span>
+        </div>
       </div>
 
       {/* Three compact office buttons */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-        {TOURISM_OFFICES.map((office) => (
+        {officesList.map((office) => (
           <button
             key={office.id}
             id={`btn-oficina-${office.id}`}
@@ -119,7 +138,7 @@ export const TourismOfficesSection: React.FC = () => {
             <div className="px-5 pt-4 sm:pt-5 pb-4 border-b border-slate-100 flex items-start justify-between gap-3">
               <div className="min-w-0">
                 <p className="text-xs font-semibold text-emerald-700">
-                  {TOURISM_OFFICES_META.categoria}
+                  {sectionTitle}
                 </p>
                 <h3
                   id="tourism-office-modal-title"

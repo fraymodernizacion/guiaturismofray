@@ -178,6 +178,7 @@ function toAudioguideRow(guide: Audioguide, sortOrder: number) {
     subtitle: guide.subtitle ?? '',
     duration: guide.duration,
     audioSeconds: Number(guide.audioSeconds || 0),
+    audioUrl: guide.audioUrl ?? null,
     coverImage: guide.coverImage ?? '',
     shortSummary: guide.shortSummary ?? '',
     narrativeText: guide.narrativeText ?? '',
@@ -190,7 +191,7 @@ function toAudioguideRow(guide: Audioguide, sortOrder: number) {
 }
 
 function fromAudioguideRow(row: typeof audioguidesTable.$inferSelect): Audioguide {
-  return {
+  const guide: Audioguide = {
     id: row.id,
     placeId: row.placeId,
     title: row.title,
@@ -204,6 +205,8 @@ function fromAudioguideRow(row: typeof audioguidesTable.$inferSelect): Audioguid
     nextPlaceId: row.nextPlaceId,
     nextPlaceReason: row.nextPlaceReason,
   };
+  if (row.audioUrl) guide.audioUrl = row.audioUrl;
+  return guide;
 }
 
 export async function seedDatabaseFromExistingFiles(): Promise<{

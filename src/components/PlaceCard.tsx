@@ -11,7 +11,7 @@ import {
 import { Place } from '../types';
 import { useData } from '../context/DataContext';
 import { useAuth } from '../context/AuthContext';
-import { formatDistance, getDirectionsUrl, getWhatsAppUrl, isValidCoordinate } from '../utils/geoUtils';
+import { getDirectionsUrl, getWhatsAppUrl, isValidCoordinate } from '../utils/geoUtils';
 import { CATEGORIES } from '../data/initialData';
 import { PlacePhotoDisplay } from './PlacePhotoDisplay';
 
@@ -94,11 +94,6 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({ place, compact = false }) 
             compact={true}
             className="w-full h-full"
           />
-          {place.distanceKm !== undefined && (
-            <span className="absolute bottom-1.5 left-1.5 bg-slate-950/80 backdrop-blur-xs text-white text-[10px] font-bold px-2 py-0.5 rounded-md z-10">
-              {formatDistance(place.distanceKm)}
-            </span>
-          )}
         </div>
 
         <div className="p-3 flex flex-col justify-between flex-1 min-w-0">
@@ -216,18 +211,12 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({ place, compact = false }) 
           </div>
         </div>
 
-        {/* Bottom Image Stats (Distance & Locality) */}
+        {/* Bottom Image Locality Badge */}
         <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white text-xs pointer-events-none z-10">
           <div className="flex items-center gap-1 bg-black/60 backdrop-blur-xs px-2.5 py-1 rounded-lg">
             <MapPin className="w-3.5 h-3.5 text-amber-300" />
             <span className="font-medium truncate">{place.locality}</span>
           </div>
-
-          {place.distanceKm !== undefined && (
-            <div className="bg-blue-600 text-white font-bold px-2.5 py-1 rounded-lg text-xs shadow-xs border border-white/20">
-              a {formatDistance(place.distanceKm)}
-            </div>
-          )}
         </div>
       </div>
 

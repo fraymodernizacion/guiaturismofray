@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Landmark, Navigation } from 'lucide-react';
+import { Landmark, Navigation, Edit3 } from 'lucide-react';
 import { Place } from '../types';
 import { useData } from '../context/DataContext';
+import { useAuth } from '../context/AuthContext';
 import { getDirectionsUrl } from '../utils/geoUtils';
 
 interface ReligiousPlaceCardProps {
@@ -9,7 +10,8 @@ interface ReligiousPlaceCardProps {
 }
 
 export const ReligiousPlaceCard: React.FC<ReligiousPlaceCardProps> = ({ place }) => {
-  const { setSelectedPlace, userLocation } = useData();
+  const { setSelectedPlace, setPlaceToEdit, userLocation } = useData();
+  const { isAuthenticated, isEditorMode } = useAuth();
   const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
@@ -30,6 +32,21 @@ export const ReligiousPlaceCard: React.FC<ReligiousPlaceCardProps> = ({ place })
     >
       {/* Fotografía del lugar */}
       <div className="relative aspect-[16/10] w-full overflow-hidden bg-slate-900">
+        {isAuthenticated && isEditorMode && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setPlaceToEdit(place);
+            }}
+            className="absolute top-2.5 right-2.5 z-20 inline-flex items-center gap-1 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-[11px] px-2.5 py-1.5 rounded-xl shadow-md border border-amber-300 transition active:scale-95"
+            title={`Editar ${place.name}`}
+          >
+            <Edit3 className="w-3.5 h-3.5" />
+            <span>Editar</span>
+          </button>
+        )}
+
         {hasPhoto ? (
           <img
             src={place.image}

@@ -1,8 +1,14 @@
 import { SiteConfig } from '../types/siteConfig';
+import { TOURISM_OFFICES, TOURISM_OFFICES_META } from './tourismOfficesData';
 
 export const DEFAULT_SITE_CONFIG: SiteConfig = {
   version: 1,
   updatedAt: new Date().toISOString(),
+  tourismOffices: {
+    title: TOURISM_OFFICES_META.categoria,
+    sharedPhone: TOURISM_OFFICES_META.telefono_compartido,
+    offices: TOURISM_OFFICES,
+  },
   hero: {
     locationBadge: 'Catamarca · Argentina',
     seasonBadge: 'Guía Oficial de Verano',
@@ -114,7 +120,19 @@ export const DEFAULT_SITE_CONFIG: SiteConfig = {
         bgLight: 'bg-teal-50 text-teal-900 border-teal-200',
         description: 'Cabañas con pileta, posadas coloniales y campings',
         isVisible: true,
-        sortOrder: 4,
+        sortOrder: 5,
+      },
+      {
+        id: 'religioso',
+        label: 'Turismo Religioso & Fe',
+        shortLabel: 'Ruta de Fe',
+        emoji: '⛪',
+        iconName: 'Landmark',
+        color: 'from-sky-700 to-indigo-800',
+        bgLight: 'bg-sky-50 text-sky-900 border-sky-200',
+        description: 'Templos del 1700, santuarios y la huella de Fray Mamerto Esquiú',
+        isVisible: true,
+        sortOrder: 6,
       },
       {
         id: 'naturaleza',
@@ -125,8 +143,8 @@ export const DEFAULT_SITE_CONFIG: SiteConfig = {
         color: 'from-cyan-600 to-teal-700',
         bgLight: 'bg-cyan-50 text-cyan-900 border-cyan-200',
         description: 'Dique Las Pirquitas, balnearios sobre el Río del Valle',
-        isVisible: true,
-        sortOrder: 5,
+        isVisible: false,
+        sortOrder: 7,
       },
       {
         id: 'senderos',
@@ -137,20 +155,8 @@ export const DEFAULT_SITE_CONFIG: SiteConfig = {
         color: 'from-emerald-700 to-green-800',
         bgLight: 'bg-emerald-50 text-emerald-900 border-emerald-200',
         description: 'Caminatas a Casa de Piedra y trekking en Sierra de Gracián',
-        isVisible: true,
-        sortOrder: 6,
-      },
-      {
-        id: 'religioso',
-        label: 'Turismo Religioso & Fe',
-        shortLabel: 'Ruta de Fe',
-        emoji: '⛪',
-        iconName: 'Church',
-        color: 'from-sky-700 to-indigo-800',
-        bgLight: 'bg-sky-50 text-sky-900 border-sky-200',
-        description: 'Templos del 1700, santuarios y la huella de Fray Mamerto Esquiú',
-        isVisible: true,
-        sortOrder: 7,
+        isVisible: false,
+        sortOrder: 8,
       },
       {
         id: 'actividades',
@@ -161,8 +167,8 @@ export const DEFAULT_SITE_CONFIG: SiteConfig = {
         color: 'from-blue-600 to-cyan-700',
         bgLight: 'bg-blue-50 text-blue-900 border-blue-200',
         description: 'Deportes náuticos en el dique, cabalgatas y cicloturismo',
-        isVisible: true,
-        sortOrder: 8,
+        isVisible: false,
+        sortOrder: 9,
       },
     ],
   },

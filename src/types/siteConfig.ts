@@ -1,4 +1,5 @@
 import { CategoryId } from '../types';
+import type { TourismOffice } from '../data/tourismOfficesData';
 
 export interface QuickHeroBadge {
   id: string;
@@ -137,10 +138,17 @@ export interface FooterConfig {
   localitiesText: string;
 }
 
+export interface TourismOfficesSectionConfig {
+  title: string;
+  sharedPhone: string;
+  offices: TourismOffice[];
+}
+
 export interface SiteConfig {
   version: number;
   updatedAt: string;
   hero: HeroConfig;
+  tourismOffices?: TourismOfficesSectionConfig;
   categories: CategoriesSectionConfig;
   imperdibles: ImperdiblesSectionConfig;
   conoceFray: ConoceFraySectionConfig;
@@ -148,4 +156,5 @@ export interface SiteConfig {
   recorridoEsquiu: RecorridoEsquiuSectionConfig;
   emblemaFe: EmblemaFeConfig;
   footer: FooterConfig;
+  deletedPlaceIds?: string[];
 }

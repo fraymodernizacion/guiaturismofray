@@ -85,28 +85,140 @@ async function startServer() {
     next();
   });
 
-  app.use('/uploads', express.static(uploadsDir));
-  app.get('/uploads/:filename', async (req, res, next) => {
-    if (!isPostgresConfigured()) return next();
-    try {
-      const media = await getMediaUpload(req.params.filename);
-      if (!media) return next();
-      const buffer = Buffer.from(media.dataBase64, 'base64');
-      res.setHeader('Content-Type', media.mimeType);
-      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
-      return res.send(buffer);
-    } catch {
-      return next();
+  app.use(
+    '/uploads',
+    express.static(uploadsDir, {
+      maxAge: '365d',
+      immutable: true,
+    })
+  );
+  app.get('/uploads/:filename', async (req, res) => {
+    const safeFilename = path.basename(req.params.filename || '');
+    if (!safeFilename) {
+      return res.status(404).json({ error: 'Archivo no encontrado' });
     }
+    const diskPath = path.join(uploadsDir, safeFilename);
+    if (fs.existsSync(diskPath)) {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      return res.sendFile(diskPath);
+    }
+    if (isPostgresConfigured()) {
+      try {
+        const media = await getMediaUpload(safeFilename);
+        if (media) {
+          const buffer = Buffer.from(media.dataBase64, 'base64');
+          // Re-hydrate local cache on disk for fast subsequent reads
+          try {
+            fs.writeFileSync(diskPath, buffer);
+          } catch {
+            // Non-fatal
+          }
+          res.setHeader('Content-Type', media.mimeType);
+          res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+          return res.send(buffer);
+        }
+      } catch (pgErr) {
+        console.warn('[STORAGE] PostgreSQL media lookup failed:', pgErr);
+      }
+    }
+    return res.status(404).json({ error: 'Imagen no encontrada' });
   });
-  app.use('/images', express.static(imagesDir));
+  app.use('/images', express.static(imagesDir, { maxAge: '7d' }));
+  app.use('/audio', express.static(path.join(process.cwd(), 'public', 'audio'), { maxAge: '30d' }));
   app.use(express.static(path.join(process.cwd(), 'public')));
+
+  const revisionsDir = path.join(dataDir, 'revisions');
+  let revisionSeq = 0;
+
+  type RevisionKind = 'places' | 'site_config' | 'events' | 'audioguides';
+
+  const writeJsonAtomic = (filePath: string, payload: unknown) => {
+    const dir = path.dirname(filePath);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    const tmpPath = `${filePath}.${process.pid}.${Date.now()}.tmp`;
+    fs.writeFileSync(tmpPath, JSON.stringify(payload, null, 2), 'utf-8');
+    fs.renameSync(tmpPath, filePath);
+  };
+
+  const readJsonSafe = <T,>(filePath: string): T | null => {
+    try {
+      if (!fs.existsSync(filePath)) return null;
+      const content = fs.readFileSync(filePath, 'utf-8');
+      return JSON.parse(content) as T;
+    } catch {
+      return null;
+    }
+  };
+
+  /**
+   * Append-only immutable revision writer.
+   * Every save creates a brand-new timestamped file inside data/revisions/
+   * so workspace syncs or concurrent reads can never overwrite saved user edits.
+   */
+  const persistRevisionDurable = (
+    kind: RevisionKind,
+    payload: unknown
+  ): { timestamp: number; filename: string } => {
+    const timestamp = Date.now();
+    revisionSeq += 1;
+    const filename = `${kind}_${timestamp}_${String(revisionSeq).padStart(4, '0')}.json`;
+    const revPath = path.join(revisionsDir, filename);
+
+    // 1. Primary immutable revision file (unique filename, immune to snapshot overwrites)
+    writeJsonAtomic(revPath, { timestamp, data: payload });
+
+    // 2. Mirror to baseline data/<kind>.json for exports and builds
+    writeJsonAtomic(path.join(dataDir, `${kind}.json`), payload);
+
+    return { timestamp, filename };
+  };
+
+  const readLatestRevision = <T,>(
+    kind: RevisionKind
+  ): { data: T; timestamp: number; filename: string } | null => {
+    try {
+      if (!fs.existsSync(revisionsDir)) return null;
+      const pattern = new RegExp(`^${kind}_(\\d+)_(\\d+)\\.json$`);
+      const candidates = fs
+        .readdirSync(revisionsDir)
+        .map((name) => {
+          const match = name.match(pattern);
+          if (!match) return null;
+          return {
+            name,
+            ts: Number(match[1]),
+            seq: Number(match[2]),
+          };
+        })
+        .filter((item): item is { name: string; ts: number; seq: number } => item !== null)
+        .sort((a, b) => (b.ts !== a.ts ? b.ts - a.ts : b.seq - a.seq));
+
+      for (const candidate of candidates) {
+        const parsed = readJsonSafe<any>(path.join(revisionsDir, candidate.name));
+        if (!parsed) continue;
+        const data = parsed && typeof parsed === 'object' && 'data' in parsed ? parsed.data : parsed;
+        if (data !== null && data !== undefined) {
+          const ts = typeof parsed.timestamp === 'number' ? parsed.timestamp : candidate.ts;
+          return { data: data as T, timestamp: ts, filename: candidate.name };
+        }
+      }
+      return null;
+    } catch {
+      return null;
+    }
+  };
 
   // Health check API
   app.get('/api/health', (req, res) => {
+    res.setHeader('Cache-Control', 'no-store');
+    const latestPlacesRev = readLatestRevision<any[]>('places');
     res.json({
       status: 'ok',
       database: isPostgresConfigured() ? 'postgresql' : 'json',
+      revisionStore: 'append-only',
+      latestPlacesRevision: latestPlacesRev?.timestamp || 0,
       timestamp: new Date().toISOString(),
     });
   });
@@ -116,11 +228,15 @@ async function startServer() {
     try {
       const { filename, dataUrl, base64 } = req.body;
       if (!dataUrl && !base64) {
-        return res.status(400).json({ error: 'No image data provided' });
+        return res.status(400).json({ error: 'No se recibieron datos de imagen' });
+      }
+
+      if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir, { recursive: true });
       }
 
       // Clean or generate file name
-      let cleanName = (filename || `foto_${Date.now()}.jpg`)
+      let cleanName = (filename || `foto_${Date.now()}.webp`)
         .toLowerCase()
         .replace(/[^a-z0-9._-]/g, '_')
         .replace(/_{2,}/g, '_');
@@ -135,31 +251,45 @@ async function startServer() {
       const rawBase64 = dataUrl ? dataUrl.replace(/^data:image\/[\w.+-]+;base64,/, '') : base64;
       const buffer = Buffer.from(rawBase64, 'base64');
 
+      if (!buffer || buffer.length === 0) {
+        return res.status(400).json({ error: 'El archivo de imagen está vacío o dañado' });
+      }
+      if (buffer.length > 15 * 1024 * 1024) {
+        return res.status(413).json({ error: 'La imagen supera el tamaño máximo permitido (15 MB)' });
+      }
+
       const targetPath = path.join(uploadsDir, cleanName);
       fs.writeFileSync(targetPath, buffer);
 
       // If dist/uploads exists in production, also copy there for instant access
       const distUploads = path.join(process.cwd(), 'dist', 'uploads');
       if (fs.existsSync(distUploads)) {
-        fs.writeFileSync(path.join(distUploads, cleanName), buffer);
+        try {
+          fs.writeFileSync(path.join(distUploads, cleanName), buffer);
+        } catch {
+          // Non-fatal
+        }
       }
 
+      let storedInPostgres = false;
       if (isPostgresConfigured()) {
         try {
           await saveMediaUpload(cleanName, mimeType, rawBase64, buffer.length);
+          storedInPostgres = true;
         } catch (pgErr) {
-          console.warn('[STORAGE] PostgreSQL media save failed, keeping local file:', pgErr);
+          console.warn('[STORAGE] PostgreSQL media save failed, keeping persistent disk file:', pgErr);
         }
       }
 
       const permanentUrl = `/uploads/${cleanName}`;
-      console.log(`[STORAGE] Uploaded persistent image: ${permanentUrl} (${buffer.length} bytes)`);
+      console.log(`[STORAGE] Uploaded persistent image: ${permanentUrl} (${buffer.length} bytes, pg=${storedInPostgres})`);
 
       return res.json({
         success: true,
         url: permanentUrl,
         filename: cleanName,
         size: buffer.length,
+        storedInPostgres,
       });
     } catch (err: any) {
       console.error('[STORAGE ERROR] Failed to save image:', err);
@@ -167,7 +297,7 @@ async function startServer() {
     }
   });
 
-  // Places Persistence API (Sync between devices & reloads)
+  // Baseline JSON file paths
   const placesFilePath = path.join(dataDir, 'places.json');
   const siteConfigFilePath = path.join(dataDir, 'site_config.json');
   const eventsFilePath = path.join(dataDir, 'events.json');
@@ -175,21 +305,24 @@ async function startServer() {
 
   // Site Config API (CMS & Section Customization)
   app.get('/api/site-config', async (req, res) => {
+    res.setHeader('Cache-Control', 'no-store');
     try {
+      const latestRev = readLatestRevision<Record<string, any>>('site_config');
+      if (latestRev && typeof latestRev.data === 'object') {
+        return res.json({ config: latestRev.data, revisionTimestamp: latestRev.timestamp });
+      }
       if (isPostgresConfigured()) {
         try {
           const config = await getSiteConfig();
-          return res.json({ config });
+          if (config) return res.json({ config, revisionTimestamp: 0 });
         } catch (pgErr) {
           console.warn('[DATABASE] PostgreSQL site-config read failed, falling back to JSON:', pgErr);
         }
       }
-      if (fs.existsSync(siteConfigFilePath)) {
-        const content = fs.readFileSync(siteConfigFilePath, 'utf-8');
-        const data = JSON.parse(content);
-        return res.json({ config: data });
-      }
-      return res.json({ config: null });
+      const baselineData = readJsonSafe<Record<string, any>>(siteConfigFilePath);
+      if (baselineData) return res.json({ config: baselineData, revisionTimestamp: 0 });
+
+      return res.json({ config: null, revisionTimestamp: 0 });
     } catch (err: any) {
       console.error('[DATABASE] Error reading site config:', err);
       return res.status(500).json({ error: 'Error reading site config' });
@@ -202,18 +335,19 @@ async function startServer() {
       if (!config || typeof config !== 'object') {
         return res.status(400).json({ error: 'Expected valid site config object' });
       }
+      const rev = persistRevisionDurable('site_config', config);
+
+      let storage: 'postgresql' | 'json' = 'json';
       if (isPostgresConfigured()) {
         try {
           await saveSiteConfig(config);
-          console.log('[DATABASE] Saved site configuration to PostgreSQL.');
-          return res.json({ success: true });
+          storage = 'postgresql';
         } catch (pgErr) {
-          console.warn('[DATABASE] PostgreSQL site-config save failed, falling back to JSON:', pgErr);
+          console.warn('[DATABASE] PostgreSQL site-config save failed, persisted to Revision Store:', pgErr);
         }
       }
-      fs.writeFileSync(siteConfigFilePath, JSON.stringify(config, null, 2), 'utf-8');
-      console.log('[DATABASE] Saved site configuration to persistent storage.');
-      return res.json({ success: true });
+      console.log(`[DATABASE] Saved site_config revision ${rev.filename} (${storage}).`);
+      return res.json({ success: true, storage, revisionTimestamp: rev.timestamp });
     } catch (err: any) {
       console.error('[DATABASE ERROR] Failed to save site config:', err);
       return res.status(500).json({ error: 'Error saving site config' });
@@ -222,21 +356,24 @@ async function startServer() {
 
   // Events API
   app.get('/api/events', async (req, res) => {
+    res.setHeader('Cache-Control', 'no-store');
     try {
+      const latestRev = readLatestRevision<any[]>('events');
+      if (latestRev && Array.isArray(latestRev.data)) {
+        return res.json({ events: latestRev.data, revisionTimestamp: latestRev.timestamp });
+      }
       if (isPostgresConfigured()) {
         try {
           const events = await getAllEvents();
-          return res.json({ events });
+          if (Array.isArray(events)) return res.json({ events, revisionTimestamp: 0 });
         } catch (pgErr) {
           console.warn('[DATABASE] PostgreSQL events read failed, falling back to JSON:', pgErr);
         }
       }
-      if (fs.existsSync(eventsFilePath)) {
-        const content = fs.readFileSync(eventsFilePath, 'utf-8');
-        const data = JSON.parse(content);
-        return res.json({ events: data });
-      }
-      return res.json({ events: null });
+      const baselineData = readJsonSafe<any[]>(eventsFilePath);
+      if (Array.isArray(baselineData)) return res.json({ events: baselineData, revisionTimestamp: 0 });
+
+      return res.json({ events: null, revisionTimestamp: 0 });
     } catch (err: any) {
       console.error('[DATABASE] Error reading events:', err);
       return res.status(500).json({ error: 'Error reading events' });
@@ -249,16 +386,18 @@ async function startServer() {
       if (!Array.isArray(events)) {
         return res.status(400).json({ error: 'Expected array of events' });
       }
+      const rev = persistRevisionDurable('events', events);
+
+      let storage: 'postgresql' | 'json' = 'json';
       if (isPostgresConfigured()) {
         try {
-          const count = await replaceAllEvents(events);
-          return res.json({ success: true, count });
+          await replaceAllEvents(events);
+          storage = 'postgresql';
         } catch (pgErr) {
-          console.warn('[DATABASE] PostgreSQL events save failed, falling back to JSON:', pgErr);
+          console.warn('[DATABASE] PostgreSQL events save failed, persisted to Revision Store:', pgErr);
         }
       }
-      fs.writeFileSync(eventsFilePath, JSON.stringify(events, null, 2), 'utf-8');
-      return res.json({ success: true, count: events.length });
+      return res.json({ success: true, count: events.length, storage, revisionTimestamp: rev.timestamp });
     } catch (err: any) {
       console.error('[DATABASE ERROR] Failed to save events:', err);
       return res.status(500).json({ error: 'Error saving events' });
@@ -267,21 +406,24 @@ async function startServer() {
 
   // Audioguides API
   app.get('/api/audioguides', async (req, res) => {
+    res.setHeader('Cache-Control', 'no-store');
     try {
+      const latestRev = readLatestRevision<any[]>('audioguides');
+      if (latestRev && Array.isArray(latestRev.data)) {
+        return res.json({ audioguides: latestRev.data, revisionTimestamp: latestRev.timestamp });
+      }
       if (isPostgresConfigured()) {
         try {
           const audioguides = await getAllAudioguides();
-          return res.json({ audioguides });
+          if (Array.isArray(audioguides)) return res.json({ audioguides, revisionTimestamp: 0 });
         } catch (pgErr) {
           console.warn('[DATABASE] PostgreSQL audioguides read failed, falling back to JSON:', pgErr);
         }
       }
-      if (fs.existsSync(audioguidesFilePath)) {
-        const content = fs.readFileSync(audioguidesFilePath, 'utf-8');
-        const data = JSON.parse(content);
-        return res.json({ audioguides: data });
-      }
-      return res.json({ audioguides: null });
+      const baselineData = readJsonSafe<any[]>(audioguidesFilePath);
+      if (Array.isArray(baselineData)) return res.json({ audioguides: baselineData, revisionTimestamp: 0 });
+
+      return res.json({ audioguides: null, revisionTimestamp: 0 });
     } catch (err: any) {
       console.error('[DATABASE] Error reading audioguides:', err);
       return res.status(500).json({ error: 'Error reading audioguides' });
@@ -294,42 +436,97 @@ async function startServer() {
       if (!Array.isArray(audioguides)) {
         return res.status(400).json({ error: 'Expected array of audioguides' });
       }
+      const rev = persistRevisionDurable('audioguides', audioguides);
+
+      let storage: 'postgresql' | 'json' = 'json';
       if (isPostgresConfigured()) {
         try {
-          const count = await replaceAllAudioguides(audioguides);
-          return res.json({ success: true, count });
+          await replaceAllAudioguides(audioguides);
+          storage = 'postgresql';
         } catch (pgErr) {
-          console.warn('[DATABASE] PostgreSQL audioguides save failed, falling back to JSON:', pgErr);
+          console.warn('[DATABASE] PostgreSQL audioguides save failed, persisted to Revision Store:', pgErr);
         }
       }
-      fs.writeFileSync(audioguidesFilePath, JSON.stringify(audioguides, null, 2), 'utf-8');
-      return res.json({ success: true, count: audioguides.length });
+      return res.json({ success: true, count: audioguides.length, storage, revisionTimestamp: rev.timestamp });
     } catch (err: any) {
       console.error('[DATABASE ERROR] Failed to save audioguides:', err);
       return res.status(500).json({ error: 'Error saving audioguides' });
     }
   });
 
-  const removedPlaceIds = new Set(['casa-de-te-la-calera']);
+  const removedPlaceIds = new Set([
+    'campanas-del-rosario',
+    'casa-de-te-la-calera',
+    'helados-plaza-sanjose',
+    'casona-piedra-blanca',
+    'parrilla-el-quincho',
+    'astor-pizza-in-te-glia',
+    'buena-vida-resto',
+  ]);
   const filterRemovedPlaces = (list: any[]) =>
     list.filter((p) => p && !removedPlaceIds.has(p.id));
 
+  const mergeRuntimeWithBaselinePlaces = (runtimeList: any[], baselineList: any[] | null): any[] => {
+    if (!Array.isArray(baselineList) || baselineList.length === 0) {
+      return filterRemovedPlaces(runtimeList);
+    }
+    const baselineById = new Map<string, any>(baselineList.filter((p) => p?.id).map((p) => [p.id, p]));
+    const merged = runtimeList.map((item) => {
+      if (!item?.id) return item;
+      const base = baselineById.get(item.id);
+      if (!base) return item;
+      const runtimeHasImg = typeof item.image === 'string' && item.image.trim() !== '';
+      const baseHasImg = typeof base.image === 'string' && base.image.trim() !== '';
+      if (!runtimeHasImg && baseHasImg) {
+        const mergedGallery =
+          Array.isArray(item.gallery) && item.gallery.length > 0
+            ? item.gallery
+            : Array.isArray(base.gallery) && base.gallery.length > 0
+              ? base.gallery
+              : [base.image];
+        const nextItem = { ...item, image: base.image, gallery: mergedGallery };
+        delete nextItem.photoPendingNote;
+        return nextItem;
+      }
+      return item;
+    });
+    return filterRemovedPlaces(merged);
+  };
+
   app.get('/api/places', async (req, res) => {
+    res.setHeader('Cache-Control', 'no-store');
     try {
+      const baselinePlaces = readJsonSafe<any[]>(placesFilePath);
+      const latestRev = readLatestRevision<any[]>('places');
+
+      if (latestRev && Array.isArray(latestRev.data) && latestRev.data.length > 0) {
+        return res.json({
+          places: mergeRuntimeWithBaselinePlaces(latestRev.data, baselinePlaces),
+          revisionTimestamp: latestRev.timestamp,
+        });
+      }
+
       if (isPostgresConfigured()) {
         try {
           const places = await getAllPlaces();
-          return res.json({ places: filterRemovedPlaces(places) });
+          if (Array.isArray(places) && places.length > 0) {
+            return res.json({
+              places: mergeRuntimeWithBaselinePlaces(places, baselinePlaces),
+              revisionTimestamp: 0,
+            });
+          }
         } catch (pgErr) {
           console.warn('[DATABASE] PostgreSQL places read failed, falling back to JSON:', pgErr);
         }
       }
-      if (fs.existsSync(placesFilePath)) {
-        const content = fs.readFileSync(placesFilePath, 'utf-8');
-        const data = JSON.parse(content);
-        return res.json({ places: Array.isArray(data) ? filterRemovedPlaces(data) : data });
+
+      if (Array.isArray(baselinePlaces)) {
+        return res.json({
+          places: filterRemovedPlaces(baselinePlaces),
+          revisionTimestamp: 0,
+        });
       }
-      return res.json({ places: null });
+      return res.json({ places: null, revisionTimestamp: 0 });
     } catch (err: any) {
       console.error('[DATABASE] Error reading places:', err);
       return res.status(500).json({ error: 'Error reading places database' });
@@ -343,18 +540,24 @@ async function startServer() {
         return res.status(400).json({ error: 'Expected array of places' });
       }
       const sanitizedPlaces = filterRemovedPlaces(places);
+      const rev = persistRevisionDurable('places', sanitizedPlaces);
+
+      let storage: 'postgresql' | 'json' = 'json';
       if (isPostgresConfigured()) {
         try {
-          const count = await replaceAllPlaces(sanitizedPlaces);
-          console.log(`[DATABASE] Saved ${count} places to PostgreSQL.`);
-          return res.json({ success: true, count });
+          await replaceAllPlaces(sanitizedPlaces);
+          storage = 'postgresql';
         } catch (pgErr) {
-          console.warn('[DATABASE] PostgreSQL places save failed, falling back to JSON:', pgErr);
+          console.warn('[DATABASE] PostgreSQL places save failed, persisted to Revision Store:', pgErr);
         }
       }
-      fs.writeFileSync(placesFilePath, JSON.stringify(sanitizedPlaces, null, 2), 'utf-8');
-      console.log(`[DATABASE] Saved ${sanitizedPlaces.length} places to persistent storage.`);
-      return res.json({ success: true, count: sanitizedPlaces.length });
+      console.log(`[DATABASE] Saved ${sanitizedPlaces.length} places to revision ${rev.filename} (${storage}).`);
+      return res.json({
+        success: true,
+        count: sanitizedPlaces.length,
+        storage,
+        revisionTimestamp: rev.timestamp,
+      });
     } catch (err: any) {
       console.error('[DATABASE ERROR] Failed to save places:', err);
       return res.status(500).json({ error: 'Error saving places database' });

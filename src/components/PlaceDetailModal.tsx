@@ -14,7 +14,7 @@ import {
 import { Place } from '../types';
 import { useData } from '../context/DataContext';
 import { useAuth } from '../context/AuthContext';
-import { formatDistance, getDirectionsUrl, isValidCoordinate } from '../utils/geoUtils';
+import { getDirectionsUrl, isValidCoordinate } from '../utils/geoUtils';
 import { CATEGORIES } from '../data/initialData';
 
 interface PlaceDetailModalProps {
@@ -570,7 +570,7 @@ export const PlaceDetailModal: React.FC<PlaceDetailModalProps> = ({
                           {np.name}
                         </p>
                         <p className="text-[11px] text-slate-500 truncate font-medium">
-                          {np.locality} {np.distanceKm ? `· a ${formatDistance(np.distanceKm)}` : ''}
+                          {np.locality}
                         </p>
                       </div>
                     </div>

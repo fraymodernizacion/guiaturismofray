@@ -135,8 +135,9 @@ export interface Audioguide {
   placeId: string;
   title: string;
   subtitle: string;
-  duration: string; // "3:45 min"
+  duration: string; // "0:42 min"
   audioSeconds: number;
+  audioUrl?: string; // Optimized MP3/audio file path when available
   coverImage: string;
   shortSummary: string;
   narrativeText: string;

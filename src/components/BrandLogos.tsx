@@ -316,6 +316,20 @@ export const TierraDeMilagrosBadge: React.FC<{
   variant?: 'badge' | 'card' | 'seal';
   compact?: boolean;
 }> = ({ className = '', variant = 'badge', compact = false }) => {
+  const { siteConfig } = useData();
+  const { isAuthenticated, isEditorMode } = useAuth();
+  const emblema = siteConfig?.emblemaFe || {
+    badge: 'Patrimonio & Fe',
+    title: 'Fray, Tierra de Milagros',
+    bodyText:
+      'Cuna del Beato Fray Mamerto Esquiú. Recorré los templos históricos, museos y el circuito de fe en el corazón de Catamarca.',
+    isVisible: true,
+  };
+
+  if (emblema.isVisible === false && !isEditorMode) {
+    return null;
+  }
+
   if (compact) {
     return (
       <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-gradient-to-r from-blue-900/90 via-teal-900/90 to-emerald-900/90 text-white shadow-md border border-white/20 backdrop-blur-md ${className}`}>
@@ -333,7 +347,12 @@ export const TierraDeMilagrosBadge: React.FC<{
   }
 
   return (
-    <div className={`relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-950 via-slate-900 to-emerald-950 p-5 text-white border border-white/15 shadow-xl ${className}`}>
+    <div className={`relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-950 via-slate-900 to-emerald-950 p-5 text-white border border-white/15 shadow-xl ${emblema.isVisible === false ? 'opacity-50' : ''} ${className}`}>
+      {isAuthenticated && isEditorMode && (
+        <div className="absolute top-3 right-3 z-20">
+          <SectionEditButton sectionId="emblemaFe" sectionTitle="Emblema de Fe" />
+        </div>
+      )}
       <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl from-emerald-500/20 via-teal-500/10 to-transparent rounded-full blur-2xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-40 h-40 bg-gradient-to-tr from-blue-600/30 to-transparent rounded-full blur-2xl pointer-events-none" />
 
@@ -351,13 +370,13 @@ export const TierraDeMilagrosBadge: React.FC<{
 
         <div className="flex-1 min-w-0">
           <span className="inline-block text-[10px] font-black uppercase tracking-widest text-emerald-400 bg-emerald-950/80 px-2.5 py-0.5 rounded-full border border-emerald-500/30 mb-1">
-            Patrimonio & Fe
+            {emblema.badge || 'Patrimonio & Fe'}
           </span>
           <h3 className="font-display font-black text-lg sm:text-xl text-white tracking-tight leading-tight">
-            Fray, <span className="bg-gradient-to-r from-blue-300 via-teal-300 to-emerald-300 bg-clip-text text-transparent">Tierra de Milagros</span>
+            {emblema.title || 'Fray, Tierra de Milagros'}
           </h3>
           <p className="text-xs text-slate-300 font-normal mt-1 leading-relaxed max-w-md">
-            Cuna del Beato Fray Mamerto Esquiú. Recorré los templos históricos, museos y el circuito de fe en el corazón de Catamarca.
+            {emblema.bodyText}
           </p>
         </div>
       </div>
@@ -394,7 +413,7 @@ export const InstitutionalFooterBanner: React.FC<{ className?: string }> = ({ cl
         <div className="space-y-1.5 text-center md:text-left flex flex-col items-center md:items-start">
           <VisitaFrayLogo variant="white" size="sm" />
           <p className="text-[11px] text-slate-300 font-medium">
-            Guía Oficial de Turismo 2026 - 2027
+            {(footerData as any).tagline || 'Guía Oficial de Turismo 2026 - 2027'}
           </p>
         </div>
 
@@ -422,7 +441,7 @@ export const InstitutionalFooterBanner: React.FC<{ className?: string }> = ({ cl
 
       <div className="pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-500">
         <div className="flex items-center gap-2">
-          <p>© 2026–2027 Municipalidad de Fray Mamerto Esquiú. Todos los derechos reservados.</p>
+          <p>{(footerData as any).copyrightText || '© 2026–2027 Municipalidad de Fray Mamerto Esquiú. Todos los derechos reservados.'}</p>
           {!isAuthenticated && (
             <button
               onClick={() => setIsLoginModalOpen(true)}

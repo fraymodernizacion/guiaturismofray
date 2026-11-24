@@ -1,0 +1,448 @@
+{
+  "version": 1,
+  "updatedAt": "2026-11-24T23:18:50.450Z",
+  "tourismOffices": {
+    "title": "Oficinas de Turismo",
+    "sharedPhone": "3834 69-3224",
+    "offices": [
+      {
+        "id": "turismo-san-jose",
+        "nombre_boton": "Turismo San José",
+        "nombre": "Oficina de Turismo de San José (Casa Natal)",
+        "referencia_corta": "Casa Natal · Piedra Blanca",
+        "ubicacion": "Casa Natal del Beato Mamerto Esquiú, San José de Piedra Blanca, Fray Mamerto Esquiú, Catamarca, Argentina",
+        "horarios": [
+          {
+            "dias": "Todos los días",
+            "desde": "08:00",
+            "hasta": "20:00"
+          }
+        ],
+        "telefono": "3834 69-3224",
+        "whatsapp_url": "https://wa.me/5493834693224",
+        "google_maps_url": "https://maps.app.goo.gl/uPSTtDTTPk1Ci1un7"
+      },
+      {
+        "id": "turismo-trapiche",
+        "nombre_boton": "Turismo Trapiche",
+        "nombre": "Oficina de Turismo del Trapiche Azucarero",
+        "referencia_corta": "Camino Real · Piedra Blanca",
+        "ubicacion": "Trapiche Azucarero, antiguo Camino Real, Piedra Blanca, Fray Mamerto Esquiú, Catamarca, Argentina",
+        "horarios": [
+          {
+            "dias": "Lunes a viernes",
+            "tramos": [
+              {
+                "desde": "08:00",
+                "hasta": "14:00"
+              },
+              {
+                "desde": "15:00",
+                "hasta": "19:00"
+              }
+            ]
+          },
+          {
+            "dias": "Sábados, domingos y feriados",
+            "desde": "08:00",
+            "hasta": "20:00"
+          }
+        ],
+        "telefono": "3834 69-3224",
+        "whatsapp_url": "https://wa.me/5493834693224",
+        "google_maps_url": null
+      },
+      {
+        "id": "turismo-las-moras",
+        "nombre_boton": "Turismo Las Moras",
+        "nombre": "Oficina de Turismo Las Moras",
+        "referencia_corta": "Paseo Las Moras · Las Pirquitas",
+        "ubicacion": "Paseo Las Moras, Villa Las Pirquitas, Fray Mamerto Esquiú, Catamarca, Argentina",
+        "horarios": [
+          {
+            "dias": "Lunes a viernes",
+            "tramos": [
+              {
+                "desde": "08:00",
+                "hasta": "13:00"
+              },
+              {
+                "desde": "14:00",
+                "hasta": "18:00"
+              }
+            ]
+          },
+          {
+            "dias": "Sábados, domingos y feriados",
+            "desde": "08:00",
+            "hasta": "20:00"
+          }
+        ],
+        "telefono": "3834 69-3224",
+        "whatsapp_url": "https://wa.me/5493834693224",
+        "google_maps_url": "https://maps.app.goo.gl/MW1HUEGpGNuoLMWc7"
+      }
+    ]
+  },
+  "hero": {
+    "locationBadge": "Catamarca · Argentina",
+    "seasonBadge": "Guía Oficial de Verano",
+    "tagline": "Naturaleza · Historia · Paisaje",
+    "title": "FRAY TURISMO",
+    "subtitle": "Un lugar para descubrir, disfrutar y volver a visitar.",
+    "bgImage": "/images/dique-las-pirquitas.webp",
+    "searchPlaceholder": "¿Qué querés hacer? (ej. río, kayak, dique, cabañas, empanadas)",
+    "showSearch": true,
+    "showQuickBadges": true,
+    "quickBadges": [
+      {
+        "id": "qb-imperdibles",
+        "label": "Imperdibles",
+        "sublabel": "Sitios ícono",
+        "iconName": "Landmark",
+        "actionType": "scroll",
+        "target": "seccion-imperdibles-fray",
+        "colorBg": "bg-emerald-500/80"
+      },
+      {
+        "id": "qb-dique",
+        "label": "Dique & Sierras",
+        "sublabel": "Naturaleza",
+        "iconName": "Mountain",
+        "actionType": "category",
+        "target": "naturaleza",
+        "colorBg": "bg-teal-500/80"
+      },
+      {
+        "id": "qb-mapa",
+        "label": "Mapa & Cerca",
+        "sublabel": "Geolocalización",
+        "iconName": "MapPin",
+        "actionType": "tab",
+        "target": "mapa",
+        "colorBg": "bg-sky-500/80"
+      },
+      {
+        "id": "qb-esquiu",
+        "label": "Huellas del Beato",
+        "sublabel": "Audioguías",
+        "iconName": "Headphones",
+        "actionType": "scroll",
+        "target": "seccion-recorrido-esquiu",
+        "colorBg": "bg-amber-500/80"
+      }
+    ]
+  },
+  "categories": {
+    "title": "Explorá Fray por Categoría",
+    "subtitle": "Encontrá atractivos, gastronomía, naturaleza y servicios",
+    "items": [
+      {
+        "id": "visitar",
+        "label": "Imperdibles & Visitas",
+        "shortLabel": "Qué Visitar",
+        "emoji": "📸",
+        "iconName": "Camera",
+        "color": "from-emerald-700 to-teal-800",
+        "bgLight": "bg-emerald-50 text-emerald-900 border-emerald-200",
+        "description": "Monumentos, casas natales, diques y miradores de Fray",
+        "isVisible": true,
+        "sortOrder": 1
+      },
+      {
+        "id": "comer",
+        "label": "Gastronomía & Sabores",
+        "shortLabel": "Dónde Comer",
+        "emoji": "🥟",
+        "iconName": "Utensils",
+        "color": "from-amber-600 to-orange-700",
+        "bgLight": "bg-amber-50 text-amber-900 border-amber-200",
+        "description": "Empanadas al barro, asados, parrilladas y comida criolla",
+        "isVisible": true,
+        "sortOrder": 2
+      },
+      {
+        "id": "merendar",
+        "label": "Cafés & Casas de Té",
+        "shortLabel": "Meriendas",
+        "emoji": "☕",
+        "iconName": "Coffee",
+        "color": "from-orange-600 to-amber-700",
+        "bgLight": "bg-orange-50 text-orange-900 border-orange-200",
+        "description": "Tortas caseras, té en hebras y delicias serranas",
+        "isVisible": true,
+        "sortOrder": 3
+      },
+      {
+        "id": "campings",
+        "label": "Piletas y Campings",
+        "shortLabel": "Campings",
+        "emoji": "🏊",
+        "iconName": "Waves",
+        "color": "from-cyan-600 to-teal-700",
+        "bgLight": "bg-cyan-50 text-cyan-900 border-cyan-200",
+        "description": "Piletas recreativas, campings municipales y espacios al aire libre",
+        "isVisible": true,
+        "sortOrder": 4
+      },
+      {
+        "id": "dormir",
+        "label": "Cabañas & Alojamientos",
+        "shortLabel": "Dónde Dormir",
+        "emoji": "🏡",
+        "iconName": "Bed",
+        "color": "from-teal-600 to-emerald-700",
+        "bgLight": "bg-teal-50 text-teal-900 border-teal-200",
+        "description": "Cabañas con pileta, posadas coloniales y campings",
+        "isVisible": true,
+        "sortOrder": 5
+      },
+      {
+        "id": "religioso",
+        "label": "Turismo Religioso & Fe",
+        "shortLabel": "Ruta de Fe",
+        "emoji": "⛪",
+        "iconName": "Landmark",
+        "color": "from-sky-700 to-indigo-800",
+        "bgLight": "bg-sky-50 text-sky-900 border-sky-200",
+        "description": "Templos del 1700, santuarios y la huella de Fray Mamerto Esquiú",
+        "isVisible": true,
+        "sortOrder": 6
+      },
+      {
+        "id": "naturaleza",
+        "label": "Río, Dique & Paisajes",
+        "shortLabel": "Naturaleza",
+        "emoji": "🌊",
+        "iconName": "Trees",
+        "color": "from-cyan-600 to-teal-700",
+        "bgLight": "bg-cyan-50 text-cyan-900 border-cyan-200",
+        "description": "Dique Las Pirquitas, balnearios sobre el Río del Valle",
+        "isVisible": false,
+        "sortOrder": 7
+      },
+      {
+        "id": "senderos",
+        "label": "Sierras & Senderos",
+        "shortLabel": "Trekking",
+        "emoji": "🥾",
+        "iconName": "Mountain",
+        "color": "from-emerald-700 to-green-800",
+        "bgLight": "bg-emerald-50 text-emerald-900 border-emerald-200",
+        "description": "Caminatas a Casa de Piedra y trekking en Sierra de Gracián",
+        "isVisible": false,
+        "sortOrder": 8
+      },
+      {
+        "id": "actividades",
+        "label": "Kayak, Bici & Aventura",
+        "shortLabel": "Actividades",
+        "emoji": "🚣",
+        "iconName": "Compass",
+        "color": "from-blue-600 to-cyan-700",
+        "bgLight": "bg-blue-50 text-blue-900 border-blue-200",
+        "description": "Deportes náuticos en el dique, cabalgatas y cicloturismo",
+        "isVisible": false,
+        "sortOrder": 9
+      }
+    ]
+  },
+  "imperdibles": {
+    "badge": "Patrimonio & Postales Únicas",
+    "title": "Imperdibles de Fray",
+    "subtitle": "Los atractivos fundamentales que todo visitante debe conocer",
+    "items": [
+      {
+        "placeId": "casa-natal-esquiu",
+        "customTitle": "Casa Natal de Fray Mamerto Esquiú",
+        "customTagline": "Monumento Histórico Nacional con su templete protector",
+        "customImage": "/images/casa-natal-esquiu.webp",
+        "customBadge": "Patrimonio de la Nación",
+        "customBadgeColor": "bg-gradient-to-r from-amber-600 to-amber-700 text-white",
+        "customHighlight": "Paredes de adobe originales de 1826 conservadas dentro de un imponente templete.",
+        "customPhotoNote": "Fotografía oficial · Templete y fachada colonial",
+        "isVisible": true
+      },
+      {
+        "placeId": "monumento-esquiu",
+        "customTitle": "Monumento al Beato Mamerto Esquiú",
+        "customTagline": "Escultura de Antonio Emilio Forner y las tres arcadas",
+        "customImage": "/images/monumento-beato-esquiu.webp",
+        "customBadge": "Patrimonio de Fray",
+        "customBadgeColor": "bg-gradient-to-r from-teal-600 to-cyan-700 text-white",
+        "customHighlight": "Imponente figura de 2,30 m con arcadas franciscanas al pie de las sierras.",
+        "customPhotoNote": "Fotografía oficial · Cartel y Acceso al Monumento",
+        "isVisible": true
+      },
+      {
+        "placeId": "dique-las-pirquitas",
+        "customTitle": "Dique Las Pirquitas",
+        "customTagline": "Espejo de agua esmeralda, murallón y Club Náutico",
+        "customImage": "/images/dique-las-pirquitas.webp",
+        "customBadge": "Ícono Natural y Paisajístico",
+        "customBadgeColor": "bg-gradient-to-r from-emerald-600 to-teal-700 text-white",
+        "customHighlight": "Uno de los embalses más bellos del NOA, ideal para kayak, pesca y atardeceres serranos.",
+        "customPhotoNote": "Fotografía oficial · Vista panorámica del Dique",
+        "isVisible": true
+      }
+    ]
+  },
+  "conoceFray": {
+    "badge": "Identidad Territorial",
+    "title": "Conocé Fray Mamerto Esquiú",
+    "subtitle": "El departamento donde confluyen la fe, la geografía y la historia grande de Catamarca",
+    "leadParagraph": "Fray Mamerto Esquiú combina valles fértiles, aire puro serrano, la serenidad del Río del Valle y una rica historia colonial donde nació el prócer de la Constitución.",
+    "pillars": [
+      {
+        "id": "naturaleza",
+        "title": "FRAY ES NATURALEZA",
+        "subtitle": "Sierras, agua y Chaco Serrano",
+        "phrase": "Valles encajonados entre la imponente Sierra de Gracián y el Río del Valle, custodiados por el espejo verde esmeralda del Dique Las Pirquitas.",
+        "iconName": "Trees",
+        "gradient": "from-emerald-950 via-teal-900 to-sky-950",
+        "accentBadge": "bg-emerald-600 text-white",
+        "targetCategory": "naturaleza"
+      },
+      {
+        "id": "historia",
+        "title": "FRAY ES HISTORIA",
+        "subtitle": "De Allpatauca a la cuna del Beato",
+        "phrase": "Desde la Merced de Allpatauca en 1621 y el antiguo poblado de Piedra Blanca, hasta el primer trapiche e industrias coloniales del valle.",
+        "iconName": "Landmark",
+        "gradient": "from-amber-950 via-emerald-950 to-teal-950",
+        "accentBadge": "bg-amber-600 text-white",
+        "targetCategory": "historia"
+      },
+      {
+        "id": "fe",
+        "title": "FRAY ES FE",
+        "subtitle": "Tierra de Milagros y devoción",
+        "phrase": "Cuna de Fray Mamerto Esquiú (1826), templo histórico de San José (1780), el Santuario del Señor de los Milagros y las Campanas del Rosario.",
+        "iconName": "Sparkles",
+        "gradient": "from-teal-950 via-cyan-950 to-blue-950",
+        "accentBadge": "bg-cyan-600 text-white",
+        "targetCategory": "historia"
+      },
+      {
+        "id": "cultura",
+        "title": "FRAY ES CULTURA",
+        "subtitle": "Sabores, telares y tradición viva",
+        "phrase": "El aroma a empanadas recién horneadas en barro, telares criollos con manos maestras, música folclórica en las peñas y calidez pueblerina.",
+        "iconName": "HeartHandshake",
+        "gradient": "from-emerald-950 via-teal-900 to-amber-950",
+        "accentBadge": "bg-emerald-700 text-white",
+        "targetCategory": "comer"
+      },
+      {
+        "id": "experiencia",
+        "title": "FRAY ES EXPERIENCIA",
+        "subtitle": "Aventura, senderismo y desconexión",
+        "phrase": "Ascensos a la mítica Casa de Piedra en la Sierra de Gracián, travesías en kayak, cicloturismo serrano y meriendas bajo los nogales.",
+        "iconName": "Compass",
+        "gradient": "from-teal-950 via-emerald-900 to-sky-950",
+        "accentBadge": "bg-teal-600 text-white",
+        "targetCategory": "senderos"
+      }
+    ]
+  },
+  "queHacer": {
+    "badge": "Propuestas destacadas",
+    "title": "Qué hacer en Fray",
+    "subtitle": "Eventos, paseos y actividades programadas para disfrutar",
+    "featuredEventIds": [
+      "evt-1",
+      "evt-2"
+    ],
+    "activityPills": [
+      {
+        "id": "ap-kayak",
+        "label": "Kayak en el Dique",
+        "emoji": "🚣",
+        "targetCategory": "naturaleza"
+      },
+      {
+        "id": "ap-empanadas",
+        "label": "Ruta de la Empanada",
+        "emoji": "🥟",
+        "targetCategory": "comer"
+      },
+      {
+        "id": "ap-trekking",
+        "label": "Trekking Casa de Piedra",
+        "emoji": "🥾",
+        "targetCategory": "senderos"
+      },
+      {
+        "id": "ap-iglesias",
+        "label": "Circuito de Templos",
+        "emoji": "⛪",
+        "targetCategory": "religioso"
+      },
+      {
+        "id": "ap-cabanias",
+        "label": "Cabañas con pileta",
+        "emoji": "🏡",
+        "targetCategory": "dormir"
+      }
+    ]
+  },
+  "recorridoEsquiu": {
+    "badge": "Circuito Histórico & de Fe",
+    "title": "Tras las Huellas del Beato",
+    "subtitle": "Seguí los pasos del orador de la Constitución en su tierra natal",
+    "introDescription": "Un itinerario de fe y memoria que conecta la Casa Natal, el templo de San José donde fue bautizado y el mirador con el monumento serrano.",
+    "audioGuidePlaceId": "casa-natal-esquiu",
+    "highlights": [
+      "Casa Natal del Beato",
+      "Pila bautismal de 1826",
+      "Mirador panorámico 360°"
+    ],
+    "stops": [
+      {
+        "placeId": "casa-natal-esquiu",
+        "order": 1,
+        "distanceFromPrevious": "",
+        "tip": "Recorré el templete y observá el crucifijo original y los muros de adobe de 1826."
+      },
+      {
+        "placeId": "iglesia-san-jose",
+        "order": 2,
+        "distanceFromPrevious": "800 m desde la Casa Natal",
+        "tip": "Observá la pila bautismal de piedra tallada y el retablo de madera dorada."
+      },
+      {
+        "placeId": "monumento-esquiu",
+        "order": 3,
+        "distanceFromPrevious": "1.2 km desde la Iglesia de San José",
+        "tip": "Subí las escalinatas al mirador para una vista panorámica de todo el valle."
+      }
+    ]
+  },
+  "emblemaFe": {
+    "badge": "Patrimonio & Fe",
+    "title": "Fray, Tierra de Milagros",
+    "bodyText": "Cuna del Beato Fray Mamerto Esquiú. Recorré los templos históricos, museos y el circuito de fe en el corazón de Catamarca.",
+    "isVisible": true
+  },
+  "footer": {
+    "appName": "Fray Turismo",
+    "tagline": "Guía Turística Oficial de Verano 2026 - 2027",
+    "municipalTitle": "Municipalidad de Fray Mamerto Esquiú",
+    "secretaria": "Secretaría de Turismo, Cultura y Desarrollo Productivo",
+    "address": "San José de Piedra Blanca, Catamarca, Argentina",
+    "phone": "383 4491020",
+    "whatsapp": "5493834491020",
+    "email": "turismo@fraymarmertoesquiu.gob.ar",
+    "facebookUrl": "https://www.facebook.com/FrayMamertoEsquiuMunicipalidad/",
+    "instagramUrl": "https://www.instagram.com/fray_municipalidad/",
+    "websiteUrl": "https://fraymamertoesquiu.org.ar",
+    "copyrightText": "© 2026–2027 Municipalidad de Fray Mamerto Esquiú. Todos los derechos reservados.",
+    "localitiesText": "San José de Piedra Blanca · La Falda · San Antonio · Las Pirquitas · La Carrera · Collagasta · Pomancillo"
+  },
+  "deletedPlaceIds": [
+    "casona-piedra-blanca",
+    "parrilla-el-quincho",
+    "astor-pizza-in-te-glia",
+    "buena-vida-resto"
+  ]
+}

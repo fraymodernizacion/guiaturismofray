@@ -14,8 +14,10 @@
     "localityId": "san-jose",
     "lat": -28.362,
     "lng": -65.719,
-    "image": "",
-    "gallery": [],
+    "image": "/uploads/fray_1795557993534_subida_a_casa_de_piedra_1795558010556.jpg",
+    "gallery": [
+      "/uploads/fray_1795557993534_subida_a_casa_de_piedra_1795558010556.jpg"
+    ],
     "openingHours": "",
     "phone": "",
     "whatsapp": "",
@@ -32,7 +34,6 @@
     ],
     "featured": true,
     "isImperdible": true,
-    "photoPendingNote": "FOTO PENDIENTE: vista panorámica de Casa de Piedra hacia el Valle de Fray Mamerto Esquiú",
     "photoCredit": "Turismo Catamarca / Municipalidad de Fray Mamerto Esquiú",
     "validationStatus": "pendiente_validacion",
     "validationNote": "La ruta publicada por usuarios no constituye verificación oficial del sendero. Confirmar acceso vigente, duración, dificultad y señalización.",
@@ -58,7 +59,8 @@
         "No ascender con pronóstico de lluvias o tormentas eléctricas.",
         "Avisar en la Secretaría de Turismo o a conocidos antes de iniciar el ascenso."
       ]
-    }
+    },
+    "googleMapsUrl": "https://maps.app.goo.gl/xGB2fTKZWxpKmfXm6"
   },
   {
     "id": "santuario-senor-de-los-milagros",
@@ -98,8 +100,7 @@
     "audioguideId": "audio-santuario-milagros",
     "validationStatus": "verificado",
     "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú",
-    "priceLevel": "$",
-    "photoPendingNote": "FOTO PENDIENTE: Fachada histórica del Santuario Señor de los Milagros de La Tercena"
+    "priceLevel": "$"
   },
   {
     "id": "iglesia-san-antonio-padua",
@@ -440,8 +441,10 @@
     "localityId": "las-pirquitas",
     "lat": -28.281,
     "lng": -65.73,
-    "image": "",
-    "gallery": [],
+    "image": "/uploads/fray_1795558195893_paseo_las_moras_complejo_municip_1795558212684.jpg",
+    "gallery": [
+      "/uploads/fray_1795558195893_paseo_las_moras_complejo_municip_1795558212684.jpg"
+    ],
     "openingHours": "",
     "phone": "",
     "whatsapp": "",
@@ -456,7 +459,8 @@
     ],
     "validationStatus": "pendiente_validacion",
     "validationNote": "Confirmar horarios actuales del complejo, de Turismo y de cada sala; pueden ser distintos.",
-    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)"
+    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)",
+    "googleMapsUrl": "https://maps.app.goo.gl/accdxym7u4D16rJ77"
   },
   {
     "id": "casa-natal-esquiu",
@@ -582,43 +586,6 @@
     "priceLevel": "$"
   },
   {
-    "id": "casona-piedra-blanca",
-    "name": "La Casona de Piedra Blanca",
-    "category": "comer",
-    "shortDescription": "Restaurante criollo con patio colonial, empanadas al horno de barro y cabrito a la llama.",
-    "description": "Famoso por su auténtica cocina catamarqueña en una casona centenaria rodeada de higueras y parrales. Imperdibles las empanadas cortadas a cuchillo, el cabrito braseado al torrontés y el flan casero con dulce de leche de campo.",
-    "address": "Av. Vicente Saadi 450, Piedra Blanca",
-    "locality": "San José de Piedra Blanca",
-    "lat": -28.386,
-    "lng": -65.7348,
-    "image": "/images/casona-piedra-blanca.webp",
-    "gallery": [
-      "/images/casona-piedra-blanca.webp"
-    ],
-    "openingHours": "Mié a Dom: 12:00 a 16:00 y 20:30 a 01:00 hs.",
-    "phone": "+54 383 4721990",
-    "whatsapp": "5493834721990",
-    "instagram": "lacasonapiedrablanca",
-    "tags": [
-      "Abierto ahora",
-      "Pet friendly",
-      "Con niños",
-      "Al aire libre",
-      "Estacionamiento",
-      "Opciones vegetarianas",
-      "Acepta Mercado Pago",
-      "Wi-Fi"
-    ],
-    "services": [
-      "Patio al aire libre",
-      "Música folclórica en vivo",
-      "Menú infantil",
-      "Carta de vinos catamarqueños"
-    ],
-    "priceLevel": "$$",
-    "featured": true
-  },
-  {
     "id": "hosteria-municipal-pirquitas",
     "name": "Hostería y Cabañas del Dique",
     "category": "dormir",
@@ -698,8 +665,10 @@
     "lat": -28.3996993,
     "lng": -65.704139,
     "googleMapsUrl": "https://maps.app.goo.gl/eBNxMQdTsg5jviUz7",
-    "image": "",
-    "gallery": [],
+    "image": "/uploads/fray_1795558273758_ruinas_del_primer_trapiche_azuca_1795558290532.webp",
+    "gallery": [
+      "/uploads/fray_1795558273758_ruinas_del_primer_trapiche_azuca_1795558290532.webp"
+    ],
     "openingHours": "",
     "phone": "",
     "whatsapp": "",
@@ -729,8 +698,10 @@
     "localityId": "las-pirquitas",
     "lat": 0,
     "lng": 0,
-    "image": "",
-    "gallery": [],
+    "image": "/uploads/fray_1795558285855_sala_de_exposicion_malvinas_1795558302861.webp",
+    "gallery": [
+      "/uploads/fray_1795558285855_sala_de_exposicion_malvinas_1795558302861.webp"
+    ],
     "openingHours": "",
     "phone": "383 4775621",
     "whatsapp": "",
@@ -744,7 +715,8 @@
     ],
     "validationStatus": "pendiente_validacion",
     "validationNote": "El horario de jueves a domingo 17–21 h publicado en marzo de 2026 fue para un fin de semana específico; no publicarlo como horario permanente. Teléfono para coordinar visitas escolares según nota de marzo 2026, confirmar vigencia.",
-    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)"
+    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)",
+    "googleMapsUrl": "https://maps.app.goo.gl/UGnA5JKS2hhGuJia8"
   },
   {
     "id": "plaza-san-jose",
@@ -758,8 +730,10 @@
     "localityId": "san-jose",
     "lat": 0,
     "lng": 0,
-    "image": "",
-    "gallery": [],
+    "image": "/uploads/fray_1795558318293_plaza_de_san_jose_1795558335154.webp",
+    "gallery": [
+      "/uploads/fray_1795558318293_plaza_de_san_jose_1795558335154.webp"
+    ],
     "openingHours": "",
     "phone": "",
     "whatsapp": "",
@@ -772,7 +746,8 @@
     ],
     "validationStatus": "pendiente_validacion",
     "validationNote": "Corroborar punto exacto para navegación y posibles servicios actuales.",
-    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)"
+    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)",
+    "googleMapsUrl": "https://maps.app.goo.gl/n2Ycavcph9qbUKyx6"
   },
   {
     "id": "puente-colgante-pirquitas",
@@ -786,8 +761,11 @@
     "localityId": "las-pirquitas",
     "lat": 0,
     "lng": 0,
-    "image": "",
-    "gallery": [],
+    "image": "/uploads/fray_1795558348614_puente_colgante_de_pirquitas_1795558365585.webp",
+    "gallery": [
+      "/uploads/fray_1795558348614_puente_colgante_de_pirquitas_1795558365585.webp",
+      "/uploads/fray_1795558331878_puente_colgante_de_pirquitas_1795558348530.webp"
+    ],
     "openingHours": "",
     "phone": "",
     "whatsapp": "",
@@ -798,7 +776,8 @@
     "validationStatus": "pendiente_validacion",
     "validationNote": "PRIORIDAD ALTA: verificar existencia, nombre oficial, ubicación y accesibilidad. Algunas publicaciones mencionan un puente colgante en La Carrera, que NO debe confundirse con este sitio.",
     "safetyWarning": "No publicar rutas ni asegurar habilitación de paso hasta verificarlo.",
-    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)"
+    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)",
+    "googleMapsUrl": "https://maps.app.goo.gl/846FnTEtiTMX7bFx6"
   },
   {
     "id": "murallon-dique-las-pirquitas",
@@ -812,8 +791,10 @@
     "localityId": "las-pirquitas",
     "lat": 0,
     "lng": 0,
-    "image": "",
-    "gallery": [],
+    "image": "/uploads/fray_1795558366323_murallon_del_dique_las_pirquitas_1795558383152.webp",
+    "gallery": [
+      "/uploads/fray_1795558366323_murallon_del_dique_las_pirquitas_1795558383152.webp"
+    ],
     "openingHours": "",
     "phone": "",
     "whatsapp": "",
@@ -827,7 +808,8 @@
     "validationStatus": "pendiente_validacion",
     "validationNote": "Confirmar accesos, restricciones de circulación y estado actual de miradores.",
     "safetyWarning": "Respetar vallados, señalización y restricciones de acceso a infraestructura hidráulica.",
-    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)"
+    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)",
+    "googleMapsUrl": "https://maps.app.goo.gl/wVYL3DmYqtYnc9598"
   },
   {
     "id": "los-palmares",
@@ -840,8 +822,10 @@
     "locality": "Ruta Provincial 1, Fray Mamerto Esquiú",
     "lat": 0,
     "lng": 0,
-    "image": "",
-    "gallery": [],
+    "image": "/uploads/fray_1795558386735_los_palmares_parque_los_palmares_1795558403733.jpg",
+    "gallery": [
+      "/uploads/fray_1795558386735_los_palmares_parque_los_palmares_1795558403733.jpg"
+    ],
     "openingHours": "",
     "phone": "",
     "whatsapp": "",
@@ -853,7 +837,8 @@
     "validationStatus": "pendiente_validacion",
     "validationNote": "PRIORIDAD ALTA: definir si la ficha trata del palmar natural o del parque proyectado; verificar estado de obra, habilitación, acceso y ubicación puntual. No afirmar que es un parque operativo.",
     "safetyWarning": "No recomendar ingreso a áreas de obra o terrenos sin acceso público confirmado.",
-    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)"
+    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)",
+    "googleMapsUrl": "https://maps.app.goo.gl/7rBKVwviMqCvKGjJ9"
   },
   {
     "id": "aventura-nautica-kayak",
@@ -886,70 +871,6 @@
     ],
     "priceLevel": "$$",
     "featured": true
-  },
-  {
-    "id": "parrilla-el-quincho",
-    "name": "Parrilla & Restó El Quincho de San Antonio",
-    "category": "comer",
-    "shortDescription": "Cortes a la parrilla, matambre a la pizza, papas rústicas y cervezas bien heladas.",
-    "description": "Punto de encuentro veraniego con mesas bajo techado de cañizo y gran patio cervecero. Platos abundantes pensados para compartir en familia o con amigos tras un día de río o lago.",
-    "address": "Ruta 41 y Calle del Carmen, San Antonio",
-    "locality": "San Antonio",
-    "lat": -28.4045,
-    "lng": -65.737,
-    "image": "",
-    "gallery": [],
-    "openingHours": "Jue a Dom: 20:30 a 02:00 hs. Sáb y Dom también 12:30 a 16:00 hs.",
-    "phone": "+54 383 4223344",
-    "whatsapp": "5493834223344",
-    "instagram": "elquinchosanantonio",
-    "tags": [
-      "Abierto ahora",
-      "Pet friendly",
-      "Con niños",
-      "Al aire libre",
-      "Estacionamiento",
-      "Wi-Fi",
-      "Acepta Mercado Pago"
-    ],
-    "services": [
-      "Parrilla a la vista",
-      "Pantalla gigante para partidos",
-      "Sector infantil",
-      "Delivery local"
-    ],
-    "priceLevel": "$$"
-  },
-  {
-    "id": "helados-plaza-sanjose",
-    "name": "Helados Artesanales San José",
-    "category": "merendar",
-    "shortDescription": "Sabores autóctonos: nuez con higo, dulce de leche catamarqueño, cayote y frutos del monte.",
-    "description": "Frente a la plaza principal, la heladería tradicional de Fray donde convergen turistas y vecinos. Elaboración 100% artesanal con materias primas locales y cafetería rápida al paso.",
-    "address": "Calle Fray M. Esquiú 120 (frente a la plaza), Piedra Blanca",
-    "locality": "San José de Piedra Blanca",
-    "lat": -28.385,
-    "lng": -65.7339,
-    "image": "",
-    "gallery": [],
-    "openingHours": "Lunes a Domingo de 11:00 a 01:30 hs.",
-    "phone": "+54 383 4661122",
-    "whatsapp": "5493834661122",
-    "tags": [
-      "Abierto ahora",
-      "Accesible",
-      "Con niños",
-      "Al aire libre",
-      "Económico",
-      "Acepta Mercado Pago"
-    ],
-    "services": [
-      "Mesitas en la vereda",
-      "Opciones sin TACC",
-      "Café express",
-      "Take away"
-    ],
-    "priceLevel": "$"
   },
   {
     "id": "cabanas-sol-sierras",
@@ -998,8 +919,10 @@
     "locality": "Sierra de Gracián",
     "lat": -28.33,
     "lng": -65.721,
-    "image": "",
-    "gallery": [],
+    "image": "/uploads/fray_1795558401149_subida_al_gracian_1795558418151.webp",
+    "gallery": [
+      "/uploads/fray_1795558401149_subida_al_gracian_1795558418151.webp"
+    ],
     "openingHours": "",
     "phone": "",
     "whatsapp": "",
@@ -1014,7 +937,8 @@
     "validationStatus": "pendiente_validacion",
     "validationNote": "Confirmar nombre del sendero, inicio, recorrido, desnivel, dificultad, permisos, guía local y estado de accesos.",
     "safetyWarning": "Actividad de montaña; consultar condiciones meteorológicas y orientación local. No prometer acceso libre ni señalar sendero exacto.",
-    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)"
+    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)",
+    "googleMapsUrl": "https://maps.app.goo.gl/UtZ1t91Xd1434pNCA"
   },
   {
     "id": "monumento-esquiu",
@@ -1524,8 +1448,10 @@
     "lat": -28.3955991,
     "lng": -65.7039236,
     "googleMapsUrl": "https://maps.app.goo.gl/Ua6s9jgnMowxLQ886",
-    "image": "",
-    "gallery": [],
+    "image": "/uploads/fray_1795562330790_paluma_cerveceria_1795562347769.jpg",
+    "gallery": [
+      "/uploads/fray_1795562330790_paluma_cerveceria_1795562347769.jpg"
+    ],
     "openingHours": "Jueves, viernes, sábado y domingo desde las 21:00",
     "phone": "3834683333 / 3834329062 / 3834343454",
     "whatsapp": "5493834683333",
@@ -1538,7 +1464,8 @@
     "validationStatus": "pendiente_validacion",
     "validationNote": "Datos de Guía de Verano 2025-2026 (págs. 6-8). Horarios sujetos a reconfirmación.",
     "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú",
-    "priceLevel": "$$"
+    "priceLevel": "$$",
+    "instagram": ""
   },
   {
     "id": "amadeus-bar",
@@ -1553,8 +1480,10 @@
     "lat": -28.3929648,
     "lng": -65.7003958,
     "googleMapsUrl": "https://maps.app.goo.gl/qpwsFgGEgLCqsgvN9",
-    "image": "",
-    "gallery": [],
+    "image": "/uploads/fray_1795562351508_amadeus_bar_1795562368434.jpg",
+    "gallery": [
+      "/uploads/fray_1795562351508_amadeus_bar_1795562368434.jpg"
+    ],
     "openingHours": "Miércoles a domingo desde las 20:30. Domingo: almuerzo de 13:00 a 15:30",
     "phone": "3834036644",
     "whatsapp": "5493834036644",
@@ -1565,36 +1494,8 @@
     "validationStatus": "pendiente_validacion",
     "validationNote": "Datos de Guía de Verano 2025-2026 (págs. 6-8). Horarios sujetos a reconfirmación.",
     "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú",
-    "priceLevel": "$$"
-  },
-  {
-    "id": "astor-pizza-in-te-glia",
-    "name": "Astor Pizza In Te-Glia",
-    "category": "comer",
-    "subCategory": "Pizzerías y bares",
-    "shortDescription": "Pizzería y bar con servicio de envíos en San Antonio.",
-    "description": "Pizzerías y bares ubicado en Sargento Cabral esquina Ruta Provincial 41, San Antonio. Cuenta con servicio de envíos.",
-    "address": "Sargento Cabral esquina Ruta Provincial 41",
-    "locality": "San Antonio",
-    "localityId": "san-antonio",
-    "lat": -28.4065,
-    "lng": -65.7375,
-    "image": "",
-    "gallery": [],
-    "openingHours": "Jueves a domingo de 20:00 a 02:00",
-    "phone": "3834653008",
-    "whatsapp": "5493834653008",
-    "instagram": "astorpizzainteglia",
-    "tags": [
-      "Con niños"
-    ],
-    "services": [
-      "Envíos"
-    ],
-    "validationStatus": "pendiente_validacion",
-    "validationNote": "Datos de Guía de Verano 2025-2026 (págs. 6-8). Horarios y enlace Maps sujetos a validación.",
-    "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú",
-    "priceLevel": "$$"
+    "priceLevel": "$$",
+    "instagram": ""
   },
   {
     "id": "el-chaperio-de-mamerto",
@@ -1609,8 +1510,10 @@
     "lat": -28.3941799,
     "lng": -65.7138119,
     "googleMapsUrl": "https://maps.app.goo.gl/RLqDk8Q5Lko7hQpe7",
-    "image": "",
-    "gallery": [],
+    "image": "/uploads/fray_1795562363009_el_chaperio_de_mamerto_1795562379974.jpg",
+    "gallery": [
+      "/uploads/fray_1795562363009_el_chaperio_de_mamerto_1795562379974.jpg"
+    ],
     "openingHours": "",
     "phone": "3573411077",
     "whatsapp": "5493573411077",
@@ -1621,7 +1524,8 @@
     "validationStatus": "pendiente_validacion",
     "validationNote": "Datos de Guía de Verano 2025-2026 (págs. 6-8). Horarios no informados en la guía.",
     "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú",
-    "priceLevel": "$"
+    "priceLevel": "$",
+    "instagram": ""
   },
   {
     "id": "pan-y-cafe-comer",
@@ -1635,8 +1539,10 @@
     "localityId": "san-jose",
     "lat": -28.3825,
     "lng": -65.732,
-    "image": "",
-    "gallery": [],
+    "image": "/uploads/fray_1795562375433_pan_y_cafe_1795562392502.webp",
+    "gallery": [
+      "/uploads/fray_1795562375433_pan_y_cafe_1795562392502.webp"
+    ],
     "openingHours": "Todos los días de 07:00 a 15:00 y de 18:00 a 02:00",
     "phone": "3834322392 / 3934044785",
     "whatsapp": "5493834322392",
@@ -1651,7 +1557,8 @@
     ],
     "validationStatus": "pendiente_validacion",
     "validationNote": "Horarios de la Guía de Verano 2025-2026 (a reconfirmar). Revisar segundo teléfono y enlace Maps antes de validar.",
-    "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú"
+    "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú",
+    "instagram": ""
   },
   {
     "id": "restaurante-hosteria-las-pirquitas",
@@ -1665,8 +1572,10 @@
     "localityId": "las-pirquitas",
     "lat": -28.276,
     "lng": -65.729,
-    "image": "",
-    "gallery": [],
+    "image": "/uploads/fray_1795562387711_restaurante_hosteria_las_pirquit_1795562404657.webp",
+    "gallery": [
+      "/uploads/fray_1795562387711_restaurante_hosteria_las_pirquit_1795562404657.webp"
+    ],
     "openingHours": "Martes a domingo de 09:00 a 21:00",
     "phone": "3834414903",
     "whatsapp": "5493834414903",
@@ -1677,7 +1586,9 @@
     "services": [],
     "validationStatus": "pendiente_validacion",
     "validationNote": "Corresponde al servicio de restaurante (Guía de Verano 2025-2026, pág. 7). Horarios y enlace Maps a reconfirmar.",
-    "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú"
+    "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú",
+    "googleMapsUrl": "https://maps.app.goo.gl/pLDnBaMwDkZd5crz9",
+    "instagram": ""
   },
   {
     "id": "las-lilas-comer",
@@ -1691,8 +1602,10 @@
     "localityId": "san-antonio",
     "lat": -28.403,
     "lng": -65.735,
-    "image": "",
-    "gallery": [],
+    "image": "/uploads/fray_1795562440144_las_lilas_1795562457248.jpg",
+    "gallery": [
+      "/uploads/fray_1795562440144_las_lilas_1795562457248.jpg"
+    ],
     "openingHours": "Viernes a domingo y feriados. Meriendas sábados, domingos y feriados desde las 18:00",
     "phone": "3834559563 / 3512031171",
     "whatsapp": "5493834559563",
@@ -1704,7 +1617,9 @@
     ],
     "validationStatus": "pendiente_validacion",
     "validationNote": "Guía de Verano 2025-2026 (pág. 7). Confirmar horario de otras comidas y enlace Maps.",
-    "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú"
+    "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú",
+    "googleMapsUrl": "https://maps.app.goo.gl/c3M42JCSR4SFHqBS6",
+    "instagram": ""
   },
   {
     "id": "resto-bar-los-abus",
@@ -1721,14 +1636,17 @@
     "localityId": "las-pirquitas",
     "lat": -28.277,
     "lng": -65.7295,
-    "image": "",
-    "gallery": [],
+    "image": "/uploads/fray_1795562479827_resto_bar_los_abus_1795562496784.jpg",
+    "gallery": [
+      "/uploads/fray_1795562479827_resto_bar_los_abus_1795562496784.jpg"
+    ],
     "openingHours": "Sábados, domingos y feriados: almuerzo de campo de 12:00 a 16:00; merienda buffet libre de 17:00 a 22:00",
     "phone": "3834294467",
     "whatsapp": "5493834294467",
     "tags": [
       "Con niños",
-      "Vista a las sierras"
+      "Vista a las sierras",
+      "Acepta Mercado Pago"
     ],
     "services": [
       "Almuerzo de campo",
@@ -1737,7 +1655,9 @@
     "validationStatus": "pendiente_validacion",
     "validationNote": "Datos de Guía de Verano 2025-2026 (pág. 7). Horarios y enlace Maps sujetos a validación.",
     "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú",
-    "priceLevel": "$$"
+    "priceLevel": "$$",
+    "googleMapsUrl": "https://maps.app.goo.gl/qG6EFLgMo3qP8ZcW9",
+    "instagram": ""
   },
   {
     "id": "don-paulino-resto-bar",
@@ -1751,19 +1671,24 @@
     "localityId": "san-antonio",
     "lat": -28.4068,
     "lng": -65.738,
-    "image": "",
-    "gallery": [],
+    "image": "/uploads/fray_1795562512322_don_paulino_resto_bar_1795562529409.jpg",
+    "gallery": [
+      "/uploads/fray_1795562512322_don_paulino_resto_bar_1795562529409.jpg"
+    ],
     "openingHours": "Abierto desde las 20:30",
     "phone": "3834655985 / 3834196379",
     "whatsapp": "5493834655985",
     "tags": [
-      "Con niños"
+      "Con niños",
+      "Acepta Mercado Pago"
     ],
     "services": [],
     "validationStatus": "pendiente_validacion",
     "validationNote": "Datos de Guía de Verano 2025-2026 (pág. 7). Horarios y enlace Maps sujetos a validación.",
     "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú",
-    "priceLevel": "$"
+    "priceLevel": "$",
+    "googleMapsUrl": "https://maps.app.goo.gl/eVx52GS1NDUiP2Mv6",
+    "instagram": ""
   },
   {
     "id": "urbana-resto-pub",
@@ -1777,46 +1702,26 @@
     "localityId": "san-antonio",
     "lat": -28.405,
     "lng": -65.736,
-    "image": "",
-    "gallery": [],
+    "image": "/uploads/fray_1795562561294_urbana_resto_pub_1795562578418.jpg",
+    "gallery": [
+      "/uploads/fray_1795562561294_urbana_resto_pub_1795562578418.jpg"
+    ],
     "openingHours": "Sábados de 21:00 a 05:00; domingos de 12:00 a 16:00",
     "phone": "3834619923",
     "whatsapp": "5493834619923",
     "tags": [
-      "Al aire libre"
-    ],
-    "services": [],
-    "validationStatus": "pendiente_validacion",
-    "validationNote": "Datos de Guía de Verano 2025-2026 (pág. 8). Horarios y enlace Maps sujetos a validación.",
-    "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú",
-    "priceLevel": "$$"
-  },
-  {
-    "id": "buena-vida-resto",
-    "name": "Buena Vida",
-    "category": "comer",
-    "subCategory": "Restaurantes y resto bares",
-    "shortDescription": "Restaurante y resto bar en Vista Larga, San Antonio.",
-    "description": "Restaurantes y resto bares ubicado en Vista Larga, San Antonio.",
-    "address": "Vista Larga",
-    "locality": "San Antonio",
-    "localityId": "san-antonio",
-    "lat": -28.411,
-    "lng": -65.732,
-    "image": "",
-    "gallery": [],
-    "openingHours": "Viernes y sábados desde las 21:00; domingos desde las 12:00",
-    "phone": "3834021919",
-    "whatsapp": "5493834021919",
-    "tags": [
       "Al aire libre",
-      "Vista a las sierras"
+      "Estacionamiento",
+      "Acepta Mercado Pago",
+      "Con niños"
     ],
     "services": [],
     "validationStatus": "pendiente_validacion",
     "validationNote": "Datos de Guía de Verano 2025-2026 (pág. 8). Horarios y enlace Maps sujetos a validación.",
     "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú",
-    "priceLevel": "$$"
+    "priceLevel": "$$",
+    "googleMapsUrl": "https://maps.app.goo.gl/d8wbuBbSCt4VsBrv7",
+    "instagram": ""
   },
   {
     "id": "caligula-salon-eventos",
@@ -1830,13 +1735,20 @@
     "localityId": "la-carrera",
     "lat": -28.349,
     "lng": -65.7235,
-    "image": "",
-    "gallery": [],
+    "image": "/uploads/fray_1795562599663_caligula_salon_de_eventos_1795562616757.jpg",
+    "gallery": [
+      "/uploads/fray_1795562599663_caligula_salon_de_eventos_1795562616757.jpg"
+    ],
     "openingHours": "Eventos privados; no informa horarios de atención",
     "phone": "3834041980 / 3834478681",
     "whatsapp": "5493834041980",
     "tags": [
-      "Al aire libre"
+      "Al aire libre",
+      "Estacionamiento",
+      "Piscina",
+      "Con niños",
+      "Accesible",
+      "Vista a las sierras"
     ],
     "services": [
       "Celebraciones familiares",
@@ -1846,7 +1758,9 @@
     "validationStatus": "pendiente_validacion",
     "validationNote": "Guía de Verano 2025-2026 (pág. 8). Requiere revisión editorial por no ser un restaurante de atención habitual.",
     "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú",
-    "priceLevel": "$$$"
+    "priceLevel": "$$$",
+    "googleMapsUrl": "https://maps.app.goo.gl/uK94VxUNgP2zciwcA",
+    "instagram": ""
   },
   {
     "id": "alvin-resto-bar",
@@ -1860,19 +1774,27 @@
     "localityId": "san-jose",
     "lat": -28.3838,
     "lng": -65.7332,
-    "image": "",
-    "gallery": [],
+    "image": "/uploads/fray_1795562651584_alvin_resto_bar_1795562668663.jpg",
+    "gallery": [
+      "/uploads/fray_1795562651584_alvin_resto_bar_1795562668663.jpg"
+    ],
     "openingHours": "Domingo a jueves de 08:00 a 15:00 y de 19:30 a 00:30; viernes y sábados de 08:00 a 15:00 y de 19:30 a 02:30",
     "phone": "3834814020",
     "whatsapp": "5493834814020",
     "tags": [
-      "Con niños"
+      "Con niños",
+      "Estacionamiento",
+      "Al aire libre",
+      "Acepta Mercado Pago",
+      "Accesible"
     ],
     "services": [],
     "validationStatus": "pendiente_validacion",
     "validationNote": "Datos de Guía de Verano 2025-2026 (pág. 8). Horarios y enlace Maps sujetos a validación.",
     "sourceGuide": "Guía de Verano 2025-2026 · Fray Mamerto Esquiú",
-    "priceLevel": "$$"
+    "priceLevel": "$$",
+    "googleMapsUrl": "https://maps.app.goo.gl/5wxzkysKT5AyjySt8",
+    "instagram": ""
   },
   {
     "id": "hotel-don-oresttes",
@@ -2308,8 +2230,10 @@
     "localityId": "san-antonio",
     "lat": -28.4067,
     "lng": -65.7381,
-    "image": "",
-    "gallery": [],
+    "image": "/uploads/fray_1795558420843_plaza_parque_chacarero_1795558437763.webp",
+    "gallery": [
+      "/uploads/fray_1795558420843_plaza_parque_chacarero_1795558437763.webp"
+    ],
     "openingHours": "",
     "phone": "",
     "whatsapp": "",
@@ -2323,7 +2247,8 @@
     ],
     "validationStatus": "pendiente_validacion",
     "validationNote": "No se obtuvo un pin de Google Maps verificado; corroborar ubicación exacta y equipamiento actual.",
-    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)"
+    "sourceGuide": "Visita Fray · Catálogo Qué visitar (2026)",
+    "googleMapsUrl": "https://maps.app.goo.gl/maxHzxfvgr4miboi8"
   },
   {
     "id": "vertedero-dique-pirquitas",
@@ -2360,43 +2285,6 @@
     "featured": true,
     "validationStatus": "verificado",
     "validationNote": "Atractivo natural y mirador permanente.",
-    "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
-  },
-  {
-    "id": "campanas-del-rosario",
-    "name": "Campanas del Rosario & Capilla",
-    "category": "religioso",
-    "subCategory": "Patrimonio Religioso",
-    "shortDescription": "Capilla histórica y campanario rústico abrazados por el paisaje serrano de La Falda.",
-    "description": "Un sitio donde la devoción y la naturaleza se funden en perfecta armonía. La capilla y su campanario histórico resuenan entre las quebradas de La Falda, en un entorno de nogales, algarrobos y silencio espiritual venerado por generaciones.",
-    "address": "Camino a La Falda s/n",
-    "locality": "La Falda de San Antonio",
-    "localityId": "san-antonio",
-    "lat": -28.417,
-    "lng": -65.724,
-    "image": "",
-    "gallery": [],
-    "openingHours": "Visita libre durante horas del día (08:00 a 19:30 hs).",
-    "phone": "+54 383 4491020",
-    "whatsapp": "5493834491020",
-    "tags": [
-      "Al aire libre",
-      "Vista a las sierras",
-      "Patrimonio Esquiú",
-      "Con niños",
-      "Económico"
-    ],
-    "services": [
-      "Campanario histórico",
-      "Entorno arbolado de descanso",
-      "Espacio de meditación"
-    ],
-    "priceLevel": "$",
-    "featured": true,
-    "isImperdible": true,
-    "isHeritageEsquiu": true,
-    "photoPendingNote": "FOTO PENDIENTE: Campanario de las Campanas del Rosario y entorno serrano de La Falda",
-    "validationStatus": "verificado",
     "sourceGuide": "Guía Turística Oficial Fray Mamerto Esquiú"
   }
 ]

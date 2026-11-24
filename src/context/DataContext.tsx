@@ -20,11 +20,28 @@ import {
   INITIAL_BADGES,
   INITIAL_USER_PRESETS,
 } from '../data/initialData';
-import { SiteConfig, HeroConfig, CategoriesSectionConfig, ImperdiblesSectionConfig, ConoceFraySectionConfig, QueHacerSectionConfig, RecorridoEsquiuSectionConfig, EmblemaFeConfig, FooterConfig } from '../types/siteConfig';
+import {
+  SiteConfig,
+  HeroConfig,
+  TourismOfficesSectionConfig,
+  CategoriesSectionConfig,
+  ImperdiblesSectionConfig,
+  ConoceFraySectionConfig,
+  QueHacerSectionConfig,
+  RecorridoEsquiuSectionConfig,
+  EmblemaFeConfig,
+  FooterConfig,
+} from '../types/siteConfig';
 import { DEFAULT_SITE_CONFIG } from '../data/defaultSiteConfig';
 import { calculateDistanceKm, isValidCoordinate } from '../utils/geoUtils';
 import { computeTopographicalRouteEstimate, calculateHaversineKm } from '../utils/routesService';
 import { audioNarrator } from '../utils/audioNarrator';
+
+export interface SaveStatus {
+  state: 'idle' | 'saving' | 'saved' | 'error';
+  message?: string;
+  updatedAt?: number;
+}
 
 interface DataContextType {
   places: Place[];
@@ -60,22 +77,24 @@ interface DataContextType {
 
   // Site Configuration & Visual Editor
   siteConfig: SiteConfig;
+  saveStatus: SaveStatus;
   sectionToEdit: string | null;
   setSectionToEdit: (section: string | null) => void;
   placeToEdit: Place | null;
   setPlaceToEdit: (place: Place | null) => void;
   isCreatePlaceModalOpen: boolean;
   setIsCreatePlaceModalOpen: (open: boolean) => void;
-  updateSiteConfig: (newConfig: Partial<SiteConfig>) => void;
-  updateHeroConfig: (hero: Partial<HeroConfig>) => void;
-  updateCategoriesConfig: (categories: Partial<CategoriesSectionConfig>) => void;
-  updateImperdiblesConfig: (imperdibles: Partial<ImperdiblesSectionConfig>) => void;
-  updateConoceFrayConfig: (conoce: Partial<ConoceFraySectionConfig>) => void;
-  updateQueHacerConfig: (queHacer: Partial<QueHacerSectionConfig>) => void;
-  updateRecorridoEsquiuConfig: (recorrido: Partial<RecorridoEsquiuSectionConfig>) => void;
-  updateEmblemaFeConfig: (emblema: Partial<EmblemaFeConfig>) => void;
-  updateFooterConfig: (footer: Partial<FooterConfig>) => void;
-  resetSiteConfigToDefault: () => void;
+  updateSiteConfig: (newConfig: Partial<SiteConfig>) => Promise<boolean>;
+  updateHeroConfig: (hero: Partial<HeroConfig>) => Promise<boolean>;
+  updateTourismOfficesConfig: (tourismOffices: Partial<TourismOfficesSectionConfig>) => Promise<boolean>;
+  updateCategoriesConfig: (categories: Partial<CategoriesSectionConfig>) => Promise<boolean>;
+  updateImperdiblesConfig: (imperdibles: Partial<ImperdiblesSectionConfig>) => Promise<boolean>;
+  updateConoceFrayConfig: (conoce: Partial<ConoceFraySectionConfig>) => Promise<boolean>;
+  updateQueHacerConfig: (queHacer: Partial<QueHacerSectionConfig>) => Promise<boolean>;
+  updateRecorridoEsquiuConfig: (recorrido: Partial<RecorridoEsquiuSectionConfig>) => Promise<boolean>;
+  updateEmblemaFeConfig: (emblema: Partial<EmblemaFeConfig>) => Promise<boolean>;
+  updateFooterConfig: (footer: Partial<FooterConfig>) => Promise<boolean>;
+  resetSiteConfigToDefault: () => Promise<boolean>;
 
   // Actions
   setActiveTab: (tab: ActiveTab) => void;
@@ -102,29 +121,51 @@ interface DataContextType {
   unlockPassportStamp: (stampId: string) => void;
 
   // Admin CRUD
-  addPlace: (place: Omit<Place, 'id'>) => void;
-  updatePlace: (place: Place) => void;
-  deletePlace: (id: string) => void;
-  addEvent: (event: Omit<TouristEvent, 'id'>) => void;
-  updateEvent: (event: TouristEvent) => void;
-  deleteEvent: (id: string) => void;
-  addAudioguide: (guide: Omit<Audioguide, 'id'>) => void;
-  updateAudioguide: (guide: Audioguide) => void;
-  deleteAudioguide: (id: string) => void;
-  resetAllDataToDefault: () => void;
+  addPlace: (place: Omit<Place, 'id'>) => Promise<boolean>;
+  updatePlace: (place: Place) => Promise<boolean>;
+  deletePlace: (id: string) => Promise<boolean>;
+  addEvent: (event: Omit<TouristEvent, 'id'>) => Promise<boolean>;
+  updateEvent: (event: TouristEvent) => Promise<boolean>;
+  deleteEvent: (id: string) => Promise<boolean>;
+  addAudioguide: (guide: Omit<Audioguide, 'id'>) => Promise<boolean>;
+  updateAudioguide: (guide: Audioguide) => Promise<boolean>;
+  deleteAudioguide: (id: string) => Promise<boolean>;
+  resetAllDataToDefault: () => Promise<boolean>;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
 const STORAGE_KEYS = {
   PLACES: 'fray_turismo_places_v2',
+  PLACES_UPDATED_AT: 'fray_turismo_places_updated_at_v1',
   EVENTS: 'fray_turismo_events_v2',
+  EVENTS_UPDATED_AT: 'fray_turismo_events_updated_at_v1',
   AUDIOGUIDES: 'fray_turismo_audioguides_v2',
+  AUDIOGUIDES_UPDATED_AT: 'fray_turismo_audioguides_updated_at_v1',
   PASSPORT: 'fray_turismo_passport_v2',
   FAVORITES: 'fray_turismo_favorites_v2',
   LOCATION: 'fray_turismo_location_v2',
   SITE_CONFIG: 'fray_turismo_site_config_v1',
+  SITE_CONFIG_UPDATED_AT: 'fray_turismo_site_config_updated_at_v1',
   LOCATION_PROMPT_SEEN: 'fray_turismo_location_prompt_seen_v1',
+};
+
+const HARD_REMOVED_PLACE_IDS = new Set([
+  'campanas-del-rosario',
+  'casa-de-te-la-calera',
+  'helados-plaza-sanjose',
+  'casona-piedra-blanca',
+  'parrilla-el-quincho',
+  'astor-pizza-in-te-glia',
+  'buena-vida-resto',
+]);
+
+const safeLocalStorageSet = (key: string, value: unknown): void => {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (err) {
+    console.warn(`[STORAGE] Could not write ${key} to localStorage:`, err);
+  }
 };
 
 const getStoredOrDefault = <T,>(key: string, fallbackKey: string, defaultValue: T): T => {
@@ -255,46 +296,57 @@ export const normalizeLegacyImagePath = (path?: string | null): string => {
 
 /**
  * Realiza un merge seguro de imágenes entre el registro persistido y la ficha inicial oficial.
- * Garantiza que una imagen válida de INITIAL_PLACES jamás sea sobrescrita por un valor vacío o roto.
+ * Prioriza SIEMPRE las fotografías cargadas por el administrador (/uploads/, /images/, etc.)
+ * y respeta la eliminación explícita cuando `respectExplicitEmpty` está activo.
  */
 export const resolveSafePlaceImages = (
   stored?: Partial<Place> | null,
-  initial?: Place
+  initial?: Place,
+  respectExplicitEmpty: boolean = false
 ): { image: string; gallery: string[] } => {
-  const initialImage = initial?.image && isValidImagePath(initial.image)
-    ? normalizeLegacyImagePath(initial.image)
-    : '';
+  const initialImage =
+    initial?.image && isValidImagePath(initial.image)
+      ? normalizeLegacyImagePath(initial.image)
+      : '';
   const initialGallery = Array.isArray(initial?.gallery)
     ? Array.from(new Set(initial.gallery.filter(isValidImagePath).map((u) => normalizeLegacyImagePath(u))))
     : [];
 
-  let resolvedImage = initialImage;
-  if (stored && stored.image && isValidImagePath(stored.image)) {
-    resolvedImage = normalizeLegacyImagePath(stored.image);
+  let resolvedImage = '';
+  const storedHasValidImage = Boolean(stored && stored.image && isValidImagePath(stored.image));
+  const storedExplicitlyEmpty = Boolean(
+    stored &&
+      stored.image !== undefined &&
+      String(stored.image).trim() === '' &&
+      respectExplicitEmpty
+  );
+
+  if (storedHasValidImage) {
+    resolvedImage = normalizeLegacyImagePath(stored!.image);
+  } else if (storedExplicitlyEmpty) {
+    resolvedImage = '';
   } else if (initialImage) {
     resolvedImage = initialImage;
   }
 
   let resolvedGallery: string[] = [];
-  if (stored && Array.isArray(stored.gallery) && stored.gallery.length > 0) {
+  if (stored && Array.isArray(stored.gallery)) {
     const validStoredGallery = Array.from(
       new Set(stored.gallery.filter(isValidImagePath).map((u) => normalizeLegacyImagePath(u)))
     );
     if (validStoredGallery.length > 0) {
       resolvedGallery = validStoredGallery;
-    }
-  }
-
-  if (resolvedGallery.length === 0) {
-    if (initialGallery.length > 0) {
+    } else if (!respectExplicitEmpty && initialGallery.length > 0 && !storedExplicitlyEmpty) {
       resolvedGallery = initialGallery;
-    } else if (resolvedImage) {
-      resolvedGallery = [resolvedImage];
     }
+  } else if (initialGallery.length > 0) {
+    resolvedGallery = initialGallery;
   }
 
   if (resolvedImage && !resolvedGallery.includes(resolvedImage)) {
     resolvedGallery = [resolvedImage, ...resolvedGallery];
+  } else if (!resolvedImage && resolvedGallery.length > 0 && !respectExplicitEmpty) {
+    resolvedImage = resolvedGallery[0];
   }
 
   return {
@@ -304,8 +356,9 @@ export const resolveSafePlaceImages = (
 };
 
 /**
- * Fusiona de forma segura los datos guardados en cliente/servidor con la ficha oficial baseline.
- * Preserva modificaciones de contenido del usuario sin destruir las imágenes oficiales.
+ * Fusiona los datos persistidos en servidor/cliente con el baseline inicial.
+ * REGLA FUNDAMENTAL: toda edición guardada por el administrador (textos, fotos, horarios,
+ * coordenadas, contactos, validación) SIEMPRE prevalece y jamás se sobrescribe al recargar.
  */
 export const mergePlaceWithBaseline = (
   initPlace: Place,
@@ -313,140 +366,71 @@ export const mergePlaceWithBaseline = (
 ): Place => {
   if (!storedPlace) return initPlace;
 
-  const { image, gallery } = resolveSafePlaceImages(storedPlace, initPlace);
-
-  const migratedReligiousIds = new Set([
-    'santuario-senor-de-los-milagros',
-    'casa-natal-esquiu',
-    'iglesia-san-jose',
-    'monumento-esquiu',
-    'capilla-nuestra-senora-de-las-mercedes',
-  ]);
-  const isMigratedReligiousPlace = migratedReligiousIds.has(initPlace.id);
-
-  const isMigratedGastronomiaPlace =
-    storedPlace.sourceGuide === 'Guía Turística Oficial Fray Mamerto Esquiú' &&
-    initPlace.sourceGuide === 'Guía de Verano 2025-2026 · Fray Mamerto Esquiú';
-
-  const isMigratedQueVisitarPlace =
-    initPlace.sourceGuide === 'Visita Fray · Catálogo Qué visitar (2026)' &&
-    storedPlace.sourceGuide !== 'Visita Fray · Catálogo Qué visitar (2026)';
-
-  const mergedName =
-    storedPlace.name === 'Antiguo Trapiche y Molino Histórico' || isMigratedReligiousPlace || isMigratedGastronomiaPlace || isMigratedQueVisitarPlace
-      ? initPlace.name
-      : (storedPlace.name || initPlace.name);
-
-  const mergedShortDescription =
-    isMigratedReligiousPlace || isMigratedGastronomiaPlace || isMigratedQueVisitarPlace
-      ? initPlace.shortDescription
-      : (storedPlace.shortDescription || initPlace.shortDescription);
-
-  const mergedDescription =
-    isMigratedReligiousPlace || isMigratedGastronomiaPlace || isMigratedQueVisitarPlace
-      ? initPlace.description
-      : (storedPlace.description || initPlace.description);
-
-  const mergedGoogleMapsUrl = isMigratedReligiousPlace
-    ? initPlace.googleMapsUrl
-    : (storedPlace.googleMapsUrl || initPlace.googleMapsUrl);
-
-  const isOldTrapicheCoords =
-    initPlace.id === 'trapiche-azucarero' &&
-    (storedPlace.lat === -28.378 || !storedPlace.googleMapsUrl);
-
-  const isOldPalumaCoords =
-    initPlace.id === 'paluma-cerveceria' &&
-    (storedPlace.lat === -28.384 || !storedPlace.googleMapsUrl);
-
-  const isOldAmadeusCoords =
-    initPlace.id === 'amadeus-bar' &&
-    (storedPlace.lat === -28.3835 || !storedPlace.googleMapsUrl);
-
-  const isOldChaperioCoords =
-    initPlace.id === 'el-chaperio-de-mamerto' &&
-    (storedPlace.lat === -28.3855 || !storedPlace.googleMapsUrl);
+  const { image, gallery } = resolveSafePlaceImages(storedPlace, initPlace, false);
 
   const resolvedLat =
-    isOldTrapicheCoords || isOldPalumaCoords || isOldAmadeusCoords || isOldChaperioCoords || typeof storedPlace.lat !== 'number' || isNaN(storedPlace.lat)
-      ? initPlace.lat
-      : storedPlace.lat;
+    typeof storedPlace.lat === 'number' && !isNaN(storedPlace.lat)
+      ? storedPlace.lat
+      : initPlace.lat;
 
   const resolvedLng =
-    isOldTrapicheCoords || isOldPalumaCoords || isOldAmadeusCoords || isOldChaperioCoords || typeof storedPlace.lng !== 'number' || isNaN(storedPlace.lng)
-      ? initPlace.lng
-      : storedPlace.lng;
+    typeof storedPlace.lng === 'number' && !isNaN(storedPlace.lng)
+      ? storedPlace.lng
+      : initPlace.lng;
 
-  const resolvedAddress =
-    isMigratedReligiousPlace ||
-    isMigratedGastronomiaPlace ||
-    isMigratedQueVisitarPlace ||
-    (!storedPlace.address && !!initPlace.address) ||
-    ((initPlace.id === 'dique-las-pirquitas' || initPlace.id === 'vertedero-dique-pirquitas') &&
-      storedPlace.address === 'Ruta Provincial 1, Las Pirquitas') ||
-    (initPlace.id === 'casa-natal-esquiu' &&
-      (storedPlace.address === 'Calle del Beato s/n, Piedra Blanca' || storedPlace.address === 'Av. La Callecita'))
-      ? initPlace.address
-      : (storedPlace.address !== undefined ? storedPlace.address : initPlace.address);
-
-  const resolvedOpeningHours =
-    isMigratedReligiousPlace ||
-    isMigratedGastronomiaPlace ||
-    isMigratedQueVisitarPlace ||
-    (initPlace.id === 'vertedero-dique-pirquitas' &&
-      storedPlace.openingHours === 'Acceso y miradores públicos permanentes.')
-      ? initPlace.openingHours
-      : (storedPlace.openingHours !== undefined ? storedPlace.openingHours : initPlace.openingHours);
-
-  const unionSecondaryCategories = Array.from(
-    new Set([
-      ...(initPlace.secondaryCategories || []),
-      ...(storedPlace.secondaryCategories || []),
-    ])
-  );
-  const resolvedSecondaryCategories =
-    unionSecondaryCategories.length > 0 ? unionSecondaryCategories : undefined;
-
-  if (isMigratedGastronomiaPlace || isMigratedQueVisitarPlace) {
-    return {
-      ...storedPlace,
-      ...initPlace,
-      secondaryCategories: resolvedSecondaryCategories,
-      image,
-      gallery,
-      googleMapsUrl: mergedGoogleMapsUrl,
-      lat: resolvedLat,
-      lng: resolvedLng,
-    };
-  }
-
-  return {
+  const merged: Place = {
     ...initPlace,
     ...storedPlace,
-    name: mergedName,
-    shortDescription: mergedShortDescription,
-    description: mergedDescription,
-    address: resolvedAddress,
-    openingHours: resolvedOpeningHours,
-    secondaryCategories: resolvedSecondaryCategories,
+    id: initPlace.id,
+    name: storedPlace.name !== undefined && storedPlace.name.trim() !== '' ? storedPlace.name : initPlace.name,
+    shortDescription:
+      storedPlace.shortDescription !== undefined ? storedPlace.shortDescription : initPlace.shortDescription,
+    description:
+      storedPlace.description !== undefined ? storedPlace.description : initPlace.description,
+    address: storedPlace.address !== undefined ? storedPlace.address : initPlace.address,
+    locality: storedPlace.locality !== undefined ? storedPlace.locality : initPlace.locality,
+    openingHours:
+      storedPlace.openingHours !== undefined ? storedPlace.openingHours : initPlace.openingHours,
+    phone: storedPlace.phone !== undefined ? storedPlace.phone : initPlace.phone,
+    whatsapp: storedPlace.whatsapp !== undefined ? storedPlace.whatsapp : initPlace.whatsapp,
+    googleMapsUrl:
+      storedPlace.googleMapsUrl !== undefined ? storedPlace.googleMapsUrl : initPlace.googleMapsUrl,
+    tags: Array.isArray(storedPlace.tags) ? storedPlace.tags : initPlace.tags,
+    services: Array.isArray(storedPlace.services) ? storedPlace.services : initPlace.services,
+    secondaryCategories:
+      storedPlace.secondaryCategories !== undefined
+        ? storedPlace.secondaryCategories
+        : initPlace.secondaryCategories,
     image,
     gallery,
-    googleMapsUrl: mergedGoogleMapsUrl,
-    safetyWarning: storedPlace.safetyWarning || initPlace.safetyWarning,
     lat: resolvedLat,
     lng: resolvedLng,
   };
+
+  // Si ya cuenta con fotografía válida cargada, limpiar nota de foto pendiente
+  if (image && image.trim() !== '') {
+    merged.photoPendingNote = undefined;
+  }
+
+  return merged;
 };
 
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Places state - ensure confirmed baseline places and user/admin modifications & photographs are properly preserved
+  // Places state - preserve stored modifications & photographs without clobbering edits
   const [places, setPlaces] = useState<Place[]>(() => {
+    const storedConfig = getStoredOrDefault<SiteConfig>(STORAGE_KEYS.SITE_CONFIG, '', DEFAULT_SITE_CONFIG);
+    const deletedIds = new Set<string>([
+      ...Array.from(HARD_REMOVED_PLACE_IDS),
+      ...(Array.isArray(storedConfig?.deletedPlaceIds) ? storedConfig.deletedPlaceIds : []),
+    ]);
+
     const raw = getStoredOrDefault<Place[]>(STORAGE_KEYS.PLACES, '', INITIAL_PLACES);
-    if (!Array.isArray(raw) || raw.length === 0) return INITIAL_PLACES;
-    
-    // Create map of stored modifications
+    if (!Array.isArray(raw) || raw.length === 0) {
+      return INITIAL_PLACES.filter((p) => !deletedIds.has(p.id));
+    }
+
     const storedMap = new Map(raw.map((p) => [p.id, p]));
-    const mergedBaseline = INITIAL_PLACES.map((initPlace) => {
+    const mergedBaseline = INITIAL_PLACES.filter((p) => !deletedIds.has(p.id)).map((initPlace) => {
       const stored = storedMap.get(initPlace.id);
       if (stored) {
         storedMap.delete(initPlace.id);
@@ -455,13 +439,11 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return initPlace;
     });
 
-    // Also include any newly created places that were not in INITIAL_PLACES
-    const removedPlaceIds = new Set(['campanas-del-rosario', 'casa-de-te-la-calera']);
     const additionalPlaces = Array.from(storedMap.values())
-      .filter((p) => !removedPlaceIds.has(p.id))
+      .filter((p) => p && p.id && !deletedIds.has(p.id))
       .map((p) => {
-        const { image, gallery } = resolveSafePlaceImages(p);
-        return { ...p, image, gallery };
+        const { image, gallery } = resolveSafePlaceImages(p, undefined, true);
+        return { ...p, image, gallery, ...(image ? { photoPendingNote: undefined } : {}) };
       });
     return [...mergedBaseline, ...additionalPlaces];
   });
@@ -474,7 +456,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       : INITIAL_EVENTS;
   });
 
-  // Audioguides state with image fallback
+  // Audioguides state with image fallback & official audioUrl upgrade
   const [audioguides, setAudioguides] = useState<Audioguide[]>(() => {
     const raw = getStoredOrDefault<Audioguide[]>(STORAGE_KEYS.AUDIOGUIDES, 'fray_verano_audioguides_v1', INITIAL_AUDIOGUIDES);
     if (!Array.isArray(raw) || raw.length === 0) return INITIAL_AUDIOGUIDES;
@@ -483,6 +465,10 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const stored = storedMap.get(initGuide.id);
       if (!stored) return initGuide;
       storedMap.delete(initGuide.id);
+      // If baseline now has an official recorded audioUrl that stored copy lacked, replace with the new official audioguide
+      if (initGuide.audioUrl && !stored.audioUrl) {
+        return initGuide;
+      }
       const coverImage = stored.coverImage && isValidImagePath(stored.coverImage)
         ? normalizeLegacyImagePath(stored.coverImage)
         : (initGuide.coverImage && isValidImagePath(initGuide.coverImage) ? normalizeLegacyImagePath(initGuide.coverImage) : '');
@@ -490,6 +476,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return {
         ...initGuide,
         ...stored,
+        audioUrl: stored.audioUrl || initGuide.audioUrl,
         coverImage,
         ...(hasRemovedNextPlace
           ? {
@@ -532,7 +519,9 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Favorites
   const [favorites, setFavorites] = useState<string[]>(() => {
     const raw = getStoredOrDefault(STORAGE_KEYS.FAVORITES, 'fray_verano_favorites_v1', ['casa-natal-esquiu', 'dique-las-pirquitas']);
-    return Array.isArray(raw) ? raw.filter((id) => id !== 'casa-de-te-la-calera') : ['casa-natal-esquiu', 'dique-las-pirquitas'];
+    return Array.isArray(raw)
+      ? raw.filter((id) => id !== 'casa-de-te-la-calera' && id !== 'helados-plaza-sanjose')
+      : ['casa-natal-esquiu', 'dique-las-pirquitas'];
   });
 
   // User location default (Plaza San José de Piedra Blanca). 
@@ -743,6 +732,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [sectionToEdit, setSectionToEdit] = useState<string | null>(null);
   const [placeToEdit, setPlaceToEdit] = useState<Place | null>(null);
   const [isCreatePlaceModalOpen, setIsCreatePlaceModalOpen] = useState<boolean>(false);
+  const [saveStatus, setSaveStatus] = useState<SaveStatus>({ state: 'idle' });
 
   // Site Configuration state
   const [siteConfig, setSiteConfigState] = useState<SiteConfig>(() => {
@@ -764,6 +754,10 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return {
       ...DEFAULT_SITE_CONFIG,
       ...stored,
+      tourismOffices: {
+        ...(DEFAULT_SITE_CONFIG.tourismOffices || { title: 'Oficinas de Turismo', sharedPhone: '', offices: [] }),
+        ...(stored?.tourismOffices || {}),
+      },
       hero: {
         ...DEFAULT_SITE_CONFIG.hero,
         ...(stored?.hero || {}),
@@ -778,54 +772,376 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   });
 
-  // Sync siteConfig with persistent server on mount
+  // Always keep refs synced with latest state so explicit server saves never read stale closures
+  const placesRef = useRef<Place[]>(places);
+  placesRef.current = places;
+  const eventsRef = useRef<TouristEvent[]>(events);
+  eventsRef.current = events;
+  const audioguidesRef = useRef<Audioguide[]>(audioguides);
+  audioguidesRef.current = audioguides;
+  const siteConfigRef = useRef<SiteConfig>(siteConfig);
+  siteConfigRef.current = siteConfig;
+
+  // Hydrate siteConfig, places, events, and audioguides from persistent server on mount
   useEffect(() => {
     let isMounted = true;
-    fetch('/api/site-config')
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (!isMounted || !data || !data.config) return;
-        const serverHero = data.config.hero || {};
-        const migratedHeroSubtitle =
-          serverHero.subtitle ===
-          'Valles serranos, agua esmeralda, cuna del Beato y tradiciones vivas en Catamarca.'
-            ? DEFAULT_SITE_CONFIG.hero.subtitle
-            : serverHero.subtitle;
-        setSiteConfigState((prev) => ({
-          ...DEFAULT_SITE_CONFIG,
-          ...prev,
-          ...data.config,
-          hero: {
-            ...DEFAULT_SITE_CONFIG.hero,
-            ...(prev.hero || {}),
-            ...serverHero,
-            ...(serverHero.bgImage ? { bgImage: normalizeLegacyImagePath(serverHero.bgImage) } : {}),
-            ...(migratedHeroSubtitle ? { subtitle: migratedHeroSubtitle } : {}),
-          },
-          categories: { ...DEFAULT_SITE_CONFIG.categories, ...(prev.categories || {}), ...(data.config.categories || {}) },
-          imperdibles: {
-            ...DEFAULT_SITE_CONFIG.imperdibles,
-            ...(prev.imperdibles || {}),
-            ...(data.config.imperdibles || {}),
-            ...(Array.isArray(data.config.imperdibles?.items)
-              ? {
-                  items: data.config.imperdibles.items.map((item: any) => ({
-                    ...item,
-                    customImage: item.customImage ? normalizeLegacyImagePath(item.customImage) : item.customImage,
-                  })),
+
+    const hydrateFromServer = async () => {
+      let deletedFromServer: string[] = [];
+
+      const getLocalUpdatedAt = (key: string): number => {
+        try {
+          const val = Number(localStorage.getItem(key) || '0');
+          return Number.isFinite(val) ? val : 0;
+        } catch {
+          return 0;
+        }
+      };
+
+      const isAdminLocal = (() => {
+        try {
+          const stored = localStorage.getItem('fray_turismo_admin_session_v1');
+          if (!stored) return false;
+          const user = JSON.parse(stored);
+          const authorized = [
+            'prensafray@gmail.com',
+            'turismofray@gmail.com',
+            'prensafraymarmerto@gmail.com',
+            'turismo@fraymarmertoesquiu.gob.ar',
+            'admin@fraymarmertoesquiu.gob.ar',
+          ];
+          return !!(user?.email && authorized.some((e) => e.toLowerCase() === user.email.toLowerCase()));
+        } catch {
+          return false;
+        }
+      })();
+
+      // 1. Hydrate Site Config first so deletedPlaceIds is known before merging places
+      try {
+        const res = await fetch('/api/site-config', { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
+          const serverTs = Number(data?.revisionTimestamp || 0);
+          const localTs = getLocalUpdatedAt(STORAGE_KEYS.SITE_CONFIG_UPDATED_AT);
+
+          if (localTs > serverTs && isAdminLocal) {
+            // Re-sync newer local admin config to server revision store
+            fetch('/api/site-config', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ config: siteConfigRef.current }),
+            })
+              .then((r) => (r.ok ? r.json() : null))
+              .then((saved) => {
+                if (saved?.revisionTimestamp) {
+                  safeLocalStorageSet(STORAGE_KEYS.SITE_CONFIG_UPDATED_AT, saved.revisionTimestamp);
                 }
-              : {}),
-          },
-          conoceFray: { ...DEFAULT_SITE_CONFIG.conoceFray, ...(prev.conoceFray || {}), ...(data.config.conoceFray || {}) },
-          queHacer: { ...DEFAULT_SITE_CONFIG.queHacer, ...(prev.queHacer || {}), ...(data.config.queHacer || {}) },
-          recorridoEsquiu: { ...DEFAULT_SITE_CONFIG.recorridoEsquiu, ...(prev.recorridoEsquiu || {}), ...(data.config.recorridoEsquiu || {}) },
-          emblemaFe: { ...DEFAULT_SITE_CONFIG.emblemaFe, ...(prev.emblemaFe || {}), ...(data.config.emblemaFe || {}) },
-          footer: { ...DEFAULT_SITE_CONFIG.footer, ...(prev.footer || {}), ...(data.config.footer || {}) },
-        }));
-      })
-      .catch((err) => {
-        console.warn('[SYNC] Notice: /api/site-config initial load:', err.message);
-      });
+              })
+              .catch(() => {});
+          } else if (isMounted && data?.config && typeof data.config === 'object') {
+            if (Array.isArray(data.config.deletedPlaceIds)) {
+              deletedFromServer = data.config.deletedPlaceIds;
+            }
+            const serverHero = data.config.hero || {};
+            const migratedHeroSubtitle =
+              serverHero.subtitle ===
+              'Valles serranos, agua esmeralda, cuna del Beato y tradiciones vivas en Catamarca.'
+                ? DEFAULT_SITE_CONFIG.hero.subtitle
+                : serverHero.subtitle;
+
+            setSiteConfigState((prev) => {
+              const mergedConfig: SiteConfig = {
+                ...DEFAULT_SITE_CONFIG,
+                ...prev,
+                ...data.config,
+                tourismOffices: {
+                  ...(DEFAULT_SITE_CONFIG.tourismOffices || { title: 'Oficinas de Turismo', sharedPhone: '', offices: [] }),
+                  ...(prev.tourismOffices || {}),
+                  ...(data.config.tourismOffices || {}),
+                },
+                hero: {
+                  ...DEFAULT_SITE_CONFIG.hero,
+                  ...(prev.hero || {}),
+                  ...serverHero,
+                  ...(serverHero.bgImage ? { bgImage: normalizeLegacyImagePath(serverHero.bgImage) } : {}),
+                  ...(migratedHeroSubtitle ? { subtitle: migratedHeroSubtitle } : {}),
+                },
+                categories: {
+                  ...DEFAULT_SITE_CONFIG.categories,
+                  ...(prev.categories || {}),
+                  ...(data.config.categories || {}),
+                },
+                imperdibles: {
+                  ...DEFAULT_SITE_CONFIG.imperdibles,
+                  ...(prev.imperdibles || {}),
+                  ...(data.config.imperdibles || {}),
+                  ...(Array.isArray(data.config.imperdibles?.items)
+                    ? {
+                        items: data.config.imperdibles.items.map((item: any) => ({
+                          ...item,
+                          customImage: item.customImage ? normalizeLegacyImagePath(item.customImage) : item.customImage,
+                        })),
+                      }
+                    : {}),
+                },
+                conoceFray: {
+                  ...DEFAULT_SITE_CONFIG.conoceFray,
+                  ...(prev.conoceFray || {}),
+                  ...(data.config.conoceFray || {}),
+                },
+                queHacer: {
+                  ...DEFAULT_SITE_CONFIG.queHacer,
+                  ...(prev.queHacer || {}),
+                  ...(data.config.queHacer || {}),
+                },
+                recorridoEsquiu: {
+                  ...DEFAULT_SITE_CONFIG.recorridoEsquiu,
+                  ...(prev.recorridoEsquiu || {}),
+                  ...(data.config.recorridoEsquiu || {}),
+                },
+                emblemaFe: {
+                  ...DEFAULT_SITE_CONFIG.emblemaFe,
+                  ...(prev.emblemaFe || {}),
+                  ...(data.config.emblemaFe || {}),
+                },
+                footer: {
+                  ...DEFAULT_SITE_CONFIG.footer,
+                  ...(prev.footer || {}),
+                  ...(data.config.footer || {}),
+                },
+              };
+              siteConfigRef.current = mergedConfig;
+              safeLocalStorageSet(STORAGE_KEYS.SITE_CONFIG, mergedConfig);
+              if (serverTs > 0) {
+                safeLocalStorageSet(STORAGE_KEYS.SITE_CONFIG_UPDATED_AT, serverTs);
+              }
+              return mergedConfig;
+            });
+          }
+        }
+      } catch (err: any) {
+        console.warn('[SYNC] Notice: /api/site-config initial load:', err?.message);
+      }
+
+      // 2. Hydrate Places (with automatic recovery of unsynced local admin edits)
+      try {
+        const localCachedPlaces = getStoredOrDefault<Place[]>(STORAGE_KEYS.PLACES, '', []);
+        const localMap = new Map<string, Place>(
+          Array.isArray(localCachedPlaces)
+            ? localCachedPlaces.filter((p) => p && p.id).map((p) => [p.id, p])
+            : []
+        );
+        const localPlacesTs = getLocalUpdatedAt(STORAGE_KEYS.PLACES_UPDATED_AT);
+
+        const res = await fetch('/api/places', { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
+          const serverPlacesTs = Number(data?.revisionTimestamp || 0);
+
+          if (isMounted && Array.isArray(data?.places) && data.places.length > 0) {
+            const serverPlaces = data.places as Place[];
+            const deletedIds = new Set<string>([
+              ...Array.from(HARD_REMOVED_PLACE_IDS),
+              ...deletedFromServer,
+              ...(Array.isArray(siteConfigRef.current?.deletedPlaceIds)
+                ? siteConfigRef.current.deletedPlaceIds
+                : []),
+            ]);
+            const serverMap = new Map<string, Place>(serverPlaces.map((p) => [p.id, p]));
+            let recoveredFromLocal = false;
+
+            const rescueLocalFields = (serverMerged: Place, localCandidate?: Place): Place => {
+              if (!localCandidate) return serverMerged;
+
+              // If this browser saved edits strictly after the server's latest revision, local wins
+              if (localPlacesTs > serverPlacesTs && isAdminLocal) {
+                recoveredFromLocal = true;
+                return mergePlaceWithBaseline(serverMerged, localCandidate);
+              }
+
+              // Even without a prior timestamp, rescue non-empty fields that were added locally
+              // (e.g., Google Maps URLs, uploaded photos, coordinates, hours, contacts)
+              const patched: Place = { ...serverMerged };
+              let changed = false;
+
+              const localMaps = (localCandidate.googleMapsUrl || '').trim();
+              const serverMaps = (serverMerged.googleMapsUrl || '').trim();
+              if (localMaps && (!serverMaps || (serverPlacesTs === 0 && isAdminLocal && localMaps !== serverMaps))) {
+                patched.googleMapsUrl = localMaps;
+                changed = true;
+              }
+
+              const localImg = (localCandidate.image || '').trim();
+              const serverImg = (serverMerged.image || '').trim();
+              if (localImg && localImg.startsWith('/uploads/') && (!serverImg || (serverPlacesTs === 0 && isAdminLocal && localImg !== serverImg))) {
+                patched.image = localImg;
+                patched.gallery = Array.from(
+                  new Set([localImg, ...(Array.isArray(localCandidate.gallery) ? localCandidate.gallery : [])])
+                );
+                patched.photoPendingNote = undefined;
+                changed = true;
+              }
+
+              if (
+                isValidCoordinate(localCandidate.lat, localCandidate.lng) &&
+                (!isValidCoordinate(serverMerged.lat, serverMerged.lng) ||
+                  (serverPlacesTs === 0 &&
+                    isAdminLocal &&
+                    (localCandidate.lat !== serverMerged.lat || localCandidate.lng !== serverMerged.lng)))
+              ) {
+                patched.lat = localCandidate.lat;
+                patched.lng = localCandidate.lng;
+                changed = true;
+              }
+
+              const optionalTextFields = ['openingHours', 'phone', 'whatsapp', 'instagram', 'address'] as const;
+              for (const field of optionalTextFields) {
+                const lv = (localCandidate[field] || '').trim();
+                const sv = (serverMerged[field] || '').trim();
+                if (lv && (!sv || (serverPlacesTs === 0 && isAdminLocal && lv !== sv))) {
+                  patched[field] = lv;
+                  changed = true;
+                }
+              }
+
+              if (changed) {
+                recoveredFromLocal = true;
+              }
+              return patched;
+            };
+
+            const mergedBaseline: Place[] = INITIAL_PLACES.filter((init) => !deletedIds.has(init.id)).map(
+              (init) => {
+                const serverItem = serverMap.get(init.id);
+                if (serverItem) {
+                  serverMap.delete(init.id);
+                  const baseMerged = mergePlaceWithBaseline(init, serverItem);
+                  return rescueLocalFields(baseMerged, localMap.get(init.id));
+                }
+                return rescueLocalFields(init, localMap.get(init.id));
+              }
+            );
+
+            const remainingServer = Array.from(serverMap.values())
+              .filter((p) => p && p.id && !deletedIds.has(p.id))
+              .map((p) => {
+                const { image, gallery } = resolveSafePlaceImages(p, undefined, true);
+                const normalized = { ...p, image, gallery, ...(image ? { photoPendingNote: undefined } : {}) };
+                return rescueLocalFields(normalized, localMap.get(p.id));
+              });
+
+            // Also recover any brand-new custom places created locally if local timestamp is newer
+            const knownIds = new Set([...mergedBaseline, ...remainingServer].map((p) => p.id));
+            const recoveredNewLocal: Place[] = [];
+            if (localPlacesTs > serverPlacesTs && isAdminLocal) {
+              for (const lp of localMap.values()) {
+                if (lp && lp.id && !knownIds.has(lp.id) && !deletedIds.has(lp.id)) {
+                  recoveredNewLocal.push(lp);
+                  recoveredFromLocal = true;
+                }
+              }
+            }
+
+            const finalPlaces = [...recoveredNewLocal, ...mergedBaseline, ...remainingServer];
+            placesRef.current = finalPlaces;
+            setPlaces(finalPlaces);
+            safeLocalStorageSet(STORAGE_KEYS.PLACES, finalPlaces);
+
+            if (recoveredFromLocal && isAdminLocal) {
+              // Automatically push recovered local edits into the server's append-only revision store
+              fetch('/api/places', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ places: finalPlaces }),
+              })
+                .then((r) => (r.ok ? r.json() : null))
+                .then((saved) => {
+                  if (saved?.revisionTimestamp) {
+                    safeLocalStorageSet(STORAGE_KEYS.PLACES_UPDATED_AT, saved.revisionTimestamp);
+                    if (isMounted) {
+                      setSaveStatus({
+                        state: 'saved',
+                        message: 'Cambios recuperados y guardados permanentemente en el servidor',
+                        updatedAt: Date.now(),
+                      });
+                    }
+                  }
+                })
+                .catch((err) => console.warn('[SYNC] Auto-recovery push failed:', err));
+            } else if (serverPlacesTs > 0) {
+              safeLocalStorageSet(STORAGE_KEYS.PLACES_UPDATED_AT, serverPlacesTs);
+            }
+          }
+        }
+      } catch (err: any) {
+        console.warn('[SYNC] Notice: /api/places initial load:', err?.message);
+      }
+
+      // 3. Hydrate Events from server
+      try {
+        const res = await fetch('/api/events', { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
+          const serverTs = Number(data?.revisionTimestamp || 0);
+          const localTs = getLocalUpdatedAt(STORAGE_KEYS.EVENTS_UPDATED_AT);
+          if (localTs > serverTs && isAdminLocal) {
+            fetch('/api/events', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ events: eventsRef.current }),
+            }).catch(() => {});
+          } else if (isMounted && Array.isArray(data?.events)) {
+            const filteredEvents = (data.events as TouristEvent[]).filter(
+              (ev) => ev && ev.placeId !== 'casa-de-te-la-calera' && ev.id !== 'ev-taller-ceramica'
+            );
+            eventsRef.current = filteredEvents;
+            setEvents(filteredEvents);
+            safeLocalStorageSet(STORAGE_KEYS.EVENTS, filteredEvents);
+            if (serverTs > 0) safeLocalStorageSet(STORAGE_KEYS.EVENTS_UPDATED_AT, serverTs);
+          }
+        }
+      } catch (err: any) {
+        console.warn('[SYNC] Notice: /api/events initial load:', err?.message);
+      }
+
+      // 4. Hydrate Audioguides from server
+      try {
+        const res = await fetch('/api/audioguides', { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
+          const serverTs = Number(data?.revisionTimestamp || 0);
+          const localTs = getLocalUpdatedAt(STORAGE_KEYS.AUDIOGUIDES_UPDATED_AT);
+          if (localTs > serverTs && isAdminLocal) {
+            fetch('/api/audioguides', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ audioguides: audioguidesRef.current }),
+            }).catch(() => {});
+          } else if (isMounted && Array.isArray(data?.audioguides) && data.audioguides.length > 0) {
+            const initById = new Map(INITIAL_AUDIOGUIDES.map((g) => [g.id, g]));
+            const serverGuides = (data.audioguides as Audioguide[]).map((g) => {
+              const initMatch = initById.get(g.id);
+              if (initMatch?.audioUrl && !g.audioUrl) {
+                return initMatch;
+              }
+              return {
+                ...g,
+                audioUrl: g.audioUrl || initMatch?.audioUrl,
+                coverImage: g.coverImage ? normalizeLegacyImagePath(g.coverImage) : (initMatch?.coverImage || ''),
+              };
+            });
+            audioguidesRef.current = serverGuides;
+            setAudioguides(serverGuides);
+            safeLocalStorageSet(STORAGE_KEYS.AUDIOGUIDES, serverGuides);
+            if (serverTs > 0) safeLocalStorageSet(STORAGE_KEYS.AUDIOGUIDES_UPDATED_AT, serverTs);
+          }
+        }
+      } catch (err: any) {
+        console.warn('[SYNC] Notice: /api/audioguides initial load:', err?.message);
+      }
+    };
+
+    hydrateFromServer();
 
     return () => {
       isMounted = false;
@@ -866,84 +1182,13 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     );
   }, [passportStamps]);
 
-  // Sync with persistent server database on mount
+  // Keep lightweight client-only preferences synced to localStorage safely
   useEffect(() => {
-    let isMounted = true;
-    fetch('/api/places')
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (!isMounted || !data || !Array.isArray(data.places) || data.places.length === 0) return;
-        const serverPlaces = Array.isArray(data.places) ? (data.places as Place[]) : [];
-        const serverMap = new Map<string, Place>(serverPlaces.map((p: Place) => [p.id, p]));
-
-        setPlaces((prev) => {
-          const prevMap = new Map<string, Place>(prev.map((p: Place) => [p.id, p]));
-          const merged: Place[] = INITIAL_PLACES.map((init: Place) => {
-            const serverItem = serverMap.get(init.id);
-            const clientItem = prevMap.get(init.id);
-            const item: Place | undefined = serverItem || clientItem;
-            if (item) {
-              serverMap.delete(init.id);
-              prevMap.delete(init.id);
-              return mergePlaceWithBaseline(init, item);
-            }
-            return init;
-          });
-
-          // Also include remaining server and client newly created places
-          const removedPlaceIds = new Set(['campanas-del-rosario', 'casa-de-te-la-calera']);
-          const remainingServer = Array.from(serverMap.values())
-            .filter((p) => !removedPlaceIds.has(p.id))
-            .map((p) => {
-              const { image, gallery } = resolveSafePlaceImages(p);
-              return { ...p, image, gallery };
-            });
-
-          const remainingClient = Array.from(prevMap.values())
-            .filter((p) => !removedPlaceIds.has(p.id) && !serverPlaces.some((sp) => sp.id === p.id))
-            .map((p) => {
-              const { image, gallery } = resolveSafePlaceImages(p);
-              return { ...p, image, gallery };
-            });
-
-          return [...merged, ...remainingServer, ...remainingClient];
-        });
-      })
-      .catch((err) => {
-        console.warn('[SYNC] Notice: /api/places initial load:', err.message);
-      });
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
-  // Persist to local storage and sync to server API
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.PLACES, JSON.stringify(places));
-    fetch('/api/places', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ places }),
-    }).catch(() => {
-      // Ignored for offline usage
-    });
-  }, [places]);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.EVENTS, JSON.stringify(events));
-  }, [events]);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.AUDIOGUIDES, JSON.stringify(audioguides));
-  }, [audioguides]);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.PASSPORT, JSON.stringify(passportStamps));
+    safeLocalStorageSet(STORAGE_KEYS.PASSPORT, passportStamps);
   }, [passportStamps]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.FAVORITES, JSON.stringify(favorites));
+    safeLocalStorageSet(STORAGE_KEYS.FAVORITES, favorites);
   }, [favorites]);
 
   const setUserLocation = (loc: UserLocation) => {
@@ -953,7 +1198,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       watchIdRef.current = null;
     }
     setUserLocationState(loc);
-    localStorage.setItem(STORAGE_KEYS.LOCATION, JSON.stringify(loc));
+    safeLocalStorageSet(STORAGE_KEYS.LOCATION, loc);
   };
 
   const toggleFavorite = (placeId: string) => {
@@ -983,7 +1228,8 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setIsAudioPlaying(false);
         setIsAudioPaused(false);
         setAudioProgress(100);
-      }
+      },
+      guide.audioUrl
     );
   };
 
@@ -1055,196 +1301,347 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // Admin actions (Protected with authorization check)
-  const addPlace = (newPlace: Omit<Place, 'id'>) => {
+  // Explicit server persistence helpers (never called accidentally on public page load)
+  const persistPlacesToServer = async (nextPlaces: Place[]): Promise<boolean> => {
+    const saveTs = Date.now();
+    placesRef.current = nextPlaces;
+    setPlaces(nextPlaces);
+    safeLocalStorageSet(STORAGE_KEYS.PLACES, nextPlaces);
+    safeLocalStorageSet(STORAGE_KEYS.PLACES_UPDATED_AT, saveTs);
+    setSaveStatus({ state: 'saving', message: 'Guardando cambios en el servidor...' });
+    try {
+      const res = await fetch('/api/places', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ places: nextPlaces }),
+      });
+      if (!res.ok) {
+        const errBody = await res.json().catch(() => ({}));
+        throw new Error(errBody.error || `Error HTTP ${res.status}`);
+      }
+      const saved = await res.json().catch(() => ({}));
+      if (saved?.revisionTimestamp) {
+        safeLocalStorageSet(STORAGE_KEYS.PLACES_UPDATED_AT, saved.revisionTimestamp);
+      }
+      setSaveStatus({ state: 'saved', message: 'Cambios guardados permanentemente', updatedAt: Date.now() });
+      return true;
+    } catch (err: any) {
+      console.error('[SYNC ERROR] /api/places:', err);
+      setSaveStatus({
+        state: 'error',
+        message: err?.message || 'No se pudo guardar en el servidor. Intentá nuevamente.',
+        updatedAt: Date.now(),
+      });
+      return false;
+    }
+  };
+
+  const persistEventsToServer = async (nextEvents: TouristEvent[]): Promise<boolean> => {
+    const saveTs = Date.now();
+    eventsRef.current = nextEvents;
+    setEvents(nextEvents);
+    safeLocalStorageSet(STORAGE_KEYS.EVENTS, nextEvents);
+    safeLocalStorageSet(STORAGE_KEYS.EVENTS_UPDATED_AT, saveTs);
+    setSaveStatus({ state: 'saving', message: 'Guardando agenda...' });
+    try {
+      const res = await fetch('/api/events', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ events: nextEvents }),
+      });
+      if (!res.ok) throw new Error(`Error HTTP ${res.status}`);
+      const saved = await res.json().catch(() => ({}));
+      if (saved?.revisionTimestamp) {
+        safeLocalStorageSet(STORAGE_KEYS.EVENTS_UPDATED_AT, saved.revisionTimestamp);
+      }
+      setSaveStatus({ state: 'saved', message: 'Agenda guardada permanentemente', updatedAt: Date.now() });
+      return true;
+    } catch (err: any) {
+      console.error('[SYNC ERROR] /api/events:', err);
+      setSaveStatus({ state: 'error', message: 'Error al guardar la agenda en el servidor', updatedAt: Date.now() });
+      return false;
+    }
+  };
+
+  const persistAudioguidesToServer = async (nextGuides: Audioguide[]): Promise<boolean> => {
+    const saveTs = Date.now();
+    audioguidesRef.current = nextGuides;
+    setAudioguides(nextGuides);
+    safeLocalStorageSet(STORAGE_KEYS.AUDIOGUIDES, nextGuides);
+    safeLocalStorageSet(STORAGE_KEYS.AUDIOGUIDES_UPDATED_AT, saveTs);
+    setSaveStatus({ state: 'saving', message: 'Guardando audioguías...' });
+    try {
+      const res = await fetch('/api/audioguides', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ audioguides: nextGuides }),
+      });
+      if (!res.ok) throw new Error(`Error HTTP ${res.status}`);
+      const saved = await res.json().catch(() => ({}));
+      if (saved?.revisionTimestamp) {
+        safeLocalStorageSet(STORAGE_KEYS.AUDIOGUIDES_UPDATED_AT, saved.revisionTimestamp);
+      }
+      setSaveStatus({ state: 'saved', message: 'Audioguía guardada permanentemente', updatedAt: Date.now() });
+      return true;
+    } catch (err: any) {
+      console.error('[SYNC ERROR] /api/audioguides:', err);
+      setSaveStatus({ state: 'error', message: 'Error al guardar audioguías en el servidor', updatedAt: Date.now() });
+      return false;
+    }
+  };
+
+  const persistSiteConfig = async (updated: SiteConfig): Promise<boolean> => {
+    const saveTs = Date.now();
+    siteConfigRef.current = updated;
+    setSiteConfigState(updated);
+    safeLocalStorageSet(STORAGE_KEYS.SITE_CONFIG, updated);
+    safeLocalStorageSet(STORAGE_KEYS.SITE_CONFIG_UPDATED_AT, saveTs);
+    setSaveStatus({ state: 'saving', message: 'Guardando sección en el servidor...' });
+    try {
+      const res = await fetch('/api/site-config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ config: updated }),
+      });
+      if (!res.ok) throw new Error(`Error HTTP ${res.status}`);
+      const saved = await res.json().catch(() => ({}));
+      if (saved?.revisionTimestamp) {
+        safeLocalStorageSet(STORAGE_KEYS.SITE_CONFIG_UPDATED_AT, saved.revisionTimestamp);
+      }
+      setSaveStatus({ state: 'saved', message: 'Sección guardada permanentemente', updatedAt: Date.now() });
+      return true;
+    } catch (err: any) {
+      console.error('[SYNC ERROR] /api/site-config:', err);
+      setSaveStatus({
+        state: 'error',
+        message: 'No se pudo guardar la sección en el servidor.',
+        updatedAt: Date.now(),
+      });
+      return false;
+    }
+  };
+
+  // Admin actions (Protected with authorization check + explicit server persistence)
+  const addPlace = async (newPlace: Omit<Place, 'id'>): Promise<boolean> => {
     if (!checkIsAdminAuthorized()) {
       console.warn('[ACCESO DENEGADO] Intento no autorizado de agregar un lugar.');
-      return;
+      return false;
     }
     const id = `place-${Date.now()}`;
-    const safeImages = resolveSafePlaceImages(newPlace);
+    const safeImages = resolveSafePlaceImages(newPlace, undefined, true);
     const sanitizedPlace: Place = {
       ...newPlace,
       id,
       image: safeImages.image,
       gallery: safeImages.gallery,
+      ...(safeImages.image ? { photoPendingNote: undefined } : {}),
     };
-    setPlaces((prev) => [sanitizedPlace, ...prev]);
+    const nextPlaces = [sanitizedPlace, ...placesRef.current];
+    return persistPlacesToServer(nextPlaces);
   };
 
-  const updatePlace = (updated: Place) => {
+  const updatePlace = async (updated: Place): Promise<boolean> => {
     if (!checkIsAdminAuthorized()) {
       console.warn('[ACCESO DENEGADO] Intento no autorizado de editar un lugar o modificar su validación.');
-      return;
+      return false;
     }
-    const initMatch = INITIAL_PLACES.find((p) => p.id === updated.id);
-    const safeImages = resolveSafePlaceImages(updated, initMatch);
+    const safeImages = resolveSafePlaceImages(updated, undefined, true);
     const sanitizedUpdated: Place = {
       ...updated,
       image: safeImages.image,
       gallery: safeImages.gallery,
+      ...(safeImages.image ? { photoPendingNote: undefined } : {}),
     };
-    setPlaces((prev) => prev.map((p) => (p.id === sanitizedUpdated.id ? sanitizedUpdated : p)));
+    const nextPlaces = placesRef.current.map((p) =>
+      p.id === sanitizedUpdated.id ? sanitizedUpdated : p
+    );
     if (selectedPlace?.id === sanitizedUpdated.id) {
       setSelectedPlace(sanitizedUpdated);
     }
+    return persistPlacesToServer(nextPlaces);
   };
 
-  const deletePlace = (id: string) => {
+  const deletePlace = async (id: string): Promise<boolean> => {
     if (!checkIsAdminAuthorized()) {
       console.warn('[ACCESO DENEGADO] Intento no autorizado de eliminar un lugar.');
-      return;
+      return false;
     }
-    setPlaces((prev) => prev.filter((p) => p.id !== id));
+    const nextPlaces = placesRef.current.filter((p) => p.id !== id);
     if (selectedPlace?.id === id) {
       setSelectedPlace(null);
     }
+    const existingDeleted = Array.isArray(siteConfigRef.current.deletedPlaceIds)
+      ? siteConfigRef.current.deletedPlaceIds
+      : [];
+    const nextDeleted = Array.from(new Set([...existingDeleted, id]));
+    const [placesOk] = await Promise.all([
+      persistPlacesToServer(nextPlaces),
+      persistSiteConfig({
+        ...siteConfigRef.current,
+        deletedPlaceIds: nextDeleted,
+        updatedAt: new Date().toISOString(),
+      }),
+    ]);
+    return placesOk;
   };
 
-  const addEvent = (newEvent: Omit<TouristEvent, 'id'>) => {
+  const addEvent = async (newEvent: Omit<TouristEvent, 'id'>): Promise<boolean> => {
     if (!checkIsAdminAuthorized()) {
       console.warn('[ACCESO DENEGADO] Intento no autorizado de agregar un evento.');
-      return;
+      return false;
     }
     const id = `event-${Date.now()}`;
-    setEvents((prev) => [{ ...newEvent, id }, ...prev]);
+    const nextEvents = [{ ...newEvent, id }, ...eventsRef.current];
+    return persistEventsToServer(nextEvents);
   };
 
-  const updateEvent = (updated: TouristEvent) => {
+  const updateEvent = async (updated: TouristEvent): Promise<boolean> => {
     if (!checkIsAdminAuthorized()) {
       console.warn('[ACCESO DENEGADO] Intento no autorizado de editar un evento.');
-      return;
+      return false;
     }
-    setEvents((prev) => prev.map((e) => (e.id === updated.id ? updated : e)));
+    const nextEvents = eventsRef.current.map((e) => (e.id === updated.id ? updated : e));
+    return persistEventsToServer(nextEvents);
   };
 
-  const deleteEvent = (id: string) => {
+  const deleteEvent = async (id: string): Promise<boolean> => {
     if (!checkIsAdminAuthorized()) {
       console.warn('[ACCESO DENEGADO] Intento no autorizado de eliminar un evento.');
-      return;
+      return false;
     }
-    setEvents((prev) => prev.filter((e) => e.id !== id));
+    const nextEvents = eventsRef.current.filter((e) => e.id !== id);
+    return persistEventsToServer(nextEvents);
   };
 
-  const addAudioguide = (newGuide: Omit<Audioguide, 'id'>) => {
+  const addAudioguide = async (newGuide: Omit<Audioguide, 'id'>): Promise<boolean> => {
     if (!checkIsAdminAuthorized()) {
       console.warn('[ACCESO DENEGADO] Intento no autorizado de agregar una audioguía.');
-      return;
+      return false;
     }
     const id = `audio-${Date.now()}`;
-    setAudioguides((prev) => [{ ...newGuide, id }, ...prev]);
+    const nextGuides = [{ ...newGuide, id }, ...audioguidesRef.current];
+    return persistAudioguidesToServer(nextGuides);
   };
 
-  const updateAudioguide = (updated: Audioguide) => {
+  const updateAudioguide = async (updated: Audioguide): Promise<boolean> => {
     if (!checkIsAdminAuthorized()) {
       console.warn('[ACCESO DENEGADO] Intento no autorizado de modificar una audioguía.');
-      return;
+      return false;
     }
-    setAudioguides((prev) => prev.map((g) => (g.id === updated.id ? updated : g)));
+    const nextGuides = audioguidesRef.current.map((g) => (g.id === updated.id ? updated : g));
     if (activeAudioGuide?.id === updated.id) {
       setActiveAudioGuide(updated);
     }
+    return persistAudioguidesToServer(nextGuides);
   };
 
-  const deleteAudioguide = (id: string) => {
+  const deleteAudioguide = async (id: string): Promise<boolean> => {
     if (!checkIsAdminAuthorized()) {
       console.warn('[ACCESO DENEGADO] Intento no autorizado de eliminar una audioguía.');
-      return;
+      return false;
     }
-    setAudioguides((prev) => prev.filter((g) => g.id !== id));
+    const nextGuides = audioguidesRef.current.filter((g) => g.id !== id);
     if (activeAudioGuide?.id === id) {
       stopAudioguide();
     }
+    return persistAudioguidesToServer(nextGuides);
   };
 
-  // Site Config Persistence & Mutation Handlers
-  const persistSiteConfig = (updated: SiteConfig) => {
-    setSiteConfigState(updated);
-    try {
-      localStorage.setItem(STORAGE_KEYS.SITE_CONFIG, JSON.stringify(updated));
-    } catch (e) {
-      console.error(e);
-    }
-    // Also push to server
-    fetch('/api/site-config', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ config: updated }),
-    }).catch((err) => console.warn('[SYNC ERROR] /api/site-config:', err));
-  };
-
-  const updateSiteConfig = (newConfig: Partial<SiteConfig>) => {
+  const updateSiteConfig = async (newConfig: Partial<SiteConfig>): Promise<boolean> => {
     if (!checkIsAdminAuthorized()) {
       console.warn('[ACCESO DENEGADO] Intento no autorizado de editar configuración del sitio.');
-      return;
+      return false;
     }
     const updated: SiteConfig = {
-      ...siteConfig,
+      ...siteConfigRef.current,
       ...newConfig,
       updatedAt: new Date().toISOString(),
     };
-    persistSiteConfig(updated);
+    return persistSiteConfig(updated);
   };
 
-  const updateHeroConfig = (hero: Partial<HeroConfig>) => {
-    updateSiteConfig({ hero: { ...siteConfig.hero, ...hero } });
+  const updateHeroConfig = async (hero: Partial<HeroConfig>): Promise<boolean> => {
+    return updateSiteConfig({ hero: { ...siteConfigRef.current.hero, ...hero } });
   };
 
-  const updateCategoriesConfig = (categories: Partial<CategoriesSectionConfig>) => {
-    updateSiteConfig({ categories: { ...siteConfig.categories, ...categories } });
+  const updateTourismOfficesConfig = async (
+    tourismOffices: Partial<TourismOfficesSectionConfig>
+  ): Promise<boolean> => {
+    const current = siteConfigRef.current.tourismOffices ||
+      DEFAULT_SITE_CONFIG.tourismOffices || {
+        title: 'Oficinas de Turismo',
+        sharedPhone: '',
+        offices: [],
+      };
+    return updateSiteConfig({
+      tourismOffices: {
+        ...current,
+        ...tourismOffices,
+      },
+    });
   };
 
-  const updateImperdiblesConfig = (imperdibles: Partial<ImperdiblesSectionConfig>) => {
-    updateSiteConfig({ imperdibles: { ...siteConfig.imperdibles, ...imperdibles } });
+  const updateCategoriesConfig = async (categories: Partial<CategoriesSectionConfig>): Promise<boolean> => {
+    return updateSiteConfig({ categories: { ...siteConfigRef.current.categories, ...categories } });
   };
 
-  const updateConoceFrayConfig = (conoce: Partial<ConoceFraySectionConfig>) => {
-    updateSiteConfig({ conoceFray: { ...siteConfig.conoceFray, ...conoce } });
+  const updateImperdiblesConfig = async (imperdibles: Partial<ImperdiblesSectionConfig>): Promise<boolean> => {
+    return updateSiteConfig({ imperdibles: { ...siteConfigRef.current.imperdibles, ...imperdibles } });
   };
 
-  const updateQueHacerConfig = (queHacer: Partial<QueHacerSectionConfig>) => {
-    updateSiteConfig({ queHacer: { ...siteConfig.queHacer, ...queHacer } });
+  const updateConoceFrayConfig = async (conoce: Partial<ConoceFraySectionConfig>): Promise<boolean> => {
+    return updateSiteConfig({ conoceFray: { ...siteConfigRef.current.conoceFray, ...conoce } });
   };
 
-  const updateRecorridoEsquiuConfig = (recorrido: Partial<RecorridoEsquiuSectionConfig>) => {
-    updateSiteConfig({ recorridoEsquiu: { ...siteConfig.recorridoEsquiu, ...recorrido } });
+  const updateQueHacerConfig = async (queHacer: Partial<QueHacerSectionConfig>): Promise<boolean> => {
+    return updateSiteConfig({ queHacer: { ...siteConfigRef.current.queHacer, ...queHacer } });
   };
 
-  const updateEmblemaFeConfig = (emblema: Partial<EmblemaFeConfig>) => {
-    updateSiteConfig({ emblemaFe: { ...siteConfig.emblemaFe, ...emblema } });
+  const updateRecorridoEsquiuConfig = async (recorrido: Partial<RecorridoEsquiuSectionConfig>): Promise<boolean> => {
+    return updateSiteConfig({ recorridoEsquiu: { ...siteConfigRef.current.recorridoEsquiu, ...recorrido } });
   };
 
-  const updateFooterConfig = (footer: Partial<FooterConfig>) => {
-    updateSiteConfig({ footer: { ...siteConfig.footer, ...footer } });
+  const updateEmblemaFeConfig = async (emblema: Partial<EmblemaFeConfig>): Promise<boolean> => {
+    return updateSiteConfig({ emblemaFe: { ...siteConfigRef.current.emblemaFe, ...emblema } });
   };
 
-  const resetSiteConfigToDefault = () => {
+  const updateFooterConfig = async (footer: Partial<FooterConfig>): Promise<boolean> => {
+    return updateSiteConfig({ footer: { ...siteConfigRef.current.footer, ...footer } });
+  };
+
+  const resetSiteConfigToDefault = async (): Promise<boolean> => {
     if (!checkIsAdminAuthorized()) {
       console.warn('[ACCESO DENEGADO] Intento no autorizado de restaurar configuración.');
-      return;
+      return false;
     }
-    persistSiteConfig(DEFAULT_SITE_CONFIG);
+    return persistSiteConfig({ ...DEFAULT_SITE_CONFIG, updatedAt: new Date().toISOString() });
   };
 
-  const resetAllDataToDefault = () => {
+  const resetAllDataToDefault = async (): Promise<boolean> => {
     if (!checkIsAdminAuthorized()) {
       console.warn('[ACCESO DENEGADO] Intento no autorizado de restaurar base de datos.');
-      return;
+      return false;
     }
-    localStorage.removeItem(STORAGE_KEYS.PLACES);
-    localStorage.removeItem(STORAGE_KEYS.EVENTS);
-    localStorage.removeItem(STORAGE_KEYS.AUDIOGUIDES);
-    localStorage.removeItem(STORAGE_KEYS.PASSPORT);
-    localStorage.removeItem(STORAGE_KEYS.FAVORITES);
-    localStorage.removeItem(STORAGE_KEYS.SITE_CONFIG);
+    try {
+      localStorage.removeItem(STORAGE_KEYS.PLACES);
+      localStorage.removeItem(STORAGE_KEYS.EVENTS);
+      localStorage.removeItem(STORAGE_KEYS.AUDIOGUIDES);
+      localStorage.removeItem(STORAGE_KEYS.PASSPORT);
+      localStorage.removeItem(STORAGE_KEYS.FAVORITES);
+      localStorage.removeItem(STORAGE_KEYS.SITE_CONFIG);
+    } catch {}
 
-    setPlaces(INITIAL_PLACES);
-    setEvents(INITIAL_EVENTS);
-    setAudioguides(INITIAL_AUDIOGUIDES);
     setPassportStamps(INITIAL_PASSPORT_STAMPS);
     setFavorites(['casa-natal-esquiu', 'dique-las-pirquitas']);
     setUserLocation(INITIAL_USER_PRESETS[0]);
-    setSiteConfigState(DEFAULT_SITE_CONFIG);
+
+    const results = await Promise.all([
+      persistPlacesToServer(INITIAL_PLACES),
+      persistEventsToServer(INITIAL_EVENTS),
+      persistAudioguidesToServer(INITIAL_AUDIOGUIDES),
+      persistSiteConfig({ ...DEFAULT_SITE_CONFIG, deletedPlaceIds: [], updatedAt: new Date().toISOString() }),
+    ]);
+    return results.every(Boolean);
   };
 
   return (
@@ -1290,6 +1687,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         // Site config & editor
         siteConfig,
+        saveStatus,
         sectionToEdit,
         setSectionToEdit,
         placeToEdit,
@@ -1298,6 +1696,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setIsCreatePlaceModalOpen,
         updateSiteConfig,
         updateHeroConfig,
+        updateTourismOfficesConfig,
         updateCategoriesConfig,
         updateImperdiblesConfig,
         updateConoceFrayConfig,

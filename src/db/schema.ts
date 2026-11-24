@@ -79,6 +79,7 @@ export const audioguidesTable = pgTable('audioguides', {
   subtitle: text('subtitle').notNull().default(''),
   duration: text('duration').notNull(),
   audioSeconds: integer('audio_seconds').notNull().default(0),
+  audioUrl: text('audio_url'),
   coverImage: text('cover_image').notNull().default(''),
   shortSummary: text('short_summary').notNull().default(''),
   narrativeText: text('narrative_text').notNull().default(''),

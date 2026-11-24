@@ -1,8 +1,9 @@
-// Audio Narrator Engine using Web Speech API with fallback audio simulation
+// Audio Narrator Engine supporting real MP3 audio files with Web Speech API fallback
 
 class AudioNarrator {
   private synth: SpeechSynthesis | null = null;
   private currentUtterance: SpeechSynthesisUtterance | null = null;
+  private currentAudio: HTMLAudioElement | null = null;
   private isSpeaking: boolean = false;
   private isPaused: boolean = false;
   private onEndCallback: (() => void) | null = null;
@@ -20,6 +21,9 @@ class AudioNarrator {
 
   public setPlaybackRate(rate: number) {
     this.playbackRate = rate;
+    if (this.currentAudio) {
+      this.currentAudio.playbackRate = rate;
+    }
     if (this.currentUtterance) {
       this.currentUtterance.rate = rate;
     }
@@ -29,7 +33,8 @@ class AudioNarrator {
     text: string,
     estimatedDurationSec: number,
     onProgress?: (progressPercent: number, currentTimeSec: number) => void,
-    onEnd?: () => void
+    onEnd?: () => void,
+    audioUrl?: string
   ) {
     this.stop();
 
@@ -40,6 +45,59 @@ class AudioNarrator {
     this.isSpeaking = true;
     this.isPaused = false;
 
+    // Prefer recorded audio file when available (streamed on demand, zero TTS voice)
+    if (audioUrl && audioUrl.trim() !== '' && typeof Audio !== 'undefined') {
+      const audio = new Audio(audioUrl);
+      audio.preload = 'auto';
+      audio.playbackRate = this.playbackRate;
+      this.currentAudio = audio;
+
+      const emitAudioProgress = () => {
+        if (this.currentAudio !== audio || !this.isSpeaking) return;
+        const duration =
+          Number.isFinite(audio.duration) && audio.duration > 0
+            ? audio.duration
+            : this.estimatedTotalSeconds;
+        this.elapsedSeconds = audio.currentTime;
+        const progress = Math.min(100, (audio.currentTime / duration) * 100);
+        if (this.onProgressCallback) {
+          this.onProgressCallback(progress, Math.floor(audio.currentTime));
+        }
+      };
+
+      audio.ontimeupdate = emitAudioProgress;
+      audio.onloadedmetadata = () => {
+        if (Number.isFinite(audio.duration) && audio.duration > 0) {
+          this.estimatedTotalSeconds = Math.round(audio.duration);
+        }
+      };
+      audio.onended = () => {
+        if (this.currentAudio === audio) {
+          this.finishPlayback();
+        }
+      };
+      audio.onerror = (err) => {
+        console.warn('[AUDIO] Failed to play recorded audioguide, falling back to speech synthesis:', err);
+        if (this.currentAudio === audio) {
+          this.cleanupAudioElement();
+          this.startSpeechFallback(text);
+        }
+      };
+
+      audio.play().catch((err) => {
+        console.warn('[AUDIO] Playback interrupted or blocked:', err);
+        if (this.currentAudio === audio && err?.name !== 'AbortError') {
+          this.cleanupAudioElement();
+          this.startSpeechFallback(text);
+        }
+      });
+      return;
+    }
+
+    this.startSpeechFallback(text);
+  }
+
+  private startSpeechFallback(text: string) {
     // Start progress timer
     this.startProgressTimer();
 
@@ -76,8 +134,27 @@ class AudioNarrator {
     }
   }
 
+  private cleanupAudioElement() {
+    if (this.currentAudio) {
+      this.currentAudio.ontimeupdate = null;
+      this.currentAudio.onloadedmetadata = null;
+      this.currentAudio.onended = null;
+      this.currentAudio.onerror = null;
+      try {
+        this.currentAudio.pause();
+        this.currentAudio.currentTime = 0;
+        this.currentAudio.src = '';
+      } catch {
+        // Ignore media reset errors
+      }
+      this.currentAudio = null;
+    }
+  }
+
   public pause() {
-    if (this.synth && this.synth.speaking) {
+    if (this.currentAudio) {
+      this.currentAudio.pause();
+    } else if (this.synth && this.synth.speaking) {
       this.synth.pause();
     }
     this.isPaused = true;
@@ -88,6 +165,14 @@ class AudioNarrator {
   }
 
   public resume() {
+    if (this.currentAudio) {
+      this.currentAudio.playbackRate = this.playbackRate;
+      this.currentAudio.play().catch((err) => {
+        console.warn('[AUDIO] Could not resume audio playback:', err);
+      });
+      this.isPaused = false;
+      return;
+    }
     if (this.synth && this.synth.paused) {
       this.synth.resume();
     }
@@ -96,6 +181,7 @@ class AudioNarrator {
   }
 
   public stop() {
+    this.cleanupAudioElement();
     if (this.synth) {
       this.synth.cancel();
     }
@@ -131,12 +217,15 @@ class AudioNarrator {
   }
 
   private finishPlayback() {
+    const endCb = this.onEndCallback;
+    const progressCb = this.onProgressCallback;
+    const totalSec = this.estimatedTotalSeconds;
     this.stop();
-    if (this.onProgressCallback) {
-      this.onProgressCallback(100, this.estimatedTotalSeconds);
+    if (progressCb) {
+      progressCb(100, totalSec);
     }
-    if (this.onEndCallback) {
-      this.onEndCallback();
+    if (endCb) {
+      endCb();
     }
   }
 

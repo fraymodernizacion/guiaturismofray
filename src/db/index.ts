@@ -182,6 +182,7 @@ export async function ensurePostgresSchema(): Promise<void> {
           subtitle TEXT NOT NULL DEFAULT '',
           duration TEXT NOT NULL,
           audio_seconds INTEGER NOT NULL DEFAULT 0,
+          audio_url TEXT,
           cover_image TEXT NOT NULL DEFAULT '',
           short_summary TEXT NOT NULL DEFAULT '',
           narrative_text TEXT NOT NULL DEFAULT '',
@@ -191,6 +192,7 @@ export async function ensurePostgresSchema(): Promise<void> {
           sort_order INTEGER NOT NULL DEFAULT 0,
           updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
         );
+        ALTER TABLE audioguides ADD COLUMN IF NOT EXISTS audio_url TEXT;
 
         CREATE TABLE IF NOT EXISTS site_config (
           key TEXT PRIMARY KEY,

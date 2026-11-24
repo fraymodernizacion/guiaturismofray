@@ -97,8 +97,8 @@ export const RecorridoEsquiuSection: React.FC = () => {
           </h2>
 
           <p className="text-amber-100/90 text-xs sm:text-sm max-w-xl font-normal leading-relaxed">
-            {esquiuConfig.subtitle ||
-              esquiuConfig.introDescription ||
+            {esquiuConfig.introDescription ||
+              esquiuConfig.subtitle ||
               'Seguí los pasos del orador de la Constitución en su tierra natal.'}
           </p>
 
@@ -122,8 +122,8 @@ export const RecorridoEsquiuSection: React.FC = () => {
 
           const stopNumber = stop.order || index + 1;
           const placeName =
+            stop.customTitle?.trim() ||
             livePlace?.name ||
-            stop.customTitle ||
             (stop as any).name ||
             `Parada ${stopNumber}`;
 
@@ -133,8 +133,8 @@ export const RecorridoEsquiuSection: React.FC = () => {
             'San José de Piedra Blanca';
 
           const placeDescription =
+            stop.tip?.trim() ||
             livePlace?.shortDescription ||
-            stop.tip ||
             (stop as any).highlight ||
             (stop as any).subtitle ||
             '';
