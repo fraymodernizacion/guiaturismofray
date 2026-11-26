@@ -11,6 +11,7 @@ import {
   AlertTriangle,
 } from 'lucide-react';
 import { optimizeImageForWeb, formatFileSizeKb } from '../utils/imageOptimizer';
+import { useAuth } from '../context/AuthContext';
 
 interface AdminPhotoUploaderProps {
   /** Primary image URL */
@@ -48,6 +49,7 @@ export const AdminPhotoUploader: React.FC<AdminPhotoUploaderProps> = ({
   title,
   helpText,
 }) => {
+  const { getAuthToken, setIsLoginModalOpen } = useAuth();
   const effectiveMainImage =
     mainImageProp !== undefined ? mainImageProp : currentImageUrl || '';
   const effectiveSingleOnly =
@@ -110,14 +112,28 @@ export const AdminPhotoUploader: React.FC<AdminPhotoUploaderProps> = ({
 
     const filename = `${cleanPlaceName}_${Date.now()}.${optimized.extension}`;
 
+    const token = await getAuthToken();
+    if (!token) {
+      setIsLoginModalOpen(true);
+      throw new Error('Iniciá sesión con Google para subir fotografías de forma permanente.');
+    }
+
     const res = await fetch('/api/upload', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify({
         filename,
         dataUrl: optimized.dataUrl,
       }),
     });
+
+    if (res.status === 401 || res.status === 403) {
+      setIsLoginModalOpen(true);
+      throw new Error('Tu sesión expiró. Iniciá sesión con Google para subir fotografías.');
+    }
 
     if (!res.ok) {
       const errData = await res.json().catch(() => ({}));

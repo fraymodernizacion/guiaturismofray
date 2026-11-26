@@ -20,6 +20,7 @@ import { PlaceEditorModal } from './components/PlaceEditorModal';
 import { AudioPlayerFloating } from './components/AudioPlayerFloating';
 import { LocationWelcomeModal } from './components/LocationWelcomeModal';
 import { GpsTestView } from './components/GpsTestView';
+import { trackAnalyticsEvent } from './utils/analytics';
 
 const checkIsGpsTestRoute = () => {
   if (typeof window === 'undefined') return false;
@@ -40,11 +41,55 @@ const MainAppRouter: React.FC = () => {
   const { isCurrentRouteAdmin } = useAuth();
   const {
     activeTab,
+    activeCategory,
+    selectedPlace,
     isLocationPromptModalOpen,
     allowLocationPermission,
     denyLocationPermission,
     isLocating,
   } = useData();
+
+  const lastTrackedTabRef = React.useRef<string>('inicio');
+  const lastTrackedCategoryRef = React.useRef<string | null>(null);
+  const lastTrackedPlaceIdRef = React.useRef<string | null>(null);
+
+  // Count every public app opening automatically (zero visitor login required)
+  useEffect(() => {
+    if (!isCurrentRouteAdmin) {
+      trackAnalyticsEvent('visit', 'inicio');
+    }
+  }, [isCurrentRouteAdmin]);
+
+  // Track main tab navigation
+  useEffect(() => {
+    if (isCurrentRouteAdmin) return;
+    if (activeTab && activeTab !== lastTrackedTabRef.current) {
+      lastTrackedTabRef.current = activeTab;
+      trackAnalyticsEvent('section', activeTab);
+    }
+  }, [activeTab, isCurrentRouteAdmin]);
+
+  // Track category explorations
+  useEffect(() => {
+    if (isCurrentRouteAdmin) return;
+    if (activeCategory && activeCategory !== lastTrackedCategoryRef.current) {
+      lastTrackedCategoryRef.current = activeCategory;
+      trackAnalyticsEvent('section', activeCategory);
+    } else if (!activeCategory) {
+      lastTrackedCategoryRef.current = null;
+    }
+  }, [activeCategory, isCurrentRouteAdmin]);
+
+  // Track opened place detail cards
+  useEffect(() => {
+    if (isCurrentRouteAdmin) return;
+    if (selectedPlace?.id && selectedPlace.id !== lastTrackedPlaceIdRef.current) {
+      lastTrackedPlaceIdRef.current = selectedPlace.id;
+      trackAnalyticsEvent('place_view', selectedPlace.id, selectedPlace.name);
+    } else if (!selectedPlace) {
+      lastTrackedPlaceIdRef.current = null;
+    }
+  }, [selectedPlace, isCurrentRouteAdmin]);
 
   // If visiting /admin route, show the private protected Admin Area
   if (isCurrentRouteAdmin) {

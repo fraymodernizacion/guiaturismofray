@@ -4,11 +4,22 @@ import {
   integer,
   jsonb,
   pgTable,
+  serial,
   text,
   timestamp,
 } from 'drizzle-orm/pg-core';
 import type { CategoryId, PlaceTag, TrekkingDetails } from '../types.ts';
 import type { SiteConfig } from '../types/siteConfig.ts';
+
+export const users = pgTable('users', {
+  id: serial('id').primaryKey(),
+  uid: text('uid').notNull().unique(),
+  email: text('email').notNull(),
+  name: text('name'),
+  role: text('role').notNull().default('editor'),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  lastLoginAt: timestamp('last_login_at', { withTimezone: true }).defaultNow().notNull(),
+});
 
 export const placesTable = pgTable('places', {
   id: text('id').primaryKey(),
@@ -101,5 +112,14 @@ export const mediaUploadsTable = pgTable('media_uploads', {
   mimeType: text('mime_type').notNull().default('application/octet-stream'),
   dataBase64: text('data_base64').notNull(),
   sizeBytes: integer('size_bytes').notNull().default(0),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+});
+
+export const siteVisitsTable = pgTable('site_visits', {
+  id: serial('id').primaryKey(),
+  eventType: text('event_type').notNull(),
+  target: text('target'),
+  label: text('label'),
+  device: text('device').notNull().default('mobile'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 });

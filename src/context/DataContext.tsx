@@ -36,6 +36,7 @@ import { DEFAULT_SITE_CONFIG } from '../data/defaultSiteConfig';
 import { calculateDistanceKm, isValidCoordinate } from '../utils/geoUtils';
 import { computeTopographicalRouteEstimate, calculateHaversineKm } from '../utils/routesService';
 import { audioNarrator } from '../utils/audioNarrator';
+import { useAuth } from './AuthContext';
 
 export interface SaveStatus {
   state: 'idle' | 'saving' | 'saved' | 'error';
@@ -67,6 +68,8 @@ interface DataContextType {
   audioPlaybackRate: number;
   isUsefulInfoModalOpen: boolean;
   isAdminModalOpen: boolean;
+  adminPanelTab: 'analytics' | 'places' | 'sections' | 'events' | 'audioguides' | 'data';
+  setAdminPanelTab: (tab: 'analytics' | 'places' | 'sections' | 'events' | 'audioguides' | 'data') => void;
   isQrShareModalOpen: boolean;
   isLocationPromptModalOpen: boolean;
   setIsLocationPromptModalOpen: (open: boolean) => void;
@@ -416,6 +419,7 @@ export const mergePlaceWithBaseline = (
 };
 
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { getAuthToken, setIsLoginModalOpen } = useAuth();
   // Places state - preserve stored modifications & photographs without clobbering edits
   const [places, setPlaces] = useState<Place[]>(() => {
     const storedConfig = getStoredOrDefault<SiteConfig>(STORAGE_KEYS.SITE_CONFIG, '', DEFAULT_SITE_CONFIG);
@@ -725,6 +729,9 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Modals & Editor States
   const [isUsefulInfoModalOpen, setIsUsefulInfoModalOpen] = useState<boolean>(false);
   const [isAdminModalOpen, setIsAdminModalOpen] = useState<boolean>(false);
+  const [adminPanelTab, setAdminPanelTab] = useState<
+    'analytics' | 'places' | 'sections' | 'events' | 'audioguides' | 'data'
+  >('places');
   const [isQrShareModalOpen, setIsQrShareModalOpen] = useState<boolean>(false);
   const [selectedStampForCheckIn, setSelectedStampForCheckIn] = useState<PassportStamp | null>(null);
 
@@ -825,19 +832,24 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
           const localTs = getLocalUpdatedAt(STORAGE_KEYS.SITE_CONFIG_UPDATED_AT);
 
           if (localTs > serverTs && isAdminLocal) {
-            // Re-sync newer local admin config to server revision store
-            fetch('/api/site-config', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ config: siteConfigRef.current }),
-            })
-              .then((r) => (r.ok ? r.json() : null))
-              .then((saved) => {
-                if (saved?.revisionTimestamp) {
-                  safeLocalStorageSet(STORAGE_KEYS.SITE_CONFIG_UPDATED_AT, saved.revisionTimestamp);
-                }
+            const token = await getAuthToken();
+            if (token) {
+              fetch('/api/site-config', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ config: siteConfigRef.current }),
               })
-              .catch(() => {});
+                .then((r) => (r.ok ? r.json() : null))
+                .then((saved) => {
+                  if (saved?.revisionTimestamp) {
+                    safeLocalStorageSet(STORAGE_KEYS.SITE_CONFIG_UPDATED_AT, saved.revisionTimestamp);
+                  }
+                })
+                .catch(() => {});
+            }
           } else if (isMounted && data?.config && typeof data.config === 'object') {
             if (Array.isArray(data.config.deletedPlaceIds)) {
               deletedFromServer = data.config.deletedPlaceIds;
@@ -1048,26 +1060,31 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
             safeLocalStorageSet(STORAGE_KEYS.PLACES, finalPlaces);
 
             if (recoveredFromLocal && isAdminLocal) {
-              // Automatically push recovered local edits into the server's append-only revision store
-              fetch('/api/places', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ places: finalPlaces }),
-              })
-                .then((r) => (r.ok ? r.json() : null))
-                .then((saved) => {
-                  if (saved?.revisionTimestamp) {
-                    safeLocalStorageSet(STORAGE_KEYS.PLACES_UPDATED_AT, saved.revisionTimestamp);
-                    if (isMounted) {
-                      setSaveStatus({
-                        state: 'saved',
-                        message: 'Cambios recuperados y guardados permanentemente en el servidor',
-                        updatedAt: Date.now(),
-                      });
-                    }
-                  }
+              const token = await getAuthToken();
+              if (token) {
+                fetch('/api/places', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                  },
+                  body: JSON.stringify({ places: finalPlaces }),
                 })
-                .catch((err) => console.warn('[SYNC] Auto-recovery push failed:', err));
+                  .then((r) => (r.ok ? r.json() : null))
+                  .then((saved) => {
+                    if (saved?.revisionTimestamp) {
+                      safeLocalStorageSet(STORAGE_KEYS.PLACES_UPDATED_AT, saved.revisionTimestamp);
+                      if (isMounted) {
+                        setSaveStatus({
+                          state: 'saved',
+                          message: 'Cambios recuperados y guardados permanentemente en el servidor',
+                          updatedAt: Date.now(),
+                        });
+                      }
+                    }
+                  })
+                  .catch((err) => console.warn('[SYNC] Auto-recovery push failed:', err));
+              }
             } else if (serverPlacesTs > 0) {
               safeLocalStorageSet(STORAGE_KEYS.PLACES_UPDATED_AT, serverPlacesTs);
             }
@@ -1085,11 +1102,17 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
           const serverTs = Number(data?.revisionTimestamp || 0);
           const localTs = getLocalUpdatedAt(STORAGE_KEYS.EVENTS_UPDATED_AT);
           if (localTs > serverTs && isAdminLocal) {
-            fetch('/api/events', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ events: eventsRef.current }),
-            }).catch(() => {});
+            const token = await getAuthToken();
+            if (token) {
+              fetch('/api/events', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ events: eventsRef.current }),
+              }).catch(() => {});
+            }
           } else if (isMounted && Array.isArray(data?.events)) {
             const filteredEvents = (data.events as TouristEvent[]).filter(
               (ev) => ev && ev.placeId !== 'casa-de-te-la-calera' && ev.id !== 'ev-taller-ceramica'
@@ -1112,11 +1135,17 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
           const serverTs = Number(data?.revisionTimestamp || 0);
           const localTs = getLocalUpdatedAt(STORAGE_KEYS.AUDIOGUIDES_UPDATED_AT);
           if (localTs > serverTs && isAdminLocal) {
-            fetch('/api/audioguides', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ audioguides: audioguidesRef.current }),
-            }).catch(() => {});
+            const token = await getAuthToken();
+            if (token) {
+              fetch('/api/audioguides', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ audioguides: audioguidesRef.current }),
+              }).catch(() => {});
+            }
           } else if (isMounted && Array.isArray(data?.audioguides) && data.audioguides.length > 0) {
             const initById = new Map(INITIAL_AUDIOGUIDES.map((g) => [g.id, g]));
             const serverGuides = (data.audioguides as Audioguide[]).map((g) => {
@@ -1301,6 +1330,23 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const buildAdminHeaders = async (): Promise<Record<string, string> | null> => {
+    const token = await getAuthToken();
+    if (!token) {
+      setSaveStatus({
+        state: 'error',
+        message: 'Iniciá sesión con Google para guardar cambios de forma permanente.',
+        updatedAt: Date.now(),
+      });
+      setIsLoginModalOpen(true);
+      return null;
+    }
+    return {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    };
+  };
+
   // Explicit server persistence helpers (never called accidentally on public page load)
   const persistPlacesToServer = async (nextPlaces: Place[]): Promise<boolean> => {
     const saveTs = Date.now();
@@ -1310,11 +1356,17 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     safeLocalStorageSet(STORAGE_KEYS.PLACES_UPDATED_AT, saveTs);
     setSaveStatus({ state: 'saving', message: 'Guardando cambios en el servidor...' });
     try {
+      const headers = await buildAdminHeaders();
+      if (!headers) return false;
       const res = await fetch('/api/places', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ places: nextPlaces }),
       });
+      if (res.status === 401 || res.status === 403) {
+        setIsLoginModalOpen(true);
+        throw new Error('Tu sesión expiró. Iniciá sesión con Google para guardar.');
+      }
       if (!res.ok) {
         const errBody = await res.json().catch(() => ({}));
         throw new Error(errBody.error || `Error HTTP ${res.status}`);
@@ -1344,11 +1396,17 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     safeLocalStorageSet(STORAGE_KEYS.EVENTS_UPDATED_AT, saveTs);
     setSaveStatus({ state: 'saving', message: 'Guardando agenda...' });
     try {
+      const headers = await buildAdminHeaders();
+      if (!headers) return false;
       const res = await fetch('/api/events', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ events: nextEvents }),
       });
+      if (res.status === 401 || res.status === 403) {
+        setIsLoginModalOpen(true);
+        throw new Error('Tu sesión expiró. Iniciá sesión con Google para guardar.');
+      }
       if (!res.ok) throw new Error(`Error HTTP ${res.status}`);
       const saved = await res.json().catch(() => ({}));
       if (saved?.revisionTimestamp) {
@@ -1358,7 +1416,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return true;
     } catch (err: any) {
       console.error('[SYNC ERROR] /api/events:', err);
-      setSaveStatus({ state: 'error', message: 'Error al guardar la agenda en el servidor', updatedAt: Date.now() });
+      setSaveStatus({ state: 'error', message: err?.message || 'Error al guardar la agenda en el servidor', updatedAt: Date.now() });
       return false;
     }
   };
@@ -1371,11 +1429,17 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     safeLocalStorageSet(STORAGE_KEYS.AUDIOGUIDES_UPDATED_AT, saveTs);
     setSaveStatus({ state: 'saving', message: 'Guardando audioguías...' });
     try {
+      const headers = await buildAdminHeaders();
+      if (!headers) return false;
       const res = await fetch('/api/audioguides', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ audioguides: nextGuides }),
       });
+      if (res.status === 401 || res.status === 403) {
+        setIsLoginModalOpen(true);
+        throw new Error('Tu sesión expiró. Iniciá sesión con Google para guardar.');
+      }
       if (!res.ok) throw new Error(`Error HTTP ${res.status}`);
       const saved = await res.json().catch(() => ({}));
       if (saved?.revisionTimestamp) {
@@ -1385,7 +1449,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return true;
     } catch (err: any) {
       console.error('[SYNC ERROR] /api/audioguides:', err);
-      setSaveStatus({ state: 'error', message: 'Error al guardar audioguías en el servidor', updatedAt: Date.now() });
+      setSaveStatus({ state: 'error', message: err?.message || 'Error al guardar audioguías en el servidor', updatedAt: Date.now() });
       return false;
     }
   };
@@ -1398,11 +1462,17 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     safeLocalStorageSet(STORAGE_KEYS.SITE_CONFIG_UPDATED_AT, saveTs);
     setSaveStatus({ state: 'saving', message: 'Guardando sección en el servidor...' });
     try {
+      const headers = await buildAdminHeaders();
+      if (!headers) return false;
       const res = await fetch('/api/site-config', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ config: updated }),
       });
+      if (res.status === 401 || res.status === 403) {
+        setIsLoginModalOpen(true);
+        throw new Error('Tu sesión expiró. Iniciá sesión con Google para guardar.');
+      }
       if (!res.ok) throw new Error(`Error HTTP ${res.status}`);
       const saved = await res.json().catch(() => ({}));
       if (saved?.revisionTimestamp) {
@@ -1414,7 +1484,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.error('[SYNC ERROR] /api/site-config:', err);
       setSaveStatus({
         state: 'error',
-        message: 'No se pudo guardar la sección en el servidor.',
+        message: err?.message || 'No se pudo guardar la sección en el servidor.',
         updatedAt: Date.now(),
       });
       return false;
@@ -1674,6 +1744,8 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setIsUsefulInfoModalOpen,
         isAdminModalOpen,
         setIsAdminModalOpen,
+        adminPanelTab,
+        setAdminPanelTab,
         isQrShareModalOpen,
         setIsQrShareModalOpen,
         isLocationPromptModalOpen,

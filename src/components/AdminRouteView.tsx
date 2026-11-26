@@ -161,120 +161,83 @@ export const AdminRouteView: React.FC = () => {
             </div>
           )}
 
-          {/* Login Mode Selector */}
-          <div className="flex bg-slate-950/80 p-1 rounded-2xl border border-slate-800 mb-5 text-xs font-bold">
-            <button
-              type="button"
-              onClick={() => setActiveLoginMode('password')}
-              className={`flex-1 py-2 rounded-xl transition ${
-                activeLoginMode === 'password'
-                  ? 'bg-emerald-600 text-white shadow-xs'
-                  : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              Usuario Autorizado
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveLoginMode('passcode')}
-              className={`flex-1 py-2 rounded-xl transition ${
-                activeLoginMode === 'passcode'
-                  ? 'bg-emerald-600 text-white shadow-xs'
-                  : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              Clave Municipal
-            </button>
-          </div>
-
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {activeLoginMode === 'password' ? (
-              <>
-                <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1.5">
-                    Correo electrónico institucional
-                  </label>
-                  <div className="relative">
-                    <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                    <input
-                      type="email"
-                      required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="prensafray@gmail.com"
-                      className="w-full pl-10 pr-3 py-2.5 bg-slate-950 text-white text-xs rounded-xl border border-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1.5">
-                    Contraseña de administrador
-                  </label>
-                  <div className="relative">
-                    <KeyRound className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                    <input
-                      type="password"
-                      required
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="••••••••••••"
-                      className="w-full pl-10 pr-3 py-2.5 bg-slate-950 text-white text-xs rounded-xl border border-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition"
-                    />
-                  </div>
-                </div>
-              </>
-            ) : (
-              <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1.5">
-                  Clave de seguridad municipal (Fray Turismo)
-                </label>
-                <div className="relative">
-                  <KeyRound className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                  <input
-                    type="password"
-                    required
-                    value={passcode}
-                    onChange={(e) => setPasscode(e.target.value)}
-                    placeholder="Ingresá la clave de equipo..."
-                    className="w-full pl-10 pr-3 py-2.5 bg-slate-950 text-white text-xs rounded-xl border border-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition"
-                  />
-                </div>
-                <p className="text-[11px] text-slate-500 mt-1.5">
-                  Uso exclusivo para personal técnico y directores de la Dirección de Turismo.
-                </p>
-              </div>
-            )}
-
-            <button
-              type="submit"
-              disabled={submitting || isLoading}
-              className="w-full py-3 px-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-black rounded-xl shadow-lg shadow-emerald-950 transition active:scale-98 disabled:opacity-50 mt-2"
-            >
-              {submitting ? 'Verificando credenciales...' : 'Ingresar al Panel de Gestión'}
-            </button>
-          </form>
-
-          {/* Alternative Google Sign-In button for verified accounts */}
-          <div className="mt-5 pt-4 border-t border-slate-800 text-center space-y-3">
+          {/* Primary Google Sign-In */}
+          <div className="space-y-3 mb-5">
             <button
               type="button"
               onClick={loginWithGoogle}
-              disabled={isLoading}
-              className="w-full py-2.5 px-4 bg-slate-950 hover:bg-slate-800 text-slate-200 border border-slate-700 text-xs font-bold rounded-xl transition flex items-center justify-center gap-2"
+              disabled={isLoading || submitting}
+              className="w-full py-3.5 px-4 bg-white hover:bg-slate-100 text-slate-900 text-sm font-black rounded-2xl shadow-lg transition flex items-center justify-center gap-2.5 disabled:opacity-60"
             >
-              <span className="w-4 h-4 rounded-full bg-white text-slate-900 font-black text-[10px] flex items-center justify-center">
+              <span className="w-5 h-5 rounded-full bg-emerald-600 text-white font-black text-xs flex items-center justify-center">
                 G
               </span>
               <span>Iniciar con Google Autorizado</span>
             </button>
 
-            <div className="flex items-center justify-center gap-1.5 text-[11px] text-slate-500">
+            <div className="flex items-center justify-center gap-1.5 text-[11px] text-slate-400">
               <Info className="w-3.5 h-3.5" />
               <span>Cuentas habilitadas: prensafray@gmail.com y afines</span>
             </div>
           </div>
+
+          <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-slate-800" />
+            </div>
+            <div className="relative flex justify-center text-[10px] uppercase tracking-wider font-bold">
+              <span className="bg-slate-900 px-3 text-slate-500">O clave municipal</span>
+            </div>
+          </div>
+
+          {/* Secondary Passcode Form */}
+          <form onSubmit={handleSubmit} className="space-y-3.5">
+            <div>
+              <label className="block text-xs font-bold text-slate-300 mb-1.5">
+                Correo electrónico institucional
+              </label>
+              <div className="relative">
+                <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="prensafray@gmail.com"
+                  className="w-full pl-10 pr-3 py-2.5 bg-slate-950 text-white text-xs rounded-xl border border-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-slate-300 mb-1.5">
+                Clave de seguridad municipal
+              </label>
+              <div className="relative">
+                <KeyRound className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <input
+                  type="password"
+                  required
+                  minLength={6}
+                  value={activeLoginMode === 'password' ? password : passcode}
+                  onChange={(e) => {
+                    setActiveLoginMode('passcode');
+                    setPasscode(e.target.value);
+                  }}
+                  placeholder="Ingresá tu clave..."
+                  className="w-full pl-10 pr-3 py-2.5 bg-slate-950 text-white text-xs rounded-xl border border-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition"
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={submitting || isLoading}
+              className="w-full py-2.5 px-4 bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-black rounded-xl transition active:scale-98 disabled:opacity-50"
+            >
+              {submitting ? 'Verificando credenciales...' : 'Ingresar con clave'}
+            </button>
+          </form>
         </div>
       </div>
 

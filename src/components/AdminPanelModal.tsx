@@ -17,12 +17,14 @@ import {
   Layers,
   Loader2,
   ChevronRight,
+  BarChart3,
 } from 'lucide-react';
 import { useData } from '../context/DataContext';
 import { useAuth } from '../context/AuthContext';
 import { Place, TouristEvent, Audioguide, CategoryId, PlaceTag } from '../types';
 import { CATEGORIES } from '../data/initialData';
 import { AdminPhotoUploader } from './AdminPhotoUploader';
+import { AdminAnalyticsTab } from './AdminAnalyticsTab';
 
 const ALL_AVAILABLE_TAGS: PlaceTag[] = [
   'Abierto ahora',
@@ -104,6 +106,8 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({ forceVisibleIn
   const {
     isAdminModalOpen,
     setIsAdminModalOpen,
+    adminPanelTab: activeAdminTab,
+    setAdminPanelTab: setActiveAdminTab,
     setSectionToEdit,
     siteConfig,
     places,
@@ -122,10 +126,6 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({ forceVisibleIn
   } = useData();
 
   const { navigateToPublic } = useAuth();
-
-  const [activeAdminTab, setActiveAdminTab] = useState<
-    'places' | 'sections' | 'events' | 'audioguides' | 'data'
-  >('places');
   const [adminSearch, setAdminSearch] = useState<string>('');
   const [adminValidationFilter, setAdminValidationFilter] = useState<
     'all' | 'pendiente_validacion' | 'verificado'
@@ -512,6 +512,7 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({ forceVisibleIn
       {/* Admin Navigation Tabs */}
       <div className="flex border-b border-slate-200 bg-slate-100/80 overflow-x-auto no-scrollbar px-3">
         {[
+          { id: 'analytics', label: 'Visitas y Estadísticas', icon: BarChart3 },
           { id: 'places', label: `Comercios y Atractivos (${places.length})`, icon: Building },
           { id: 'sections', label: `Secciones del Sitio (${SITE_SECTIONS_LIST.length})`, icon: Layers },
           { id: 'events', label: `Agenda de Eventos (${events.length})`, icon: Calendar },
@@ -1655,7 +1656,12 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({ forceVisibleIn
           </div>
         )}
 
-        {/* TAB 5: BACKUP & RESTORE */}
+        {/* TAB 5: ANALYTICS & VISIT COUNTER (ADMIN ONLY) */}
+        {activeAdminTab === 'analytics' && (
+          <AdminAnalyticsTab onFeedback={showFeedback} />
+        )}
+
+        {/* TAB 6: BACKUP & RESTORE */}
         {activeAdminTab === 'data' && (
           <div className="space-y-4 max-w-lg mx-auto py-4">
             <div className="bg-white p-5 rounded-3xl border border-slate-200 space-y-4 text-center shadow-xs">

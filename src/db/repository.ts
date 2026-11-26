@@ -1,13 +1,14 @@
 import fs from 'fs';
 import path from 'path';
 import { asc, eq, notInArray } from 'drizzle-orm';
-import { ensurePostgresSchema, getDb } from './index.ts';
+import { db } from './index.ts';
 import {
   audioguidesTable,
   eventsTable,
   mediaUploadsTable,
   placesTable,
   siteConfigTable,
+  siteVisitsTable,
 } from './schema.ts';
 import {
   INITIAL_AUDIOGUIDES,
@@ -209,13 +210,23 @@ function fromAudioguideRow(row: typeof audioguidesTable.$inferSelect): Audioguid
   return guide;
 }
 
+function maxTimestampMs(dates: Array<Date | null | undefined>): number {
+  let max = 0;
+  for (const d of dates) {
+    if (d instanceof Date) {
+      const t = d.getTime();
+      if (t > max) max = t;
+    }
+  }
+  return max;
+}
+
 export async function seedDatabaseFromExistingFiles(): Promise<{
   placesCount: number;
   eventsCount: number;
   audioguidesCount: number;
 }> {
   try {
-    await ensurePostgresSchema();
     const dataDir = path.join(process.cwd(), 'data');
 
     const seedPlaces =
@@ -241,14 +252,15 @@ export async function seedDatabaseFromExistingFiles(): Promise<{
     };
   } catch (error) {
     console.error('[POSTGRES] Failed to seed database:', error);
-    throw new Error('Failed to seed PostgreSQL database', { cause: error });
+    throw new Error('Failed to seed database.', { cause: error });
   }
 }
 
-export async function getAllPlaces(): Promise<Place[]> {
+export async function getAllPlacesWithMeta(): Promise<{
+  places: Place[];
+  revisionTimestamp: number;
+}> {
   try {
-    await ensurePostgresSchema();
-    const db = getDb();
     let rows = await db.select().from(placesTable).orderBy(asc(placesTable.sortOrder));
 
     if (rows.length === 0) {
@@ -259,17 +271,23 @@ export async function getAllPlaces(): Promise<Place[]> {
       rows = await db.select().from(placesTable).orderBy(asc(placesTable.sortOrder));
     }
 
-    return rows.map(fromPlaceRow);
+    return {
+      places: rows.map(fromPlaceRow),
+      revisionTimestamp: maxTimestampMs(rows.map((r) => r.updatedAt)),
+    };
   } catch (error) {
     console.error('[POSTGRES] Error reading places:', error);
-    throw new Error('Failed to read places from PostgreSQL', { cause: error });
+    throw new Error('Failed to load places.', { cause: error });
   }
+}
+
+export async function getAllPlaces(): Promise<Place[]> {
+  const { places } = await getAllPlacesWithMeta();
+  return places;
 }
 
 export async function replaceAllPlaces(places: Place[]): Promise<number> {
   try {
-    await ensurePostgresSchema();
-    const db = getDb();
     const ids = places.map((p) => p.id).filter(Boolean);
 
     await db.transaction(async (tx) => {
@@ -295,14 +313,15 @@ export async function replaceAllPlaces(places: Place[]): Promise<number> {
     return places.length;
   } catch (error) {
     console.error('[POSTGRES] Error saving places:', error);
-    throw new Error('Failed to save places to PostgreSQL', { cause: error });
+    throw new Error('Failed to save places.', { cause: error });
   }
 }
 
-export async function getAllEvents(): Promise<TouristEvent[] | null> {
+export async function getAllEventsWithMeta(): Promise<{
+  events: TouristEvent[];
+  revisionTimestamp: number;
+}> {
   try {
-    await ensurePostgresSchema();
-    const db = getDb();
     let rows = await db.select().from(eventsTable).orderBy(asc(eventsTable.sortOrder));
 
     if (rows.length === 0) {
@@ -313,17 +332,23 @@ export async function getAllEvents(): Promise<TouristEvent[] | null> {
       rows = await db.select().from(eventsTable).orderBy(asc(eventsTable.sortOrder));
     }
 
-    return rows.length > 0 ? rows.map(fromEventRow) : null;
+    return {
+      events: rows.map(fromEventRow),
+      revisionTimestamp: maxTimestampMs(rows.map((r) => r.updatedAt)),
+    };
   } catch (error) {
     console.error('[POSTGRES] Error reading events:', error);
-    throw new Error('Failed to read events from PostgreSQL', { cause: error });
+    throw new Error('Failed to load events.', { cause: error });
   }
+}
+
+export async function getAllEvents(): Promise<TouristEvent[] | null> {
+  const { events } = await getAllEventsWithMeta();
+  return events.length > 0 ? events : null;
 }
 
 export async function replaceAllEvents(events: TouristEvent[]): Promise<number> {
   try {
-    await ensurePostgresSchema();
-    const db = getDb();
     const ids = events.map((e) => e.id).filter(Boolean);
 
     await db.transaction(async (tx) => {
@@ -349,14 +374,15 @@ export async function replaceAllEvents(events: TouristEvent[]): Promise<number> 
     return events.length;
   } catch (error) {
     console.error('[POSTGRES] Error saving events:', error);
-    throw new Error('Failed to save events to PostgreSQL', { cause: error });
+    throw new Error('Failed to save events.', { cause: error });
   }
 }
 
-export async function getAllAudioguides(): Promise<Audioguide[] | null> {
+export async function getAllAudioguidesWithMeta(): Promise<{
+  audioguides: Audioguide[];
+  revisionTimestamp: number;
+}> {
   try {
-    await ensurePostgresSchema();
-    const db = getDb();
     let rows = await db
       .select()
       .from(audioguidesTable)
@@ -374,17 +400,23 @@ export async function getAllAudioguides(): Promise<Audioguide[] | null> {
         .orderBy(asc(audioguidesTable.sortOrder));
     }
 
-    return rows.length > 0 ? rows.map(fromAudioguideRow) : null;
+    return {
+      audioguides: rows.map(fromAudioguideRow),
+      revisionTimestamp: maxTimestampMs(rows.map((r) => r.updatedAt)),
+    };
   } catch (error) {
     console.error('[POSTGRES] Error reading audioguides:', error);
-    throw new Error('Failed to read audioguides from PostgreSQL', { cause: error });
+    throw new Error('Failed to load audioguides.', { cause: error });
   }
+}
+
+export async function getAllAudioguides(): Promise<Audioguide[] | null> {
+  const { audioguides } = await getAllAudioguidesWithMeta();
+  return audioguides.length > 0 ? audioguides : null;
 }
 
 export async function replaceAllAudioguides(audioguides: Audioguide[]): Promise<number> {
   try {
-    await ensurePostgresSchema();
-    const db = getDb();
     const ids = audioguides.map((g) => g.id).filter(Boolean);
 
     await db.transaction(async (tx) => {
@@ -410,14 +442,15 @@ export async function replaceAllAudioguides(audioguides: Audioguide[]): Promise<
     return audioguides.length;
   } catch (error) {
     console.error('[POSTGRES] Error saving audioguides:', error);
-    throw new Error('Failed to save audioguides to PostgreSQL', { cause: error });
+    throw new Error('Failed to save audioguides.', { cause: error });
   }
 }
 
-export async function getSiteConfig(): Promise<SiteConfig | null> {
+export async function getSiteConfigWithMeta(): Promise<{
+  config: SiteConfig | null;
+  revisionTimestamp: number;
+}> {
   try {
-    await ensurePostgresSchema();
-    const db = getDb();
     const rows = await db
       .select()
       .from(siteConfigTable)
@@ -430,22 +463,28 @@ export async function getSiteConfig(): Promise<SiteConfig | null> {
       );
       if (seedConfig) {
         await saveSiteConfig(seedConfig);
-        return seedConfig;
+        return { config: seedConfig, revisionTimestamp: Date.now() };
       }
-      return null;
+      return { config: null, revisionTimestamp: 0 };
     }
 
-    return rows[0].config;
+    return {
+      config: rows[0].config,
+      revisionTimestamp: rows[0].updatedAt instanceof Date ? rows[0].updatedAt.getTime() : 0,
+    };
   } catch (error) {
     console.error('[POSTGRES] Error reading site config:', error);
-    throw new Error('Failed to read site config from PostgreSQL', { cause: error });
+    throw new Error('Failed to load site configuration.', { cause: error });
   }
+}
+
+export async function getSiteConfig(): Promise<SiteConfig | null> {
+  const { config } = await getSiteConfigWithMeta();
+  return config;
 }
 
 export async function saveSiteConfig(config: SiteConfig): Promise<void> {
   try {
-    await ensurePostgresSchema();
-    const db = getDb();
     await db
       .insert(siteConfigTable)
       .values({
@@ -462,7 +501,7 @@ export async function saveSiteConfig(config: SiteConfig): Promise<void> {
       });
   } catch (error) {
     console.error('[POSTGRES] Error saving site config:', error);
-    throw new Error('Failed to save site config to PostgreSQL', { cause: error });
+    throw new Error('Failed to save site configuration.', { cause: error });
   }
 }
 
@@ -473,8 +512,6 @@ export async function saveMediaUpload(
   sizeBytes: number
 ): Promise<void> {
   try {
-    await ensurePostgresSchema();
-    const db = getDb();
     await db
       .insert(mediaUploadsTable)
       .values({
@@ -494,7 +531,7 @@ export async function saveMediaUpload(
       });
   } catch (error) {
     console.error('[POSTGRES] Error saving media upload:', error);
-    throw new Error('Failed to save uploaded media to PostgreSQL', { cause: error });
+    throw new Error('Failed to save uploaded media.', { cause: error });
   }
 }
 
@@ -502,8 +539,6 @@ export async function getMediaUpload(
   filename: string
 ): Promise<{ mimeType: string; dataBase64: string } | null> {
   try {
-    await ensurePostgresSchema();
-    const db = getDb();
     const rows = await db
       .select()
       .from(mediaUploadsTable)
@@ -516,6 +551,61 @@ export async function getMediaUpload(
     };
   } catch (error) {
     console.error('[POSTGRES] Error reading media upload:', error);
-    throw new Error('Failed to read uploaded media from PostgreSQL', { cause: error });
+    throw new Error('Failed to load uploaded media.', { cause: error });
+  }
+}
+
+export interface SiteVisitRecord {
+  t: number;
+  type: 'visit' | 'section' | 'place_view';
+  target?: string;
+  label?: string;
+  device: 'mobile' | 'desktop';
+}
+
+export async function recordSiteVisitEvent(event: SiteVisitRecord): Promise<void> {
+  try {
+    await db.insert(siteVisitsTable).values({
+      eventType: event.type,
+      target: event.target ?? null,
+      label: event.label ?? null,
+      device: event.device,
+      createdAt: new Date(event.t),
+    });
+  } catch (error) {
+    console.error('[POSTGRES] Error recording site visit event:', error);
+    throw new Error('Failed to record visit event.', { cause: error });
+  }
+}
+
+export async function getAllSiteVisitEvents(): Promise<SiteVisitRecord[]> {
+  try {
+    const rows = await db
+      .select()
+      .from(siteVisitsTable)
+      .orderBy(asc(siteVisitsTable.createdAt));
+
+    return rows.map((row) => ({
+      t: row.createdAt instanceof Date ? row.createdAt.getTime() : Date.now(),
+      type:
+        row.eventType === 'section' || row.eventType === 'place_view'
+          ? row.eventType
+          : 'visit',
+      target: row.target ?? undefined,
+      label: row.label ?? undefined,
+      device: row.device === 'desktop' ? 'desktop' : 'mobile',
+    }));
+  } catch (error) {
+    console.error('[POSTGRES] Error reading site visit events:', error);
+    throw new Error('Failed to load visit statistics.', { cause: error });
+  }
+}
+
+export async function clearSiteVisitEvents(): Promise<void> {
+  try {
+    await db.delete(siteVisitsTable);
+  } catch (error) {
+    console.error('[POSTGRES] Error clearing site visit events:', error);
+    throw new Error('Failed to clear visit statistics.', { cause: error });
   }
 }

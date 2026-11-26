@@ -5,7 +5,7 @@ import { seedDatabaseFromExistingFiles } from './repository.ts';
 async function main() {
   if (!isPostgresConfigured()) {
     console.error(
-      'PostgreSQL is not configured. Define DATABASE_URL or PGHOST, PGUSER, PGPASSWORD, and PGDATABASE in your .env file.'
+      'PostgreSQL is not configured. Ensure SQL_HOST, SQL_USER, SQL_PASSWORD, and SQL_DB_NAME are available.'
     );
     process.exit(1);
   }

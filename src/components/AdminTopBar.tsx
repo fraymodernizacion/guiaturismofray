@@ -13,6 +13,7 @@ import {
   Loader2,
   CheckCircle2,
   AlertCircle,
+  BarChart3,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useData } from '../context/DataContext';
@@ -32,7 +33,7 @@ const QUICK_SECTIONS = [
 export const AdminTopBar: React.FC = () => {
   const { adminUser, isAuthenticated, isEditorMode, setIsEditorMode, logout, navigateToAdmin } =
     useAuth();
-  const { setIsCreatePlaceModalOpen, setSectionToEdit, setIsAdminModalOpen, saveStatus } =
+  const { setIsCreatePlaceModalOpen, setSectionToEdit, setIsAdminModalOpen, setAdminPanelTab, saveStatus } =
     useData();
   const [showAddMenu, setShowAddMenu] = useState(false);
   const [showSectionsMenu, setShowSectionsMenu] = useState(false);
@@ -86,10 +87,27 @@ export const AdminTopBar: React.FC = () => {
 
         {/* Center / Actions: Mode Switchers */}
         <div className="flex items-center flex-wrap gap-1.5 sm:gap-2">
+          {/* Acceso Directo a Visitas y Estadísticas */}
+          <button
+            id="btn-admin-bar-analytics"
+            onClick={() => {
+              setAdminPanelTab('analytics');
+              setIsAdminModalOpen(true);
+            }}
+            className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-black transition flex items-center gap-1.5 border border-emerald-400 active:scale-95 shadow-xs"
+            title="Ver registro privado de visitas y uso de la app"
+          >
+            <BarChart3 className="w-3.5 h-3.5 text-amber-300" />
+            <span>Visitas y Estadísticas</span>
+          </button>
+
           {/* Panel de Gestión (Full CMS) */}
           <button
             id="btn-admin-bar-panel"
-            onClick={navigateToAdmin}
+            onClick={() => {
+              setAdminPanelTab('places');
+              navigateToAdmin();
+            }}
             className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-100 rounded-xl text-xs font-bold transition flex items-center gap-1.5 border border-slate-700 active:scale-95 shadow-2xs"
             title="Abrir Panel de Gestión CMS en pantalla completa"
           >

@@ -1,19 +1,30 @@
 import express from 'express';
 import path from 'path';
 import fs from 'fs';
+import crypto from 'crypto';
 import { isPostgresConfigured } from './src/db/index.ts';
 import {
-  getAllAudioguides,
-  getAllEvents,
-  getAllPlaces,
+  clearSiteVisitEvents,
+  getAllAudioguidesWithMeta,
+  getAllEventsWithMeta,
+  getAllPlacesWithMeta,
+  getAllSiteVisitEvents,
   getMediaUpload,
-  getSiteConfig,
+  getSiteConfigWithMeta,
+  recordSiteVisitEvent,
   replaceAllAudioguides,
   replaceAllEvents,
   replaceAllPlaces,
   saveMediaUpload,
   saveSiteConfig,
+  type SiteVisitRecord,
 } from './src/db/repository.ts';
+import {
+  AUTHORIZED_ADMIN_EMAILS,
+  createRequireAdminAuth,
+  requireAuth,
+  type AuthRequest,
+} from './src/middleware/auth.ts';
 
 async function startServer() {
   const app = express();
@@ -210,21 +221,119 @@ async function startServer() {
     }
   };
 
+  // Server-side admin session token helpers (used alongside Firebase Auth ID tokens)
+  const ADMIN_SESSION_SECRET =
+    process.env.ADMIN_SESSION_SECRET || crypto.randomBytes(32).toString('hex');
+  const ADMIN_TOKEN_TTL_MS = 12 * 60 * 60 * 1000; // 12 hours
+  const adminAuthPath = path.join(revisionsDir, 'admin_auth.json');
+  const visitsLogPath = path.join(revisionsDir, 'visits_log.ndjson');
+
+  interface StoredAdminAuth {
+    salt: string;
+    hash: string;
+    claimedBy: string;
+    claimedAt: string;
+  }
+
+  const getEnvAdminPasscode = (): string => (process.env.ADMIN_PASSCODE || '').trim();
+
+  const readStoredAdminAuth = (): StoredAdminAuth | null => {
+    const parsed = readJsonSafe<StoredAdminAuth>(adminAuthPath);
+    if (parsed && typeof parsed.salt === 'string' && typeof parsed.hash === 'string') {
+      return parsed;
+    }
+    return null;
+  };
+
+  const hashPasscodeScrypt = (passcode: string, salt: string): string =>
+    crypto.scryptSync(passcode, salt, 64).toString('hex');
+
+  const verifyPasscodeAgainstServer = (passcode: string): boolean => {
+    const candidate = passcode.trim();
+    if (!candidate) return false;
+
+    const envPasscode = getEnvAdminPasscode();
+    if (envPasscode) {
+      const a = Buffer.from(candidate, 'utf-8');
+      const b = Buffer.from(envPasscode, 'utf-8');
+      return a.length === b.length && crypto.timingSafeEqual(a, b);
+    }
+
+    const stored = readStoredAdminAuth();
+    if (!stored) return false;
+    const derived = Buffer.from(hashPasscodeScrypt(candidate, stored.salt), 'hex');
+    const expected = Buffer.from(stored.hash, 'hex');
+    return derived.length === expected.length && crypto.timingSafeEqual(derived, expected);
+  };
+
+  const signAdminToken = (email: string): string => {
+    const payload = Buffer.from(
+      JSON.stringify({ email, exp: Date.now() + ADMIN_TOKEN_TTL_MS }),
+      'utf-8'
+    ).toString('base64url');
+    const sig = crypto
+      .createHmac('sha256', ADMIN_SESSION_SECRET)
+      .update(payload)
+      .digest('base64url');
+    return `${payload}.${sig}`;
+  };
+
+  const verifyAdminToken = (req: express.Request): { email: string } | null => {
+    const authHeader = req.headers.authorization || '';
+    if (!authHeader.startsWith('Bearer ')) return null;
+    const token = authHeader.slice(7).trim();
+    const parts = token.split('.');
+    if (parts.length !== 2) return null;
+    const [payloadB64, sigB64] = parts;
+    const expectedSig = crypto
+      .createHmac('sha256', ADMIN_SESSION_SECRET)
+      .update(payloadB64)
+      .digest('base64url');
+    const a = Buffer.from(sigB64, 'utf-8');
+    const b = Buffer.from(expectedSig, 'utf-8');
+    if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return null;
+
+    try {
+      const parsed = JSON.parse(Buffer.from(payloadB64, 'base64url').toString('utf-8'));
+      if (
+        !parsed ||
+        typeof parsed.email !== 'string' ||
+        typeof parsed.exp !== 'number' ||
+        parsed.exp < Date.now() ||
+        !AUTHORIZED_ADMIN_EMAILS.has(parsed.email.toLowerCase())
+      ) {
+        return null;
+      }
+      return { email: parsed.email.toLowerCase() };
+    } catch {
+      return null;
+    }
+  };
+
+  const requireAdminAuth = createRequireAdminAuth(verifyAdminToken);
+
+  // Firebase Auth identity verification & Cloud SQL user sync
+  app.get('/api/auth/me', requireAuth, (req: AuthRequest, res) => {
+    const email = (req.user?.email || '').trim().toLowerCase();
+    return res.json({
+      uid: req.user?.uid,
+      email,
+      name: req.user?.name || null,
+      isAdmin: AUTHORIZED_ADMIN_EMAILS.has(email),
+    });
+  });
+
   // Health check API
-  app.get('/api/health', (req, res) => {
+  app.get('/api/health', (_req, res) => {
     res.setHeader('Cache-Control', 'no-store');
-    const latestPlacesRev = readLatestRevision<any[]>('places');
     res.json({
       status: 'ok',
-      database: isPostgresConfigured() ? 'postgresql' : 'json',
-      revisionStore: 'append-only',
-      latestPlacesRevision: latestPlacesRev?.timestamp || 0,
       timestamp: new Date().toISOString(),
     });
   });
 
-  // Persistent Image Upload API
-  app.post('/api/upload', async (req, res) => {
+  // Persistent Image Upload API (stored permanently in Cloud SQL + local cache)
+  app.post('/api/upload', requireAdminAuth, async (req: AuthRequest, res) => {
     try {
       const { filename, dataUrl, base64 } = req.body;
       if (!dataUrl && !base64) {
@@ -258,42 +367,35 @@ async function startServer() {
         return res.status(413).json({ error: 'La imagen supera el tamaño máximo permitido (15 MB)' });
       }
 
-      const targetPath = path.join(uploadsDir, cleanName);
-      fs.writeFileSync(targetPath, buffer);
-
-      // If dist/uploads exists in production, also copy there for instant access
-      const distUploads = path.join(process.cwd(), 'dist', 'uploads');
-      if (fs.existsSync(distUploads)) {
-        try {
-          fs.writeFileSync(path.join(distUploads, cleanName), buffer);
-        } catch {
-          // Non-fatal
-        }
+      // Primary durable persistence in Cloud SQL PostgreSQL
+      if (isPostgresConfigured()) {
+        await saveMediaUpload(cleanName, mimeType, rawBase64, buffer.length);
       }
 
-      let storedInPostgres = false;
-      if (isPostgresConfigured()) {
-        try {
-          await saveMediaUpload(cleanName, mimeType, rawBase64, buffer.length);
-          storedInPostgres = true;
-        } catch (pgErr) {
-          console.warn('[STORAGE] PostgreSQL media save failed, keeping persistent disk file:', pgErr);
+      // Fast local disk cache
+      try {
+        const targetPath = path.join(uploadsDir, cleanName);
+        fs.writeFileSync(targetPath, buffer);
+        const distUploads = path.join(process.cwd(), 'dist', 'uploads');
+        if (fs.existsSync(distUploads)) {
+          fs.writeFileSync(path.join(distUploads, cleanName), buffer);
         }
+      } catch {
+        // Non-fatal when persisted in Cloud SQL
       }
 
       const permanentUrl = `/uploads/${cleanName}`;
-      console.log(`[STORAGE] Uploaded persistent image: ${permanentUrl} (${buffer.length} bytes, pg=${storedInPostgres})`);
+      console.log(`[STORAGE] Uploaded persistent image: ${permanentUrl} (${buffer.length} bytes)`);
 
       return res.json({
         success: true,
         url: permanentUrl,
         filename: cleanName,
         size: buffer.length,
-        storedInPostgres,
       });
     } catch (err: any) {
       console.error('[STORAGE ERROR] Failed to save image:', err);
-      return res.status(500).json({ error: 'Error al procesar y guardar la imagen', details: err.message });
+      return res.status(500).json({ error: 'Error al procesar y guardar la imagen' });
     }
   });
 
@@ -304,20 +406,20 @@ async function startServer() {
   const audioguidesFilePath = path.join(dataDir, 'audioguides.json');
 
   // Site Config API (CMS & Section Customization)
-  app.get('/api/site-config', async (req, res) => {
+  app.get('/api/site-config', async (_req, res) => {
     res.setHeader('Cache-Control', 'no-store');
     try {
-      const latestRev = readLatestRevision<Record<string, any>>('site_config');
-      if (latestRev && typeof latestRev.data === 'object') {
-        return res.json({ config: latestRev.data, revisionTimestamp: latestRev.timestamp });
-      }
       if (isPostgresConfigured()) {
         try {
-          const config = await getSiteConfig();
-          if (config) return res.json({ config, revisionTimestamp: 0 });
+          const { config, revisionTimestamp } = await getSiteConfigWithMeta();
+          if (config) return res.json({ config, revisionTimestamp });
         } catch (pgErr) {
           console.warn('[DATABASE] PostgreSQL site-config read failed, falling back to JSON:', pgErr);
         }
+      }
+      const latestRev = readLatestRevision<Record<string, any>>('site_config');
+      if (latestRev && typeof latestRev.data === 'object') {
+        return res.json({ config: latestRev.data, revisionTimestamp: latestRev.timestamp });
       }
       const baselineData = readJsonSafe<Record<string, any>>(siteConfigFilePath);
       if (baselineData) return res.json({ config: baselineData, revisionTimestamp: 0 });
@@ -325,50 +427,42 @@ async function startServer() {
       return res.json({ config: null, revisionTimestamp: 0 });
     } catch (err: any) {
       console.error('[DATABASE] Error reading site config:', err);
-      return res.status(500).json({ error: 'Error reading site config' });
+      return res.status(500).json({ error: 'Error al leer la configuración del sitio' });
     }
   });
 
-  app.post('/api/site-config', async (req, res) => {
+  app.post('/api/site-config', requireAdminAuth, async (req: AuthRequest, res) => {
     try {
       const { config } = req.body;
       if (!config || typeof config !== 'object') {
-        return res.status(400).json({ error: 'Expected valid site config object' });
+        return res.status(400).json({ error: 'Configuración inválida' });
+      }
+      if (isPostgresConfigured()) {
+        await saveSiteConfig(config);
       }
       const rev = persistRevisionDurable('site_config', config);
-
-      let storage: 'postgresql' | 'json' = 'json';
-      if (isPostgresConfigured()) {
-        try {
-          await saveSiteConfig(config);
-          storage = 'postgresql';
-        } catch (pgErr) {
-          console.warn('[DATABASE] PostgreSQL site-config save failed, persisted to Revision Store:', pgErr);
-        }
-      }
-      console.log(`[DATABASE] Saved site_config revision ${rev.filename} (${storage}).`);
-      return res.json({ success: true, storage, revisionTimestamp: rev.timestamp });
+      return res.json({ success: true, revisionTimestamp: rev.timestamp });
     } catch (err: any) {
       console.error('[DATABASE ERROR] Failed to save site config:', err);
-      return res.status(500).json({ error: 'Error saving site config' });
+      return res.status(500).json({ error: 'Error al guardar la configuración del sitio' });
     }
   });
 
   // Events API
-  app.get('/api/events', async (req, res) => {
+  app.get('/api/events', async (_req, res) => {
     res.setHeader('Cache-Control', 'no-store');
     try {
-      const latestRev = readLatestRevision<any[]>('events');
-      if (latestRev && Array.isArray(latestRev.data)) {
-        return res.json({ events: latestRev.data, revisionTimestamp: latestRev.timestamp });
-      }
       if (isPostgresConfigured()) {
         try {
-          const events = await getAllEvents();
-          if (Array.isArray(events)) return res.json({ events, revisionTimestamp: 0 });
+          const { events, revisionTimestamp } = await getAllEventsWithMeta();
+          if (Array.isArray(events)) return res.json({ events, revisionTimestamp });
         } catch (pgErr) {
           console.warn('[DATABASE] PostgreSQL events read failed, falling back to JSON:', pgErr);
         }
+      }
+      const latestRev = readLatestRevision<any[]>('events');
+      if (latestRev && Array.isArray(latestRev.data)) {
+        return res.json({ events: latestRev.data, revisionTimestamp: latestRev.timestamp });
       }
       const baselineData = readJsonSafe<any[]>(eventsFilePath);
       if (Array.isArray(baselineData)) return res.json({ events: baselineData, revisionTimestamp: 0 });
@@ -376,49 +470,42 @@ async function startServer() {
       return res.json({ events: null, revisionTimestamp: 0 });
     } catch (err: any) {
       console.error('[DATABASE] Error reading events:', err);
-      return res.status(500).json({ error: 'Error reading events' });
+      return res.status(500).json({ error: 'Error al leer los eventos' });
     }
   });
 
-  app.post('/api/events', async (req, res) => {
+  app.post('/api/events', requireAdminAuth, async (req: AuthRequest, res) => {
     try {
       const { events } = req.body;
       if (!Array.isArray(events)) {
-        return res.status(400).json({ error: 'Expected array of events' });
+        return res.status(400).json({ error: 'Se esperaba una lista de eventos' });
+      }
+      if (isPostgresConfigured()) {
+        await replaceAllEvents(events);
       }
       const rev = persistRevisionDurable('events', events);
-
-      let storage: 'postgresql' | 'json' = 'json';
-      if (isPostgresConfigured()) {
-        try {
-          await replaceAllEvents(events);
-          storage = 'postgresql';
-        } catch (pgErr) {
-          console.warn('[DATABASE] PostgreSQL events save failed, persisted to Revision Store:', pgErr);
-        }
-      }
-      return res.json({ success: true, count: events.length, storage, revisionTimestamp: rev.timestamp });
+      return res.json({ success: true, count: events.length, revisionTimestamp: rev.timestamp });
     } catch (err: any) {
       console.error('[DATABASE ERROR] Failed to save events:', err);
-      return res.status(500).json({ error: 'Error saving events' });
+      return res.status(500).json({ error: 'Error al guardar los eventos' });
     }
   });
 
   // Audioguides API
-  app.get('/api/audioguides', async (req, res) => {
+  app.get('/api/audioguides', async (_req, res) => {
     res.setHeader('Cache-Control', 'no-store');
     try {
-      const latestRev = readLatestRevision<any[]>('audioguides');
-      if (latestRev && Array.isArray(latestRev.data)) {
-        return res.json({ audioguides: latestRev.data, revisionTimestamp: latestRev.timestamp });
-      }
       if (isPostgresConfigured()) {
         try {
-          const audioguides = await getAllAudioguides();
-          if (Array.isArray(audioguides)) return res.json({ audioguides, revisionTimestamp: 0 });
+          const { audioguides, revisionTimestamp } = await getAllAudioguidesWithMeta();
+          if (Array.isArray(audioguides)) return res.json({ audioguides, revisionTimestamp });
         } catch (pgErr) {
           console.warn('[DATABASE] PostgreSQL audioguides read failed, falling back to JSON:', pgErr);
         }
+      }
+      const latestRev = readLatestRevision<any[]>('audioguides');
+      if (latestRev && Array.isArray(latestRev.data)) {
+        return res.json({ audioguides: latestRev.data, revisionTimestamp: latestRev.timestamp });
       }
       const baselineData = readJsonSafe<any[]>(audioguidesFilePath);
       if (Array.isArray(baselineData)) return res.json({ audioguides: baselineData, revisionTimestamp: 0 });
@@ -426,31 +513,24 @@ async function startServer() {
       return res.json({ audioguides: null, revisionTimestamp: 0 });
     } catch (err: any) {
       console.error('[DATABASE] Error reading audioguides:', err);
-      return res.status(500).json({ error: 'Error reading audioguides' });
+      return res.status(500).json({ error: 'Error al leer las audioguías' });
     }
   });
 
-  app.post('/api/audioguides', async (req, res) => {
+  app.post('/api/audioguides', requireAdminAuth, async (req: AuthRequest, res) => {
     try {
       const { audioguides } = req.body;
       if (!Array.isArray(audioguides)) {
-        return res.status(400).json({ error: 'Expected array of audioguides' });
+        return res.status(400).json({ error: 'Se esperaba una lista de audioguías' });
+      }
+      if (isPostgresConfigured()) {
+        await replaceAllAudioguides(audioguides);
       }
       const rev = persistRevisionDurable('audioguides', audioguides);
-
-      let storage: 'postgresql' | 'json' = 'json';
-      if (isPostgresConfigured()) {
-        try {
-          await replaceAllAudioguides(audioguides);
-          storage = 'postgresql';
-        } catch (pgErr) {
-          console.warn('[DATABASE] PostgreSQL audioguides save failed, persisted to Revision Store:', pgErr);
-        }
-      }
-      return res.json({ success: true, count: audioguides.length, storage, revisionTimestamp: rev.timestamp });
+      return res.json({ success: true, count: audioguides.length, revisionTimestamp: rev.timestamp });
     } catch (err: any) {
       console.error('[DATABASE ERROR] Failed to save audioguides:', err);
-      return res.status(500).json({ error: 'Error saving audioguides' });
+      return res.status(500).json({ error: 'Error al guardar las audioguías' });
     }
   });
 
@@ -493,31 +573,31 @@ async function startServer() {
     return filterRemovedPlaces(merged);
   };
 
-  app.get('/api/places', async (req, res) => {
+  app.get('/api/places', async (_req, res) => {
     res.setHeader('Cache-Control', 'no-store');
     try {
       const baselinePlaces = readJsonSafe<any[]>(placesFilePath);
-      const latestRev = readLatestRevision<any[]>('places');
-
-      if (latestRev && Array.isArray(latestRev.data) && latestRev.data.length > 0) {
-        return res.json({
-          places: mergeRuntimeWithBaselinePlaces(latestRev.data, baselinePlaces),
-          revisionTimestamp: latestRev.timestamp,
-        });
-      }
 
       if (isPostgresConfigured()) {
         try {
-          const places = await getAllPlaces();
+          const { places, revisionTimestamp } = await getAllPlacesWithMeta();
           if (Array.isArray(places) && places.length > 0) {
             return res.json({
               places: mergeRuntimeWithBaselinePlaces(places, baselinePlaces),
-              revisionTimestamp: 0,
+              revisionTimestamp,
             });
           }
         } catch (pgErr) {
           console.warn('[DATABASE] PostgreSQL places read failed, falling back to JSON:', pgErr);
         }
+      }
+
+      const latestRev = readLatestRevision<any[]>('places');
+      if (latestRev && Array.isArray(latestRev.data) && latestRev.data.length > 0) {
+        return res.json({
+          places: mergeRuntimeWithBaselinePlaces(latestRev.data, baselinePlaces),
+          revisionTimestamp: latestRev.timestamp,
+        });
       }
 
       if (Array.isArray(baselinePlaces)) {
@@ -529,38 +609,31 @@ async function startServer() {
       return res.json({ places: null, revisionTimestamp: 0 });
     } catch (err: any) {
       console.error('[DATABASE] Error reading places:', err);
-      return res.status(500).json({ error: 'Error reading places database' });
+      return res.status(500).json({ error: 'Error al leer el catálogo de lugares' });
     }
   });
 
-  app.post('/api/places', async (req, res) => {
+  app.post('/api/places', requireAdminAuth, async (req: AuthRequest, res) => {
     try {
       const { places } = req.body;
       if (!Array.isArray(places)) {
-        return res.status(400).json({ error: 'Expected array of places' });
+        return res.status(400).json({ error: 'Se esperaba una lista de lugares' });
       }
       const sanitizedPlaces = filterRemovedPlaces(places);
+
+      if (isPostgresConfigured()) {
+        await replaceAllPlaces(sanitizedPlaces);
+      }
       const rev = persistRevisionDurable('places', sanitizedPlaces);
 
-      let storage: 'postgresql' | 'json' = 'json';
-      if (isPostgresConfigured()) {
-        try {
-          await replaceAllPlaces(sanitizedPlaces);
-          storage = 'postgresql';
-        } catch (pgErr) {
-          console.warn('[DATABASE] PostgreSQL places save failed, persisted to Revision Store:', pgErr);
-        }
-      }
-      console.log(`[DATABASE] Saved ${sanitizedPlaces.length} places to revision ${rev.filename} (${storage}).`);
       return res.json({
         success: true,
         count: sanitizedPlaces.length,
-        storage,
         revisionTimestamp: rev.timestamp,
       });
     } catch (err: any) {
       console.error('[DATABASE ERROR] Failed to save places:', err);
-      return res.status(500).json({ error: 'Error saving places database' });
+      return res.status(500).json({ error: 'Error al guardar los cambios en el servidor' });
     }
   });
 
@@ -730,6 +803,379 @@ async function startServer() {
     } catch (err: any) {
       console.error('[ROUTES API ERROR]:', err);
       return res.status(500).json({ error: 'Error calculating route' });
+    }
+  });
+
+  // =========================================================================
+  // ADMIN PASSCODE ENDPOINTS & ANONYMOUS VISIT ANALYTICS
+  // =========================================================================
+
+  app.get('/api/admin/auth-status', (_req, res) => {
+    res.setHeader('Cache-Control', 'no-store');
+    if (getEnvAdminPasscode()) {
+      return res.json({ configured: true, mode: 'env' });
+    }
+    if (readStoredAdminAuth()) {
+      return res.json({ configured: true, mode: 'claimed' });
+    }
+    return res.json({ configured: false, mode: 'unclaimed' });
+  });
+
+  app.post('/api/admin/claim', (req, res) => {
+    if (getEnvAdminPasscode() || readStoredAdminAuth()) {
+      return res.status(409).json({
+        error: 'La clave de administración ya fue configurada.',
+      });
+    }
+    const email = typeof req.body?.email === 'string' ? req.body.email.trim().toLowerCase() : '';
+    const passcode = typeof req.body?.passcode === 'string' ? req.body.passcode.trim() : '';
+
+    if (!AUTHORIZED_ADMIN_EMAILS.has(email)) {
+      return res.status(403).json({ error: 'Correo electrónico no autorizado.' });
+    }
+    if (passcode.length < 6 || passcode.length > 128) {
+      return res.status(400).json({ error: 'La clave debe tener al menos 6 caracteres.' });
+    }
+
+    const salt = crypto.randomBytes(16).toString('hex');
+    const hash = hashPasscodeScrypt(passcode, salt);
+    writeJsonAtomic(adminAuthPath, {
+      salt,
+      hash,
+      claimedBy: email,
+      claimedAt: new Date().toISOString(),
+    });
+
+    return res.json({
+      success: true,
+      token: signAdminToken(email),
+      email,
+    });
+  });
+
+  app.post('/api/admin/session', (req, res) => {
+    const email = typeof req.body?.email === 'string' ? req.body.email.trim().toLowerCase() : '';
+    const passcode = typeof req.body?.passcode === 'string' ? req.body.passcode.trim() : '';
+
+    if (!AUTHORIZED_ADMIN_EMAILS.has(email)) {
+      return res.status(403).json({ error: 'Correo electrónico no autorizado.' });
+    }
+    if (!getEnvAdminPasscode() && !readStoredAdminAuth()) {
+      return res.status(428).json({
+        error: 'Configurá una clave de acceso por primera vez.',
+        needsSetup: true,
+      });
+    }
+    if (!verifyPasscodeAgainstServer(passcode)) {
+      return res.status(401).json({ error: 'Clave de administración incorrecta.' });
+    }
+
+    return res.json({
+      success: true,
+      token: signAdminToken(email),
+      email,
+    });
+  });
+
+  // Simple in-memory rate limiter for public analytics recording (60 events/min per IP)
+  const analyticsRateMap = new Map<string, { count: number; resetAt: number }>();
+  const checkAnalyticsRateLimit = (ip: string): boolean => {
+    const now = Date.now();
+    if (analyticsRateMap.size > 2000) {
+      for (const [key, val] of analyticsRateMap.entries()) {
+        if (val.resetAt <= now) analyticsRateMap.delete(key);
+      }
+    }
+    const entry = analyticsRateMap.get(ip);
+    if (!entry || entry.resetAt <= now) {
+      analyticsRateMap.set(ip, { count: 1, resetAt: now + 60_000 });
+      return true;
+    }
+    if (entry.count >= 60) return false;
+    entry.count += 1;
+    return true;
+  };
+
+  const readVisitsLogFromDisk = (): SiteVisitRecord[] => {
+    try {
+      if (!fs.existsSync(visitsLogPath)) return [];
+      const content = fs.readFileSync(visitsLogPath, 'utf-8');
+      const lines = content.split('\n');
+      const records: SiteVisitRecord[] = [];
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed) continue;
+        try {
+          const parsed = JSON.parse(trimmed);
+          if (parsed && typeof parsed.t === 'number') {
+            records.push({
+              t: parsed.t,
+              type:
+                parsed.type === 'section' || parsed.type === 'place_view'
+                  ? parsed.type
+                  : 'visit',
+              target: typeof parsed.target === 'string' ? parsed.target : undefined,
+              label: typeof parsed.label === 'string' ? parsed.label : undefined,
+              device: parsed.device === 'desktop' ? 'desktop' : 'mobile',
+            });
+          }
+        } catch {
+          // Skip corrupted line
+        }
+      }
+      return records;
+    } catch {
+      return [];
+    }
+  };
+
+  const appendVisitToDisk = (record: SiteVisitRecord) => {
+    if (!fs.existsSync(revisionsDir)) {
+      fs.mkdirSync(revisionsDir, { recursive: true });
+    }
+    fs.appendFileSync(visitsLogPath, `${JSON.stringify(record)}\n`, 'utf-8');
+  };
+
+  // Format timestamp to Argentina (UTC-3) YYYY-MM-DD key
+  const toArgentinaDateKey = (ts: number): string => {
+    const arDate = new Date(ts - 3 * 60 * 60 * 1000);
+    return arDate.toISOString().slice(0, 10);
+  };
+
+  const formatShortDateEs = (yyyyMmDd: string): string => {
+    const months = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+    const parts = yyyyMmDd.split('-');
+    if (parts.length !== 3) return yyyyMmDd;
+    const day = parseInt(parts[2], 10);
+    const monthIdx = parseInt(parts[1], 10) - 1;
+    return `${day} ${months[monthIdx] || parts[1]}`;
+  };
+
+  const SECTION_LABELS: Record<string, string> = {
+    inicio: 'Inicio',
+    explorar: 'Explorar todo',
+    mapa: 'Mapa interactivo',
+    cerca: 'Cerca de mí',
+    agenda: 'Agenda y Eventos',
+    guardados: 'Favoritos guardados',
+    visitar: 'Qué Visitar',
+    comer: 'Gastronomía y Sabores',
+    merendar: 'Casas de Té y Meriendas',
+    campings: 'Campings y Piletas',
+    dormir: 'Dónde Dormir',
+    religioso: 'Turismo Religioso',
+    naturaleza: 'Naturaleza y Dique',
+    historia: 'Historia y Patrimonio',
+    actividades: 'Actividades y Aventura',
+    senderos: 'Senderos y Trekking',
+    audioguias: 'Audioguías',
+    oficinas: 'Oficinas de Turismo',
+  };
+
+  // Public, anonymous visit/usage event endpoint (no visitor login required)
+  // Uses neutral path /api/uso/registrar so mobile privacy shields / ad-blockers never block it
+  app.post(['/api/uso/registrar', '/api/analytics/event'], async (req, res) => {
+    try {
+      const clientIp =
+        (typeof req.headers['x-forwarded-for'] === 'string'
+          ? req.headers['x-forwarded-for'].split(',')[0].trim()
+          : req.socket.remoteAddress) || 'unknown';
+
+      if (!checkAnalyticsRateLimit(clientIp)) {
+        return res.status(429).json({ error: 'Demasiados eventos' });
+      }
+
+      const rawType = req.body?.type;
+      if (rawType !== 'visit' && rawType !== 'section' && rawType !== 'place_view') {
+        return res.status(400).json({ error: 'Tipo de evento inválido' });
+      }
+
+      const rawDevice = req.body?.device;
+      const device: 'mobile' | 'desktop' = rawDevice === 'desktop' ? 'desktop' : 'mobile';
+
+      let target: string | undefined;
+      if (typeof req.body?.target === 'string' && req.body.target.trim()) {
+        const cleanTarget = req.body.target.trim().slice(0, 80);
+        if (/^[a-zA-Z0-9_-]+$/.test(cleanTarget)) {
+          target = cleanTarget;
+        }
+      }
+
+      let label: string | undefined;
+      if (typeof req.body?.label === 'string' && req.body.label.trim()) {
+        label = req.body.label.trim().replace(/[\r\n\t]+/g, ' ').slice(0, 120);
+      }
+
+      const record: SiteVisitRecord = {
+        t: Date.now(),
+        type: rawType,
+        ...(target ? { target } : {}),
+        ...(label ? { label } : {}),
+        device,
+      };
+
+      if (isPostgresConfigured()) {
+        try {
+          await recordSiteVisitEvent(record);
+        } catch (pgErr) {
+          console.warn('[ANALYTICS] PostgreSQL write failed, saved to disk log:', pgErr);
+        }
+      }
+      try {
+        appendVisitToDisk(record);
+      } catch {
+        // Non-fatal
+      }
+
+      return res.json({ success: true });
+    } catch (err) {
+      console.error('[ANALYTICS ERROR]:', err);
+      return res.status(500).json({ error: 'Error registrando evento' });
+    }
+  });
+
+  // Admin-only statistics endpoint (accepts Firebase Auth ID token or municipal session token)
+  app.get(['/api/uso/resumen', '/api/analytics/stats'], requireAdminAuth, async (_req: AuthRequest, res) => {
+    res.setHeader('Cache-Control', 'no-store');
+
+    try {
+      let events: SiteVisitRecord[] = [];
+      if (isPostgresConfigured()) {
+        try {
+          events = await getAllSiteVisitEvents();
+        } catch (pgErr) {
+          console.warn('[ANALYTICS] PostgreSQL read failed, falling back to disk log:', pgErr);
+          events = readVisitsLogFromDisk();
+        }
+      } else {
+        events = readVisitsLogFromDisk();
+      }
+
+      const now = Date.now();
+      const todayKey = toArgentinaDateKey(now);
+      const dayMs = 24 * 60 * 60 * 1000;
+      const cutoff7 = now - 7 * dayMs;
+      const cutoff30 = now - 30 * dayMs;
+
+      let totalVisits = 0;
+      let todayVisits = 0;
+      let last7DaysVisits = 0;
+      let last30DaysVisits = 0;
+      let totalPlaceViews = 0;
+      let totalSectionClicks = 0;
+      let mobileVisits = 0;
+      let desktopVisits = 0;
+      let firstVisitAt: number | null = null;
+      let lastVisitAt: number | null = null;
+
+      // Build last 14 days map in Argentina timezone
+      const dailyMap = new Map<string, { visits: number; placeViews: number }>();
+      const dailyKeys: string[] = [];
+      for (let i = 13; i >= 0; i--) {
+        const key = toArgentinaDateKey(now - i * dayMs);
+        dailyKeys.push(key);
+        dailyMap.set(key, { visits: 0, placeViews: 0 });
+      }
+
+      const sectionCounts = new Map<string, { label: string; count: number }>();
+      const placeCounts = new Map<string, { label: string; count: number }>();
+
+      for (const ev of events) {
+        const dateKey = toArgentinaDateKey(ev.t);
+
+        if (ev.type === 'visit') {
+          totalVisits += 1;
+          if (firstVisitAt === null || ev.t < firstVisitAt) firstVisitAt = ev.t;
+          if (lastVisitAt === null || ev.t > lastVisitAt) lastVisitAt = ev.t;
+          if (dateKey === todayKey) todayVisits += 1;
+          if (ev.t >= cutoff7) last7DaysVisits += 1;
+          if (ev.t >= cutoff30) last30DaysVisits += 1;
+          if (ev.device === 'desktop') desktopVisits += 1;
+          else mobileVisits += 1;
+
+          const dayBucket = dailyMap.get(dateKey);
+          if (dayBucket) dayBucket.visits += 1;
+        } else if (ev.type === 'section' && ev.target) {
+          totalSectionClicks += 1;
+          const prev = sectionCounts.get(ev.target);
+          sectionCounts.set(ev.target, {
+            label: ev.label || SECTION_LABELS[ev.target] || ev.target,
+            count: (prev?.count || 0) + 1,
+          });
+        } else if (ev.type === 'place_view' && ev.target) {
+          totalPlaceViews += 1;
+          const dayBucket = dailyMap.get(dateKey);
+          if (dayBucket) dayBucket.placeViews += 1;
+          const prev = placeCounts.get(ev.target);
+          placeCounts.set(ev.target, {
+            label: ev.label || prev?.label || ev.target,
+            count: (prev?.count || 0) + 1,
+          });
+        }
+      }
+
+      const dailyVisits = dailyKeys.map((date) => {
+        const b = dailyMap.get(date) || { visits: 0, placeViews: 0 };
+        return {
+          date,
+          label: formatShortDateEs(date),
+          visits: b.visits,
+          placeViews: b.placeViews,
+        };
+      });
+
+      const topSections = Array.from(sectionCounts.entries())
+        .map(([id, info]) => ({ id, label: info.label, count: info.count }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 10);
+
+      const topPlaces = Array.from(placeCounts.entries())
+        .map(([id, info]) => ({ id, label: info.label, count: info.count }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 10);
+
+      return res.json({
+        totalVisits,
+        todayVisits,
+        last7DaysVisits,
+        last30DaysVisits,
+        totalPlaceViews,
+        totalSectionClicks,
+        firstVisitAt: firstVisitAt ? new Date(firstVisitAt).toISOString() : null,
+        lastVisitAt: lastVisitAt ? new Date(lastVisitAt).toISOString() : null,
+        devices: {
+          mobile: mobileVisits,
+          desktop: desktopVisits,
+        },
+        dailyVisits,
+        topSections,
+        topPlaces,
+        generatedAt: new Date().toISOString(),
+      });
+    } catch (err) {
+      console.error('[ANALYTICS STATS ERROR]:', err);
+      return res.status(500).json({ error: 'Error al consultar estadísticas' });
+    }
+  });
+
+  // Admin-only reset analytics counter
+  app.post(['/api/uso/reiniciar', '/api/analytics/reset'], requireAdminAuth, async (_req: AuthRequest, res) => {
+    try {
+      if (isPostgresConfigured()) {
+        await clearSiteVisitEvents();
+      }
+      try {
+        if (!fs.existsSync(revisionsDir)) {
+          fs.mkdirSync(revisionsDir, { recursive: true });
+        }
+        fs.writeFileSync(visitsLogPath, '', 'utf-8');
+      } catch {
+        // Non-fatal
+      }
+      return res.json({ success: true });
+    } catch (err) {
+      console.error('[ANALYTICS RESET ERROR]:', err);
+      return res.status(500).json({ error: 'Error al reiniciar el contador' });
     }
   });
 

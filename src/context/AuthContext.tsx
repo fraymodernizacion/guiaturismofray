@@ -1,8 +1,11 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
+import { onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
+import { auth, googleAuthProvider } from '../lib/firebase';
 
 export interface AdminUser {
   email: string;
   name: string;
+  uid?: string;
   role: 'superadmin' | 'editor';
   authenticatedVia: 'google' | 'municipal_passcode';
   lastLogin: string;
@@ -10,6 +13,9 @@ export interface AdminUser {
 
 interface AuthContextType {
   adminUser: AdminUser | null;
+  adminToken: string | null;
+  setAdminToken: (token: string | null) => void;
+  getAuthToken: () => Promise<string | null>;
   isAuthenticated: boolean;
   isLoading: boolean;
   loginError: string | null;
@@ -41,13 +47,13 @@ const AUTHORIZED_ADMIN_EMAILS = [
   'admin@fraymarmertoesquiu.gob.ar',
 ];
 
-// Municipal security key for official Tourism Department staff
-const MUNICIPAL_PASSCODE_HASH = 'FrayTurismo2026!';
-
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [adminUser, setAdminUser] = useState<AdminUser | null>(null);
+  // Held strictly in React memory (never written to localStorage/sessionStorage)
+  const [adminToken, setAdminToken] = useState<string | null>(null);
+  const adminTokenRef = useRef<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [loginError, setLoginError] = useState<string | null>(null);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
@@ -58,6 +64,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return false;
     }
   });
+
+  useEffect(() => {
+    adminTokenRef.current = adminToken;
+  }, [adminToken]);
 
   const [isCurrentRouteAdmin, setIsCurrentRouteAdmin] = useState<boolean>(() => {
     if (typeof window === 'undefined') return false;
@@ -73,7 +83,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     );
   });
 
-  const setIsEditorMode = (enabled: boolean) => {
+  const setIsEditorMode = useCallback((enabled: boolean) => {
     setIsEditorModeState(enabled);
     try {
       if (enabled) {
@@ -84,9 +94,119 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch (e) {
       console.error(e);
     }
-  };
+  }, []);
 
-  // Check URL changes, initial session and hotkeys
+  const saveAdminSession = useCallback((user: AdminUser) => {
+    setAdminUser(user);
+    setLoginError(null);
+    setIsLoginModalOpen(false);
+    try {
+      localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
+    } catch (e) {
+      console.error('Failed to persist admin session', e);
+    }
+  }, []);
+
+  const syncFirebaseUserToServer = useCallback(async (idToken: string) => {
+    try {
+      await fetch('/api/auth/me', {
+        headers: { Authorization: `Bearer ${idToken}` },
+        cache: 'no-store',
+      });
+    } catch {
+      // Non-fatal sync
+    }
+  }, []);
+
+  // Retrieve a live Bearer token from Firebase Auth (auto-refreshed) or in-memory municipal session
+  const getAuthToken = useCallback(async (): Promise<string | null> => {
+    try {
+      if (auth.currentUser) {
+        const freshToken = await auth.currentUser.getIdToken();
+        setAdminToken(freshToken);
+        adminTokenRef.current = freshToken;
+        return freshToken;
+      }
+    } catch (err) {
+      console.warn('[AUTH] Could not refresh Firebase ID token:', err);
+    }
+    return adminTokenRef.current;
+  }, []);
+
+  // Listen to Firebase Auth state (primary authentication source)
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
+      if (fbUser && fbUser.email) {
+        const cleanEmail = fbUser.email.trim().toLowerCase();
+        const isAuthorized = AUTHORIZED_ADMIN_EMAILS.some(
+          (e) => e.toLowerCase() === cleanEmail
+        );
+        if (isAuthorized) {
+          try {
+            const idToken = await fbUser.getIdToken();
+            setAdminToken(idToken);
+            adminTokenRef.current = idToken;
+            const user: AdminUser = {
+              email: cleanEmail,
+              name:
+                fbUser.displayName ||
+                (cleanEmail === 'prensafray@gmail.com'
+                  ? 'Prensa y Turismo Fray'
+                  : 'Administrador Municipal'),
+              uid: fbUser.uid,
+              role: 'superadmin',
+              authenticatedVia: 'google',
+              lastLogin: new Date().toISOString(),
+            };
+            setAdminUser(user);
+            try {
+              localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
+            } catch {
+              // Ignore storage errors
+            }
+            void syncFirebaseUserToServer(idToken);
+          } catch (err) {
+            console.warn('[AUTH] Error getting Firebase ID token:', err);
+          }
+        } else {
+          await signOut(auth).catch(() => {});
+          setAdminToken(null);
+          adminTokenRef.current = null;
+        }
+        setIsLoading(false);
+        return;
+      }
+
+      // If no active Firebase user, restore local UI display metadata if present
+      // (mutations still require an active verified token)
+      try {
+        const stored = localStorage.getItem(AUTH_STORAGE_KEY);
+        if (stored) {
+          const parsed = JSON.parse(stored) as AdminUser;
+          const isAuthorized = AUTHORIZED_ADMIN_EMAILS.some(
+            (e) => e.toLowerCase() === parsed.email.toLowerCase()
+          );
+          if (isAuthorized) {
+            setAdminUser(parsed);
+          } else {
+            localStorage.removeItem(AUTH_STORAGE_KEY);
+            setAdminUser(null);
+            setIsEditorMode(false);
+          }
+        }
+      } catch {
+        localStorage.removeItem(AUTH_STORAGE_KEY);
+        setAdminUser(null);
+        setIsEditorMode(false);
+      } finally {
+        setIsLoading(false);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [setIsEditorMode, syncFirebaseUserToServer]);
+
+  // Check URL changes and Alt+A keyboard shortcut
   useEffect(() => {
     const checkRoute = () => {
       const path = window.location.pathname;
@@ -102,10 +222,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Secret Alt + A keyboard shortcut for municipal administration
       if (e.altKey && (e.key === 'a' || e.key === 'A')) {
         e.preventDefault();
-        if (adminUser) {
+        if (adminUser && adminTokenRef.current) {
           setIsEditorMode(!isEditorMode);
         } else {
           setIsLoginModalOpen(true);
@@ -117,36 +236,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     window.addEventListener('hashchange', checkRoute);
     window.addEventListener('keydown', handleKeyDown);
 
-    // Restore existing admin session
-    try {
-      const stored = localStorage.getItem(AUTH_STORAGE_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored) as AdminUser;
-        const isAuthorized = AUTHORIZED_ADMIN_EMAILS.some(
-          (e) => e.toLowerCase() === parsed.email.toLowerCase()
-        );
-        if (isAuthorized) {
-          setAdminUser(parsed);
-        } else {
-          localStorage.removeItem(AUTH_STORAGE_KEY);
-          setAdminUser(null);
-          setIsEditorMode(false);
-        }
-      }
-    } catch {
-      localStorage.removeItem(AUTH_STORAGE_KEY);
-      setAdminUser(null);
-      setIsEditorMode(false);
-    } finally {
-      setIsLoading(false);
-    }
-
     return () => {
       window.removeEventListener('popstate', checkRoute);
       window.removeEventListener('hashchange', checkRoute);
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [adminUser, isEditorMode]);
+  }, [adminUser, isEditorMode, setIsEditorMode]);
 
   const navigateToAdmin = () => {
     window.history.pushState({}, '', '/admin');
@@ -167,19 +262,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsEditorMode(false);
   };
 
-  const saveAdminSession = (user: AdminUser) => {
-    setAdminUser(user);
-    setLoginError(null);
-    setIsLoginModalOpen(false);
-    try {
-      localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
-    } catch (e) {
-      console.error('Failed to persist admin session', e);
-    }
-  };
-
   const logout = () => {
+    void signOut(auth).catch(() => {});
     setAdminUser(null);
+    setAdminToken(null);
+    adminTokenRef.current = null;
     setLoginError(null);
     setIsEditorMode(false);
     try {
@@ -191,105 +278,110 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     navigateToPublic();
   };
 
-  // Google Sign-In with whitelist verification
+  // Primary Authentication: Real Firebase Google Sign-In (signInWithPopup)
   const loginWithGoogle = async (): Promise<boolean> => {
     setIsLoading(true);
     setLoginError(null);
     try {
-      const candidateEmail = prompt(
-        'Ingresá tu cuenta de Google autorizada de la Municipalidad (ej. prensafray@gmail.com):',
-        'prensafray@gmail.com'
+      const result = await signInWithPopup(auth, googleAuthProvider);
+      const fbUser = result.user;
+      const cleanEmail = (fbUser.email || '').trim().toLowerCase();
+
+      const isAuthorized = AUTHORIZED_ADMIN_EMAILS.some(
+        (e) => e.toLowerCase() === cleanEmail
       );
 
-      if (!candidateEmail) {
-        setIsLoading(false);
-        return false;
-      }
-
-      const cleanEmail = candidateEmail.trim().toLowerCase();
-      const isAuthorized = AUTHORIZED_ADMIN_EMAILS.some((e) => e.toLowerCase() === cleanEmail);
-
       if (!isAuthorized) {
-        setLoginError(`El correo ${cleanEmail} no está en la lista de administradores autorizados.`);
+        await signOut(auth).catch(() => {});
+        setLoginError(
+          `El correo ${cleanEmail || 'seleccionado'} no está en la lista de administradores autorizados.`
+        );
         setIsLoading(false);
         return false;
       }
+
+      const idToken = await fbUser.getIdToken();
+      setAdminToken(idToken);
+      adminTokenRef.current = idToken;
 
       const user: AdminUser = {
         email: cleanEmail,
-        name: cleanEmail === 'prensafray@gmail.com' ? 'Prensa y Turismo Fray' : 'Administrador Municipal',
+        name:
+          fbUser.displayName ||
+          (cleanEmail === 'prensafray@gmail.com'
+            ? 'Prensa y Turismo Fray'
+            : 'Administrador Municipal'),
+        uid: fbUser.uid,
         role: 'superadmin',
         authenticatedVia: 'google',
         lastLogin: new Date().toISOString(),
       };
 
       saveAdminSession(user);
+      void syncFirebaseUserToServer(idToken);
       setIsLoading(false);
       return true;
     } catch (err: any) {
-      setLoginError(err.message || 'Error al autenticar con Google');
+      const code = err?.code || '';
+      if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') {
+        setLoginError('Se canceló el inicio de sesión con Google.');
+      } else if (code === 'auth/popup-blocked') {
+        setLoginError('El navegador bloqueó la ventana emergente de Google. Permití pop-ups e intentá de nuevo.');
+      } else {
+        setLoginError(err?.message || 'Error al autenticar con Google.');
+      }
       setIsLoading(false);
       return false;
     }
   };
 
-  // Municipal Passcode login for tourism team
-  const loginWithMunicipalPasscode = async (
-    passcode: string,
-    designatedEmail = 'prensafray@gmail.com'
+  // Server-verified municipal passcode session (no hardcoded client passwords)
+  const authenticateWithServerPasscode = async (
+    email: string,
+    passcode: string
   ): Promise<boolean> => {
     setIsLoading(true);
     setLoginError(null);
-
-    await new Promise((res) => setTimeout(res, 400));
-
-    if (
-      passcode.trim() === MUNICIPAL_PASSCODE_HASH ||
-      passcode.trim() === 'Fray2026' ||
-      passcode.trim() === 'TurismoFray'
-    ) {
-      const cleanEmail = designatedEmail.trim().toLowerCase();
-      const user: AdminUser = {
-        email: cleanEmail,
-        name: 'Equipo de Turismo Fray Mamerto Esquiú',
-        role: 'superadmin',
-        authenticatedVia: 'municipal_passcode',
-        lastLogin: new Date().toISOString(),
-      };
-      saveAdminSession(user);
-      setIsLoading(false);
-      return true;
-    } else {
-      setLoginError('Clave de seguridad municipal incorrecta.');
-      setIsLoading(false);
-      return false;
-    }
-  };
-
-  // Direct email & password check
-  const loginWithDirectCredentials = async (email: string, pass: string): Promise<boolean> => {
-    setIsLoading(true);
-    setLoginError(null);
-    await new Promise((res) => setTimeout(res, 400));
-
     const cleanEmail = email.trim().toLowerCase();
-    const isEmailAuthorized = AUTHORIZED_ADMIN_EMAILS.some((e) => e.toLowerCase() === cleanEmail);
+    const cleanPass = passcode.trim();
 
-    if (!isEmailAuthorized) {
+    if (!AUTHORIZED_ADMIN_EMAILS.some((e) => e.toLowerCase() === cleanEmail)) {
       setLoginError(`El correo ${cleanEmail} no cuenta con autorización administrativa.`);
       setIsLoading(false);
       return false;
     }
 
-    if (
-      pass === 'FrayTurismo2026!' ||
-      pass === 'Fray2026' ||
-      pass === 'TurismoFray' ||
-      pass === 'AdminFray2026'
-    ) {
+    try {
+      let res = await fetch('/api/admin/session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: cleanEmail, passcode: cleanPass }),
+      });
+
+      if (res.status === 428) {
+        // First-time claim if passcode not yet configured on server
+        res = await fetch('/api/admin/claim', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: cleanEmail, passcode: cleanPass }),
+        });
+      }
+
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || typeof data.token !== 'string') {
+        setLoginError(data.error || 'Clave de seguridad municipal incorrecta.');
+        setIsLoading(false);
+        return false;
+      }
+
+      setAdminToken(data.token);
+      adminTokenRef.current = data.token;
       const user: AdminUser = {
         email: cleanEmail,
-        name: cleanEmail === 'prensafray@gmail.com' ? 'Prensa Fray Mamerto Esquiú' : 'Gestión Turismo FME',
+        name:
+          cleanEmail === 'prensafray@gmail.com'
+            ? 'Prensa Fray Mamerto Esquiú'
+            : 'Gestión Turismo FME',
         role: 'superadmin',
         authenticatedVia: 'municipal_passcode',
         lastLogin: new Date().toISOString(),
@@ -297,17 +389,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       saveAdminSession(user);
       setIsLoading(false);
       return true;
-    } else {
-      setLoginError('Contraseña incorrecta para el usuario administrador.');
+    } catch {
+      setLoginError('Error de conexión con el servidor al validar credenciales.');
       setIsLoading(false);
       return false;
     }
+  };
+
+  const loginWithMunicipalPasscode = async (
+    passcode: string,
+    designatedEmail = 'prensafray@gmail.com'
+  ): Promise<boolean> => {
+    return authenticateWithServerPasscode(designatedEmail, passcode);
+  };
+
+  const loginWithDirectCredentials = async (
+    email: string,
+    pass: string
+  ): Promise<boolean> => {
+    return authenticateWithServerPasscode(email, pass);
   };
 
   return (
     <AuthContext.Provider
       value={{
         adminUser,
+        adminToken,
+        setAdminToken,
+        getAuthToken,
         isAuthenticated: !!adminUser,
         isLoading,
         loginError,
